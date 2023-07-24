@@ -34,3 +34,4 @@ export PKG_CONFIG_PATH="/usr/local/opt/ncurses/lib/pkgconfig"
 alias ls='ls --color'
 export PATH="/usr/local/opt/m4/bin:$PATH"
 alias gconf='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+neofetch
