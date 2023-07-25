@@ -84,121 +84,116 @@
 (require 'all-the-icons)
 
 ; Dashboard Configuration
-(require 'dashboard)
-(dashboard-setup-startup-hook)
-;; Or if you use use-package
+; (require 'dashboard)
+; (dashboard-setup-startup-hook)
+; ;; Or if you use use-package
 (use-package dashboard
-  :ensure t
-  :config
-  (dashboard-setup-startup-hook))
-;; Set the title
+ :ensure t
+ :config
+ (dashboard-setup-startup-hook))
+; Set the title
 (setq dashboard-banner-logo-title "Dashboard")
 ;; Set the banner
 (setq dashboard-startup-banner 'logo)
-;; Value can be
-;; - nil to display no banner
-;; - 'official which displays the official emacs logo
-;; - 'logo which displays an alternative emacs logo
-;; - 1, 2 or 3 which displays one of the text banners
-;; - "path/to/your/image.gif", "path/to/your/image.png" or "path/to/your/text.txt" which displays whatever gif/image/text you would prefer
-;; - a cons of '("path/to/your/image.png" . "path/to/your/text.txt")
-
-;; Content is not centered by default. To center, set
+; ;; Value can be
+; ;; - nil to display no banner
+; ;; - 'official which displays the official emacs logo
+; ;; - 'logo which displays an alternative emacs logo
+; ;; - 1, 2 or 3 which displays one of the text banners
+; ;; - "path/to/your/image.gif", "path/to/your/image.png" or "path/to/your/text.txt" which displays whatever gif/image/text you would prefer
+; ;; - a cons of '("path/to/your/image.png" . "path/to/your/text.txt")
+;
+; ;; Content is not centered by default. To center, set
 (setq dashboard-center-content t)
-
-;; To disable shortcut "jump" indicators for each section, set
+;
+; ;; To disable shortcut "jump" indicators for each section, set
 (setq dashboard-show-shortcuts t)
 (setq dashboard-items '((recents  . 5)
-                        (bookmarks . 5)
-                        (projects . 5)
-                        (agenda . 5)
-                        (registers . 5)))
+                       (bookmarks . 5)
+                       (projects . 5)
+                       (agenda . 5)
+                       (registers . 5)))
 ;; use all-the-icons package
 (setq dashboard-icon-type 'all-the-icons)
 (setq dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
 (setq dashboard-heading-icons '((recents . "history")
-                                (bookmarks . "bookmark")
-                                (agenda    . "calendar")
-                                (projects  . "rocket")
-                                (registers . "database")))
+                              (bookmarks . "bookmark")
+                              (agenda    . "calendar")
+                              (projects  . "rocket")
+                              (registers . "database")))
 (setq dashboard-set-heading-icons t)
 (setq dashboard-set-file-icons t)
 (setq dashboard-set-navigator t)
 (setq dashboard-init-info "Welcome to Emacs!")
-
+;
 (page-break-lines-mode)
-
+; ;
 ; beacon
 (use-package beacon
-  :hook (prog-mode . ((beacon-mode)
-         (setq beacon-blink-when-buffer-changes t)
+  :hook (prog-mode . beacon-mode)
+  :config
+        (setq beacon-blink-when-buffer-changes t)
         (setq beacon-blink-when-window-changes t)
         (setq beacon-blink-when-point-moves-vertically t)
-        (setq beacon-blink-when-point-moves-horizontally t))))
+        (setq beacon-blink-when-point-moves-horizontally t))
 
-        ; (setq beacon-size 79)
-        ; (setq beacon-color 0.5))))
-
-; (require 'beacon)
-; (after! beacon
-; (beacon-mode 1)
-; (beacon--post-command)
+        ; ; (setq beacon-size 79)
+        ; ; (setq beacon-color 0.5))))
 
 (use-package linum-relative
-  :hook (prog-mode . (linum-relative-mode))
-        (org-mode . (linum-relative-mode))
-        (text-mode . (linum-relative-mode)))
-
-
+  :hook (prog-mode . linum-relative-mode)
+       (org-mode . linum-relative-mode)
+       (text-mode . linum-relative-mode))
+;
 (require 'emacs-surround)
 (global-set-key (kbd "C-q") 'emacs-surround)
 
 ; clippy
+(require 'clippy)
 (map! :leader
       (:prefix ("c h" . "Help info from Clippy")
        :desc "Clippy describes function under point" "f" #'clippy-describe-function
        :desc "Clippy describes variable under point" "v" #'clippy-describe-variable))
-;
+
 ; ivy
-(setq ivy-posframe-display-functions-alist
-      '((swiper                     . ivy-posframe-display-at-point)
-        (complete-symbol            . ivy-posframe-display-at-point)
-        (counsel-M-x                . ivy-display-function-fallback)
-        (counsel-esh-history        . ivy-posframe-display-at-window-center)
-        (counsel-describe-function  . ivy-display-function-fallback)
-        (counsel-describe-variable  . ivy-display-function-fallback)
-        (counsel-find-file          . ivy-display-function-fallback)
-        (counsel-recentf            . ivy-display-function-fallback)
-        (counsel-register           . ivy-posframe-display-at-frame-bottom-window-center)
-        (dmenu                      . ivy-posframe-display-at-frame-top-center)
-        (nil                        . ivy-posframe-display))
-      ivy-posframe-height-alist
-      '((swiper . 20)
-        (dmenu . 20)
-        (t . 10)))
-(ivy-posframe-mode 1) ; 1 enables posframe-mode, 0 disables it.
-
-(map! :leader
-      (:prefix ("v" . "Ivy")
-       :desc "Ivy push view" "v p" #'ivy-push-view
-       :desc "Ivy switch view" "v s" #'ivy-switch-view))
-
-; neotree file browser
+; (setq ivy-posframe-display-functions-alist
+       ; '((swiper                     . ivy-posframe-display-at-point)
+        ; (complete-symbol            . ivy-posframe-display-at-point)
+        ; (counsel-M-x                . ivy-display-function-fallback)
+        ; (counsel-esh-history        . ivy-posframe-display-at-window-center)
+        ; (counsel-describe-function  . ivy-display-function-fallback)
+        ; (counsel-describe-variable  . ivy-display-function-fallback)
+        ; (counsel-find-file          . ivy-display-function-fallback)
+        ; (counsel-recentf            . ivy-display-function-fallback)
+        ; (counsel-register           . ivy-posframe-display-at-frame-bottom-window-center)
+        ; (dmenu                      . ivy-posframe-display-at-frame-top-center)
+        ; (nil                        . ivy-posframe-display))
+        ; ivy-posframe-height-alist
+       ; '((swiper . 20)
+        ; (dmenu . 20)
+        ; (t . 10)))
+; (ivy-posframe-mode 1) ; 1 enables posframe-mode, 0 disables it.
+;
+; (map! :leader
+       ; (:prefix ("v" . "Ivy")
+       ; :desc "Ivy push view" "v p" #'ivy-push-view
+       ; :desc "Ivy switch view" "v s" #'ivy-switch-view))
+;
+neotree file browser
 (after! neotree
-  (setq neo-smart-open t
+ (setq neo-smart-open t
         neo-window-fixed-size nil))
-
+;
 (after! doom-themes
   (setq doom-neotree-enable-variable-pitch t))
-
+; ;
 (map! :leader
       :desc "Toggle neotree file viewer" "t n" #'neotree-toggle
       :desc "Open directory in neotree"  "d n" #'neotree-dir)
-
+;
 ; org superstar
 (require 'org-superstar)
 (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))
-
 
 (use-package pdf-tools
    :ensure t
@@ -208,27 +203,26 @@
    (custom-set-variables
     '(pdf-tools-handle-upgrades t)))
 
-
-;; org noter keybinings
+; org noter keybinings
 (global-set-key (kbd "C-c i") (lambda () (interactive) (funcall 'org-noter-insert-note)))
 
 
 ; (add-hook 'pdf-view-mode-hook )
-
-
-; Indentation
-(add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-(add-hook 'org-mode-hook 'highlight-indent-guides-mode)
-(add-hook 'text-mode-hook 'highlight-indent-guides-mode)
-(add-hook 'lisp-mode-hook 'highlight-indent-guides-mode)
-(setq highlight-indent-guides-method 'column)
-
-
-; undo tree
-(use-package undo-tree
-  :hook (prog-mode . (undo-tree-mode))
-        (org-mode . (undo-tree-mode))
-        (text-mode . (undo-tree-mode))
-        (lisp-mode . (undo-tree-mode)))
-
-; (undo-tree-visualizer-diff t)
+;
+;
+; ; Indentation
+; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+; (add-hook 'org-mode-hook 'highlight-indent-guides-mode)
+; (add-hook 'text-mode-hook 'highlight-indent-guides-mode)
+; (add-hook 'lisp-mode-hook 'highlight-indent-guides-mode)
+; (setq highlight-indent-guides-method 'column)
+;
+;
+; ; undo tree
+; (use-package undo-tree
+  ; :hook (prog-mode . (undo-tree-mode))
+        ; (org-mode . (undo-tree-mode))
+        ; (text-mode . (undo-tree-mode))
+        ; (lisp-mode . (undo-tree-mode)))
+;
+; ; (undo-tree-visualizer-diff t)
