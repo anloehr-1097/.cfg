@@ -23,8 +23,8 @@ export PATH="$HOME/.emacs.d/bin:$PATH"
 export PATH="$HOME/homebrew/bin:$PATH"
 export PATH="$HOME/homebrew/sbin:$PATH"
 export PATH="$HOME/opt/anaconda3/bin:$PATH"
-# alias emacs="open -a ~/Applications/Emacs.app"
-# alias em="~/Applications/Emacs.app/Contents/MacOs/bin/emacsclient -t -a ''"
+alias emacs="open -a ~/Applications/Emacs.app"
+alias em="~/Applications/Emacs.app/Contents/MacOs/bin/emacsclient -cn"
 export PATH="/usr/local/opt/llvm/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/opt/ncurses/bin:$PATH"
@@ -35,3 +35,4 @@ alias ls='ls --color'
 export PATH="/usr/local/opt/m4/bin:$PATH"
 alias gconf='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 neofetch
+alias emst='open -a /Users/Andy/Applications/Emacs.app --args --bg-daemon'
