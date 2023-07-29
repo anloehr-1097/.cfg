@@ -21,6 +21,8 @@
 
 ;; accept. For example:
 ;;
+(setq doom-font (font-spec :family "Iosevka Nerd Font" :size 13 :weight 'normal))
+
 ;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
 ;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
 ;;
@@ -32,7 +34,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-shades-of-purple)
+(setq doom-theme 'doom-acario-dark)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -179,7 +181,7 @@
        ; :desc "Ivy push view" "v p" #'ivy-push-view
        ; :desc "Ivy switch view" "v s" #'ivy-switch-view))
 ;
-neotree file browser
+; neotree file browser
 (after! neotree
  (setq neo-smart-open t
         neo-window-fixed-size nil))
