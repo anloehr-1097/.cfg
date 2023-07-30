@@ -36,3 +36,4 @@ export PATH="/usr/local/opt/m4/bin:$PATH"
 alias gconf='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 neofetch
 alias emst='open -a /Users/Andy/Applications/Emacs.app --args --bg-daemon'
+export PATH="/usr/local/Cellar/gdb/13.1/bin:$PATH"

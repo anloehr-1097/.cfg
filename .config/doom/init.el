@@ -87,7 +87,7 @@
        :tools
        ;;ansible
        ;;biblio            ; Writes a PhD for you (citation needed)
-       ;;debugger          ; FIXME stepping through code, to help you add bugs
+       debugger          ; FIXME stepping through code, to help you add bugs
        ;;direnv
        docker
        ;;editorconfig      ; let someone else argue about tabs vs spaces
@@ -198,6 +198,7 @@
        (default +bindings +smartparens))
 
 (setq default-frame-alist
-      '((font . "Menlo-13")
+      '((font . "Iosevka Nerd Font")
         (width . 160)
         (height . 120)))
+(add-to-list 'image-types 'svg)

@@ -158,28 +158,28 @@
        :desc "Clippy describes variable under point" "v" #'clippy-describe-variable))
 
 ; ivy
-; (setq ivy-posframe-display-functions-alist
-       ; '((swiper                     . ivy-posframe-display-at-point)
-        ; (complete-symbol            . ivy-posframe-display-at-point)
-        ; (counsel-M-x                . ivy-display-function-fallback)
-        ; (counsel-esh-history        . ivy-posframe-display-at-window-center)
-        ; (counsel-describe-function  . ivy-display-function-fallback)
-        ; (counsel-describe-variable  . ivy-display-function-fallback)
-        ; (counsel-find-file          . ivy-display-function-fallback)
-        ; (counsel-recentf            . ivy-display-function-fallback)
-        ; (counsel-register           . ivy-posframe-display-at-frame-bottom-window-center)
-        ; (dmenu                      . ivy-posframe-display-at-frame-top-center)
-        ; (nil                        . ivy-posframe-display))
-        ; ivy-posframe-height-alist
-       ; '((swiper . 20)
-        ; (dmenu . 20)
-        ; (t . 10)))
-; (ivy-posframe-mode 1) ; 1 enables posframe-mode, 0 disables it.
+(setq ivy-posframe-display-functions-alist
+        '((swiper                     . ivy-posframe-display-at-point)
+        (complete-symbol            . ivy-posframe-display-at-point)
+        (counsel-M-x                . ivy-display-function-fallback)
+        (counsel-esh-history        . ivy-posframe-display-at-window-center)
+        (counsel-describe-function  . ivy-display-function-fallback)
+        (counsel-describe-variable  . ivy-display-function-fallback)
+        (counsel-find-file          . ivy-display-function-fallback)
+        (counsel-recentf            . ivy-display-function-fallback)
+        (counsel-register           . ivy-posframe-display-at-frame-bottom-window-center)
+        (dmenu                      . ivy-posframe-display-at-frame-top-center)
+        (nil                        . ivy-posframe-display))
+        ivy-posframe-height-alist
+       '((swiper . 20)
+        (dmenu . 20)
+        (t . 10)))
+(ivy-posframe-mode 1) ; 1 enables posframe-mode, 0 disables it.
 ;
-; (map! :leader
-       ; (:prefix ("v" . "Ivy")
-       ; :desc "Ivy push view" "v p" #'ivy-push-view
-       ; :desc "Ivy switch view" "v s" #'ivy-switch-view))
+(map! :leader
+       (:prefix ("v" . "Ivy")
+       :desc "Ivy push view" "v p" #'ivy-push-view
+       :desc "Ivy switch view" "v s" #'ivy-switch-view))
 ;
 ; neotree file browser
 (after! neotree
@@ -209,22 +209,8 @@
 (global-set-key (kbd "C-c i") (lambda () (interactive) (funcall 'org-noter-insert-note)))
 
 
-; (add-hook 'pdf-view-mode-hook )
-;
-;
-; ; Indentation
-; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-; (add-hook 'org-mode-hook 'highlight-indent-guides-mode)
-; (add-hook 'text-mode-hook 'highlight-indent-guides-mode)
-; (add-hook 'lisp-mode-hook 'highlight-indent-guides-mode)
-; (setq highlight-indent-guides-method 'column)
-;
-;
-; ; undo tree
-; (use-package undo-tree
-  ; :hook (prog-mode . (undo-tree-mode))
-        ; (org-mode . (undo-tree-mode))
-        ; (text-mode . (undo-tree-mode))
-        ; (lisp-mode . (undo-tree-mode)))
-;
-; ; (undo-tree-visualizer-diff t)
+ ;; Enabling only some features
+(setq dap-auto-configure-features '(sessions locals controls tooltip))
+
+(after! dap-mode
+  (require 'dap-cpptools))

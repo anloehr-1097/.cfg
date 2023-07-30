@@ -105,3 +105,5 @@
 (package! highlight-indent-guides)
 
 (package! undo-tree)
+; (package! dap-mode)
+(package! exwm)
