@@ -217,3 +217,6 @@
 
 
 ; configure org roam
+(after! org
+(setq org-roam-directory (file-truename "~/org-roam"))
+(org-roam-db-autosync-mode))

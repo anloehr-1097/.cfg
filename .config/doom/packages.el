@@ -107,3 +107,5 @@
 (package! undo-tree)
 ; (package! dap-mode)
 (package! exwm)
+
+(package! emacsql-sqlite)

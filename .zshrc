@@ -53,3 +53,4 @@ source /Users/Andy/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /Users/Andy/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /Users/Andy/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 
+export PATH="/usr/local/opt/sqlite/bin:$PATH"
