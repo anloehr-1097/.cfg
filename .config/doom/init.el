@@ -201,4 +201,10 @@
       '((font . "Iosevka Nerd Font")
         (width . 160)
         (height . 120)))
+
 (add-to-list 'image-types 'svg)
+
+; create org roam dir if not already existent
+(cond
+    ((eq t (file-directory-p "~/org-roam")) (print "Directory ~/org-roam exists already."))
+    ((eq nil (file-directory-p "~/org-roam")) (make-directory "~/org-roam")))

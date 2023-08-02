@@ -214,3 +214,6 @@
 
 (after! dap-mode
   (require 'dap-cpptools))
+
+
+; configure org roam
