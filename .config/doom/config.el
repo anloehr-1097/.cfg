@@ -210,13 +210,45 @@
 
 
  ;; Enabling only some features
-(setq dap-auto-configure-features '(sessions locals controls tooltip))
+; (setq dap-auto-configure-features '(sessions locals controls tooltip))
+
 
 (after! dap-mode
-  (require 'dap-cpptools))
+  ; (require 'dap-cpptools)
+  (setq dap-python-debugger 'debugpy))
 
+(require 'dap-python)
+  (setq dap-python-debugger 'debugpy)
 
 ; configure org roam
 (after! org
 (setq org-roam-directory (file-truename "~/org-roam"))
 (org-roam-db-autosync-mode))
+
+; (lsp-register-custom-settings ())
+
+(require 'flycheck)
+   (setq flycheck-python-pylint-executable "python3")
+; Activate flycheck mode globally
+(global-flycheck-mode)
+(setq flycheck-python-mypy-executable "mypy")
+
+; (use-package lsp-mode
+  ; :ensure t
+  ; :config
+;
+  ; ;; make sure we have lsp-imenu everywhere we have LSP
+  ; (require 'lsp-imenu)
+  ; (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)
+  ; ;; get lsp-python-enable defined
+  ; ;; NB: use either projectile-project-root or ffip-get-project-root-directory
+  ; ;;     or any other function that can be used to find the root directory of a project
+  ; (lsp-define-stdio-client lsp-python "python"
+                           ; #'projectile-project-root
+                           ; '("pylsp"))
+;
+  ; ;; make sure this is activated when python-mode is activated
+  ; ;; lsp-python-enable is created by macro above
+  ; (add-hook 'python-mode-hook
+            ; (lambda ()
+              ; (lsp-python-enable))))

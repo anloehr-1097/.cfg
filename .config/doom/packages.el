@@ -72,6 +72,7 @@
 (package! emacs-surround :recipe (:host github :repo "ganmacs/emacs-surround"))
 
 (package! flycheck-aspell)
+(package! flycheck-mypy)
 (package! calfw)
 (package! calfw-org)
 (package! clippy)
@@ -109,3 +110,5 @@
 (package! exwm)
 
 (package! emacsql-sqlite)
+(package! pipenv)
+(package! lsp-python-ms)
