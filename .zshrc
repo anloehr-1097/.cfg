@@ -38,3 +38,5 @@ source /Users/Andy/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 export PATH="/usr/local/opt/sqlite/bin:$PATH"
 export PATH="/Users/Andy/Library/Python/3.9/bin:$PATH"
 export PATH="/usr/local/bin:$PATH"
+export PATH="/Users/Andy/lldb/lldb-mi/src:$PATH"
+export PATH="/usr/local/Cellar/gdb/13.2/bin:$PATH"

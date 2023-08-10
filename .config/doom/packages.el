@@ -112,3 +112,4 @@
 (package! emacsql-sqlite)
 (package! pipenv)
 (package! lsp-python-ms)
+(package! exec-path-from-shell)

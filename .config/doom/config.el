@@ -220,6 +220,8 @@
 (require 'dap-python)
   (setq dap-python-debugger 'debugpy)
 
+(require 'dap-gdb-lldb)
+
 ; configure org roam
 (after! org
 (setq org-roam-directory (file-truename "~/org-roam"))
