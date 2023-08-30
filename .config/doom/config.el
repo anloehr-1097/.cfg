@@ -232,7 +232,7 @@
 (require 'flycheck)
    (setq flycheck-python-pylint-executable "python3")
 ; Activate flycheck mode globally
-(global-flycheck-mode)
+; (global-flycheck-mode)
 (setq flycheck-python-mypy-executable "mypy")
 
 ; (use-package lsp-mode
@@ -254,3 +254,7 @@
   ; (add-hook 'python-mode-hook
             ; (lambda ()
               ; (lsp-python-enable))))
+(add-hook 'doc-view-mode
+          (lambda ()
+            (linum-mode -1)
+            ))

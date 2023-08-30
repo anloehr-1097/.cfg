@@ -113,3 +113,8 @@
 (package! pipenv)
 (package! lsp-python-ms)
 (package! exec-path-from-shell)
+(package! org-noter-pdftools)
+(package! djvu)
+(package! tree-sitter)
+(package! nov)
+(package! vertico)
