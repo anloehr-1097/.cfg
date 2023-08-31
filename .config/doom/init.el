@@ -211,3 +211,5 @@
 (cond
     ((eq t (file-directory-p "~/org-roam")) (print "Directory ~/org-roam exists already."))
     ((eq nil (file-directory-p "~/org-roam")) (make-directory "~/org-roam")))
+
+(add-to-list 'exec-path  "/home/andy/anaconda3/bin/sqlite3")

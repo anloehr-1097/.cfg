@@ -118,3 +118,4 @@
 (package! tree-sitter)
 (package! nov)
 (package! vertico)
+(package! emacsql-sqlite3)
