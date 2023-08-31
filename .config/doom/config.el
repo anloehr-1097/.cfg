@@ -259,3 +259,5 @@
           (lambda ()
             (linum-mode -1)
             ))
+
+(set-face-attribute 'default nil :height 130)

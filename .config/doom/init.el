@@ -201,10 +201,11 @@
        (default +bindings +smartparens))
 
 (setq default-frame-alist
-      '((font . "Iosevka Nerd Font")
+      '((font . "Iosevka Nerd Font-13")
         (width . 160)
         (height . 120)))
 
+(setq doom-font (font-spec :family "Iosevka Nerd Font" :size 13.0))
 (add-to-list 'image-types 'svg)
 
 ; create org roam dir if not already existent
@@ -213,3 +214,4 @@
     ((eq nil (file-directory-p "~/org-roam")) (make-directory "~/org-roam")))
 
 (add-to-list 'exec-path  "/home/andy/anaconda3/bin/sqlite3")
+(setq frame-resize-pixelwise t)
