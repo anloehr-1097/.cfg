@@ -163,8 +163,8 @@
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
        (python +lsp
-               +pyright
-               +tree-sitter)            ; beautiful is better than ugly
+               +pyright)
+               ;+tree-sitter)            ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
@@ -200,6 +200,8 @@
        ;;literate
        (default +bindings +smartparens))
 
+
+; Setting visuals
 (setq default-frame-alist
       '((font . "Iosevka Nerd Font-13")
         (width . 160)
@@ -215,3 +217,5 @@
 
 (add-to-list 'exec-path  "/home/andy/anaconda3/bin/sqlite3")
 (setq frame-resize-pixelwise t)
+; fixing font size work station
+(set-face-attribute 'default nil :height 130)
