@@ -210,17 +210,22 @@
 
 
  ;; Enabling only some features
-; (setq dap-auto-configure-features '(sessions locals controls tooltip))
+(setq dap-auto-configure-mode t)
+(setq dap-auto-configure-features '(sessions locals controls tooltip))
 
 
 (after! dap-mode
-  ; (require 'dap-cpptools)
+  (require 'dap-cpptools)
   (setq dap-python-debugger 'debugpy))
 
 (require 'dap-python)
   (setq dap-python-debugger 'debugpy)
 
-(require 'dap-gdb-lldb)
+; (require 'dap-gdb-lldb)
+
+(use-package dap-mode
+  :config
+  (dap-mode 1))
 
 ; configure org roam
 (after! org

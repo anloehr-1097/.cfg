@@ -49,73 +49,83 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 
-; Style Packages
 
-(package! projectile)
+
+(package! ivy-posframe)
+(package! mw-thesaurus)
+(package! dired-open)
+(package! dired-subtree)
+(package! resize-window)
+(package! speed-type)
+;(package! dirvish)
+;(package! dmenu)
+;(package! evil-tutor)
+;(package! imenu-list)
+; (package! org-web-tools)
+; (package! ox-gemini)
+; (package! peep-dired)
+; (package! password-store)
+; (package! wc-mode)
+; (package! olivetti)
+
+
+; Editor navigation etc.
+(package! calfw)
+(package! calfw-org)
+(package! dashboard)
+(package! tldr)
+(package! neotree)
+(package! undo-tree)
+(package! exwm)
+; -- Style Packages
+(package! org-auto-tangle)
+(package! org-superstar)
+(package! rainbow-mode)
 (package! all-the-icons)
 (package! page-break-lines)
 
+; PDF + Annotation
+(package! org-pdftools)
+(package! org-noter-pdftools)
+(package! pdf-tools)
+(package! auctex)
+(package! org-noter)
+(package! highlight-indent-guides)
+(package! nov)
+(package! djvu)
 
-; Development packages
+; Org Roam
+(package! emacsql-sqlite)
+(package! exec-path-from-shell)
+(package! vertico)
+(package! emacsql-sqlite3)
+
+; General Dev
+(package! clippy)
+(package! projectile)
+(package! tree-sitter)
 (package! company)
+(package! dap-mode)
 (package! flycheck)
+(package! flycheck-aspell)
 (package! page-break-lines)
 (package! beacon)
 (package! linum-relative)
 ;; https://github.com/ganmacs/emacs-surround.git
 ;; https://github.com/radian-software/straight.el#the-recipe-format
-
 ; (package! emacs-surround
   ; :recipe (:host github :repo "ganmacs/emacs-surround.git"
            ; :files ("emacs-surround.el" ".travis.yml")))
-
 (package! emacs-surround :recipe (:host github :repo "ganmacs/emacs-surround"))
 
-(package! flycheck-aspell)
-(package! flycheck-mypy)
-(package! calfw)
-(package! calfw-org)
-(package! clippy)
-(package! dashboard)
-(package! dired-open)
-(package! dired-subtree)
-;(package! dirvish)
-;(package! dmenu)
-;(package! evil-tutor)
-;(package! imenu-list)
-(package! ivy-posframe)
-(package! mw-thesaurus)
-(package! org-auto-tangle)
-(package! org-superstar)
-; (package! org-web-tools)
-; (package! ox-gemini)
-; (package! peep-dired)
-; (package! password-store)
-(package! rainbow-mode)
-(package! resize-window)
-(package! tldr)
-(package! neotree)
-; (package! wc-mode)
-; (package! olivetti)
-(package! speed-type)
+; C Dev
+(package! company-c-headers)
+(package! company-irony)
+(package! company-irony-c-headers)
+(package! irony)
+(package! flycheck-irony)
 
-
-(package! pdf-tools)
-(package! auctex)
-(package! org-noter)
-(package! highlight-indent-guides)
-
-(package! undo-tree)
-; (package! dap-mode)
-(package! exwm)
-
-(package! emacsql-sqlite)
+; Python Dev
 (package! pipenv)
+(package! flycheck-mypy)
 (package! lsp-python-ms)
-(package! exec-path-from-shell)
-(package! org-noter-pdftools)
-(package! djvu)
-(package! tree-sitter)
-(package! nov)
-(package! vertico)
-(package! emacsql-sqlite3)
