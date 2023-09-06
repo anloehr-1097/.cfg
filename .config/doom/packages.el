@@ -119,3 +119,5 @@
 (package! nov)
 (package! vertico)
 (package! gruber-darker-theme)
+(package! csv)
+(package! csv-mode)
