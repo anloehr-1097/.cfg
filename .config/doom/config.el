@@ -227,6 +227,7 @@
 (after! org
 (setq org-roam-directory (file-truename "~/org-roam"))
 (org-roam-db-autosync-mode))
+(setq org-roam-database-connector 'sqlite)
 
 ; (lsp-register-custom-settings ())
 

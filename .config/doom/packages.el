@@ -121,3 +121,4 @@
 (package! gruber-darker-theme)
 (package! csv)
 (package! csv-mode)
+(package! emacsql-sqlite3)
