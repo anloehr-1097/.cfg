@@ -77,8 +77,6 @@
 ;;                 pdf-view-mode-hook))
 ;;   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-(set-background-color "black")
-
 (set-face-attribute 'default nil :font "Iosevka Nerd Font-13" :height efs/default-font-size)
 
 ;; Set the fixed pitch face
@@ -132,7 +130,10 @@
 (use-package doom-themes
   :init (load-theme 'doom-palenight t))
 
+(use-package gruber-darker-theme
+  :ensure t)
 (load-theme 'gruber-darker t)
+(set-background-color "black")
 
 (use-package all-the-icons)
 
@@ -708,3 +709,5 @@
 
 ;; Make gc pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 2 1000 1000))
+
+(server-start)
