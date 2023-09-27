@@ -122,3 +122,4 @@
 (package! csv)
 (package! csv-mode)
 (package! emacsql-sqlite3)
+; (package! tramp)

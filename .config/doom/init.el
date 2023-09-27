@@ -91,7 +91,7 @@
        ;;direnv
        docker
        ;;editorconfig      ; let someone else argue about tabs vs spaces
-       ;;ein               ; tame Jupyter notebooks with emacs
+       ein               ; tame Jupyter notebooks with emacs
        (eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
        lookup              ; navigate your code and its documentation
@@ -213,3 +213,11 @@
     ((eq nil (file-directory-p "~/org-roam")) (make-directory "~/org-roam")))
 
 (add-to-list 'exec-path  "/home/andy/anaconda3/bin/sqlite3")
+
+(add-hook 'doc-view-mode
+          (lambda ()
+            (linum-mode -1)
+            ))
+(global-linum-mode -1)
+(add-hook 'prog-mode-hook (lambda () (linum-mode 1)))
+(set-background-color "black")
