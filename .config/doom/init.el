@@ -219,3 +219,5 @@
 (setq frame-resize-pixelwise t)
 ; fixing font size work station
 (set-face-attribute 'default nil :height 130)
+
+(set-background-color "black")
