@@ -1,0 +1,47 @@
+(undo-tree-save-format-version . 1)
+"07fd9f64605c61602fc5e0ca8375584fc8383df7"
+[nil nil nil nil (25798 39729 360613 0) 0 nil]
+([nil nil ((425 . 664) (#("(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )" 0 239 (fontified nil)) . -425) (348 . 424) (#("
+" 0 1 (fontified nil)) . -348) (267 . 349) (#(" " 0 1 (fontified nil)) . 267) (1 . 268) (#("(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '(\"2dd4951e967990396142ec54d376cced3f135810b2b69920e77103e0bcedfba9\" default)))" 0 349 (fontified nil)) . -1) (undo-tree-id0 . -22) (t 25797 1978 409690 498000)) nil (25798 39729 360608 0) 0 nil])
+([nil nil ((434 . 673) (#("(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )" 0 239 (fontified nil)) . -434) (348 . 433) (#("
+" 0 1 (fontified nil)) . -348) (267 . 349) (#(" " 0 1 (fontified nil)) . 267) (1 . 268) (#("(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '(\"2dd4951e967990396142ec54d376cced3f135810b2b69920e77103e0bcedfba9\" default))
+ '(package-selected-packages '(flycheck))
+ '(pdf-tools-handle-upgrades t))" 0 423 (fontified nil)) . -1) (undo-tree-id0 . -22) (t 25798 39729 389295 156000)) nil (25798 39729 541780 0) 0 nil])
+([nil current ((436 . 675) (#("(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )" 0 239 (fontified nil)) . -436) (348 . 435) (#("
+" 0 1 (fontified nil)) . -348) (267 . 349) (#(" " 0 1 (fontified nil)) . 267) (1 . 268) (#("(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '(\"2dd4951e967990396142ec54d376cced3f135810b2b69920e77103e0bcedfba9\" default))
+ '(package-selected-packages '(dap-mode flycheck))
+ '(pdf-tools-handle-upgrades t))" 0 432 (fontified nil)) . -1) (undo-tree-id0 . -22) (t 25798 39729 569826 154000)) nil (25798 41566 43568 0) 0 nil])
+nil
