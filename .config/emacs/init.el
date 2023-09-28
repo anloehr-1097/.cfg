@@ -2,18 +2,27 @@
       user-mail-addess "andreas.loehr97@gmail.com")
 
 ;; The default is 800 kilobytes.  Measured in bytes.
-(setq gc-cons-threshold (* 50 1000 1000))
+  (setq gc-cons-threshold (* 50 1000 1000))
 
-(defun efs/display-startup-time ()
-  (message "Emacs loaded in %s with %d garbage collections."
-           (format "%.2f seconds"
-                   (float-time
-                     (time-subtract after-init-time before-init-time)))
-           gcs-done))
+  (defun efs/display-startup-time ()
+    (message "Emacs loaded in %s with %d garbage collections."
+             (format "%.2f seconds"
+                     (float-time
+                       (time-subtract after-init-time before-init-time)))
+             gcs-done))
 
-(add-hook 'emacs-startup-hook #'efs/display-startup-time)
-(defvar efs/default-font-size 100)
-(defvar efs/default-variable-font-size 100)
+  (add-hook 'emacs-startup-hook #'efs/display-startup-time)
+  (defvar efs/default-font-size 100)
+  (defvar efs/default-variable-font-size 100)
+  (setq insert-directory-program "gls" dired-use-ls-dired t)
+  (setq dired-listing-switches "-al --group-directories-first")
+
+(setq default-frame-alist
+      '((font . "Iosevka Nerd Font-13")
+        (width . 160)
+        (height . 120)))
+(setq visible-bell nil)
+(setq ring-bell-function 'ignore)
 
 ;; Initialize package sources
 (require 'package)
