@@ -485,12 +485,13 @@
 (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-config)))
 
 (use-package org-roam
-    :after org
-    :config
-    (setq org-roam-directory (file-truename "~/org-roam"))
-    (org-roam-db-autosync-mode))
-
-(setq org-roam-database-connector 'sqlite)
+  :after org
+  :config
+  (setq org-roam-directory (file-truename "~/org-roam"))
+  (org-roam-db-autosync-mode)
+  (global-set-key (kbd "C-c r i") 'org-roam-node-insert)
+  (global-set-key (kbd "C-c r c") 'org-roam-capture)
+  (setq org-roam-database-connector 'sqlite))
 
 (defun efs/lsp-mode-setup ()
     (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
