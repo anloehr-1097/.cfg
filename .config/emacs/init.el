@@ -12,15 +12,15 @@
              gcs-done))
 
   (add-hook 'emacs-startup-hook #'efs/display-startup-time)
-  (defvar efs/default-font-size 100)
-  (defvar efs/default-variable-font-size 100)
+  (defvar efs/default-font-size 200)
+  (defvar efs/default-variable-font-size 200)
   (setq insert-directory-program "gls" dired-use-ls-dired t)
   (setq dired-listing-switches "-al --group-directories-first")
 
 (setq default-frame-alist
-      '((font . "Iosevka Nerd Font-13")
+      '((font . "Iosevka Nerd Font-22")
         (width . 160)
-        (height . 120)))
+        (height . 160)))
 (setq visible-bell nil)
 (setq ring-bell-function 'ignore)
 
@@ -89,10 +89,15 @@
 (set-face-attribute 'default nil :font "Iosevka Nerd Font-13" :height efs/default-font-size)
 
 ;; Set the fixed pitch face
-(set-face-attribute 'fixed-pitch nil :font "Iosevka Nerd Font-13" :height efs/default-font-size)
+(set-face-attribute 'fixed-pitch nil :font "Iosevka Nerd Font-16" :height efs/default-font-size)
 
 ;; Set the variable pitch face
 (set-face-attribute 'variable-pitch nil :font "Cantarell" :height efs/default-variable-font-size :weight 'regular)
+
+(use-package undo-tree
+  :ensure t
+  :config
+  (global-undo-tree-mode))
 
 ;; Make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
@@ -126,7 +131,9 @@
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
   (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal))
+  (evil-set-initial-state 'dashboard-mode 'normal)
+  (evil-set-undo-system 'undo-tree))
+
 
 (use-package evil-collection
   :after evil
@@ -262,10 +269,18 @@
 (efs/leader-keys
   "ts" '(hydra-text-scale/body :which-key "scale text"))
 
+(use-package djvu
+  :ensure t)
+
 (use-package popup
   :ensure t)
 
 (use-package clippy)
+
+(global-set-key (kbd "C-c s") 'shell-command)
+
+(use-package yasnippet
+  :ensure t)
 
 (defun efs/org-font-setup ()
     ;; Replace list hyphen with dot
@@ -428,6 +443,8 @@
 
   (efs/org-font-setup))
 
+(global-set-key (kbd "C-c c") 'org-agenda)
+
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode)
   :custom
@@ -476,16 +493,22 @@
 (setq org-roam-database-connector 'sqlite)
 
 (defun efs/lsp-mode-setup ()
-  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-  (lsp-headerline-breadcrumb-mode))
+    (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+    (lsp-headerline-breadcrumb-mode))
 
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :hook (lsp-mode . efs/lsp-mode-setup)
-  :init
-  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
-  :config
-  (lsp-enable-which-key-integration t))
+  (use-package lsp-mode
+    :commands (lsp lsp-deferred)
+    :hook (lsp-mode . efs/lsp-mode-setup)
+    :init
+    (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+    :config
+    (lsp-enable-which-key-integration t))
+;; configs for lsp
+(setq lsp-eldoc-enable-hover t)
+(setq lsp-ui-doc-show-with-cursor t)
+;; you could manually request them via `lsp-signature-activate`
+(setq lsp-signature-auto-activate t)
+(setq lsp-signature-render-documentation nil)
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
@@ -507,8 +530,8 @@
   :commands dap-debug
   :config
   ;; Set up Node debugging
-  (require 'dap-node)
-  (dap-node-setup) ;; Automatically installs Node debug adapter if needed
+  ;;(require 'dap-node)
+  ;;(dap-node-setup) ;; Automatically installs Node debug adapter if needed
 
   ;; Bind `C-c l d` to `dap-hydra` for easy access
   (general-define-key
@@ -520,6 +543,7 @@
 (setq dap-auto-configure-features '(sessions locals controls tooltip))
 
 (require 'dap-cpptools)
+(dap-cpptools-setup)
 
 (use-package python-mode
   :ensure t
@@ -569,6 +593,9 @@
 
 (use-package magit
   :commands magit-status
+  :config
+  (global-set-key (kbd "C-c m s") 'magit-status)
+  (global-set-key (kbd "C-c m l") 'magit-log)
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
@@ -716,23 +743,9 @@
   (evil-collection-define-key 'normal 'dired-mode-map
     "H" 'dired-hide-dotfiles-mode))
 
+(global-auto-revert-mode 1)
+
 ;; Make gc pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 2 1000 1000))
 
 (server-start)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("ba4ab079778624e2eadbdc5d9345e6ada531dc3febeb24d257e6d31d5ed02577" default))
- '(package-selected-packages
-   '(docker-compose-mode dockerfile-mode which-key vterm visual-fill-column use-package rainbow-delimiters pyvenv python-mode popup org-roam org-noter-pdftools org-bullets no-littering lsp-ui lsp-ivy linum-relative ivy-rich ivy-prescient helpful gruber-darker-theme general forge fit-text-scale evil-surround evil-nerd-commenter evil-collection eterm-256color eshell-git-prompt doom-themes doom-modeline dired-single dired-open dired-hide-dotfiles default-text-scale dashboard dap-mode counsel-projectile company-box command-log-mode clippy auto-package-update all-the-icons-dired))
- '(pdf-tools-handle-upgrades t))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

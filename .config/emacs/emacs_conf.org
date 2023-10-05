@@ -29,19 +29,18 @@ This configuration file is based on the config file from Systemcrafters.
                gcs-done))
 
     (add-hook 'emacs-startup-hook #'efs/display-startup-time)
-    (defvar efs/default-font-size 100)
-    (defvar efs/default-variable-font-size 100)
+    (defvar efs/default-font-size 200)
+    (defvar efs/default-variable-font-size 200)
     (setq insert-directory-program "gls" dired-use-ls-dired t)
     (setq dired-listing-switches "-al --group-directories-first")
 
   (setq default-frame-alist
-        '((font . "Iosevka Nerd Font-13")
+        '((font . "Iosevka Nerd Font-22")
           (width . 160)
-          (height . 120)))
+          (height . 160)))
   (setq visible-bell nil)
   (setq ring-bell-function 'ignore)
 #+end_src
-
 
 
 * Package System Setup
@@ -145,10 +144,20 @@ I am using the Iosevka Nerd Fonts  and [[https://fonts.google.com/specimen/Canta
 (set-face-attribute 'default nil :font "Iosevka Nerd Font-13" :height efs/default-font-size)
 
 ;; Set the fixed pitch face
-(set-face-attribute 'fixed-pitch nil :font "Iosevka Nerd Font-13" :height efs/default-font-size)
+(set-face-attribute 'fixed-pitch nil :font "Iosevka Nerd Font-16" :height efs/default-font-size)
 
 ;; Set the variable pitch face
 (set-face-attribute 'variable-pitch nil :font "Cantarell" :height efs/default-variable-font-size :weight 'regular)
+
+#+end_src
+
+** Undo Tree
+We need undo tree to enable the evil-redo functionality.
+#+begin_src emacs-lisp
+      (use-package undo-tree
+        :ensure t
+        :config
+        (global-undo-tree-mode))
 
 #+end_src
 
@@ -157,44 +166,46 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
 
 #+begin_src emacs-lisp
 
-  ;; Make ESC quit prompts
-  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+    ;; Make ESC quit prompts
+    (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-  (use-package general
-    :after evil
-    :config
-    (general-create-definer efs/leader-keys
-      :keymaps '(normal insert visual emacs)
-      :prefix "SPC"
-      :global-prefix "C-SPC")
+    (use-package general
+      :after evil
+      :config
+      (general-create-definer efs/leader-keys
+        :keymaps '(normal insert visual emacs)
+        :prefix "SPC"
+        :global-prefix "C-SPC")
 
-    (efs/leader-keys
-      "t"  '(:ignore t :which-key "toggles")
-      "tt" '(counsel-load-theme :which-key "choose theme")
-      "fde" '(lambda () (interactive) (find-file (expand-file-name "~/.emacs.d/emacs_conf.org")))))
+      (efs/leader-keys
+        "t"  '(:ignore t :which-key "toggles")
+        "tt" '(counsel-load-theme :which-key "choose theme")
+        "fde" '(lambda () (interactive) (find-file (expand-file-name "~/.emacs.d/emacs_conf.org")))))
 
-  (use-package evil
-    :init
-    (setq evil-want-integration t)
-    (setq evil-want-keybinding nil)
-    (setq evil-want-C-u-scroll t)
-    (setq evil-want-C-i-jump nil)
-    :config
-    (evil-mode 1)
-    (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+    (use-package evil
+      :init
+      (setq evil-want-integration t)
+      (setq evil-want-keybinding nil)
+      (setq evil-want-C-u-scroll t)
+      (setq evil-want-C-i-jump nil)
+      :config
+      (evil-mode 1)
+      (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+      (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
 
-    ;; Use visual line motions even outside of visual-line-mode buffers
-    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-    (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+      ;; Use visual line motions even outside of visual-line-mode buffers
+      (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+      (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
-    (evil-set-initial-state 'messages-buffer-mode 'normal)
-    (evil-set-initial-state 'dashboard-mode 'normal))
+      (evil-set-initial-state 'messages-buffer-mode 'normal)
+      (evil-set-initial-state 'dashboard-mode 'normal)
+      (evil-set-undo-system 'undo-tree))
 
-  (use-package evil-collection
-    :after evil
-    :config
-    (evil-collection-init))
+
+    (use-package evil-collection
+      :after evil
+      :config
+      (evil-collection-init))
 #+end_src
 
 * UI Configuration
@@ -407,6 +418,12 @@ This is an example of using [[https://github.com/abo-abo/hydra][Hydra]] to desig
 
 #+end_src
 
+** Djvu
+#+begin_src emacs-lisp
+    (use-package djvu
+      :ensure t)
+
+#+end_src
 
 ** Clippy
 #+begin_src emacs-lisp
@@ -414,6 +431,19 @@ This is an example of using [[https://github.com/abo-abo/hydra][Hydra]] to desig
       :ensure t)
 
     (use-package clippy)
+#+end_src
+
+** shell-command
+Sometimes it may be desirable to execute a shell command from the minibuffer instead of opening an entire shell.
+For this purpose, we may use the 'shell-command' function. Initial keybinding is "M-!" but this is not really comfortable. We thus rebind it to another keybinding.
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c s") 'shell-command)
+#+end_src
+
+** Yasnippet
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :ensure t)
 #+end_src
 * Org Mode
 
@@ -595,6 +625,10 @@ This section contains the basic configuration for =org-mode= plus the configurat
 
 #+end_src
 
+*** Org Agenda
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-c c") 'org-agenda)
+#+end_src
 *** Nicer Heading Bullets
 
 [[https://github.com/sabof/org-bullets][org-bullets]] replaces the heading stars in =org-mode= buffers with nicer looking characters that you can control.  Another option for this is [[https://github.com/integral-dw/org-superstar-mode][org-superstar-mode]] which we may cover in a later video.
@@ -676,7 +710,6 @@ This snippet adds a hook to =org-mode= buffers so that =efs/org-babel-tangle-con
 
 #+end_src
 
-
 * Org Roam Setup
 #+begin_src emacs-lisp
     (use-package org-roam
@@ -702,18 +735,23 @@ The =which-key= integration adds helpful descriptions of the various keys so you
 
 #+begin_src emacs-lisp
 
-  (defun efs/lsp-mode-setup ()
-    (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-    (lsp-headerline-breadcrumb-mode))
+    (defun efs/lsp-mode-setup ()
+      (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+      (lsp-headerline-breadcrumb-mode))
 
-  (use-package lsp-mode
-    :commands (lsp lsp-deferred)
-    :hook (lsp-mode . efs/lsp-mode-setup)
-    :init
-    (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
-    :config
-    (lsp-enable-which-key-integration t))
-
+    (use-package lsp-mode
+      :commands (lsp lsp-deferred)
+      :hook (lsp-mode . efs/lsp-mode-setup)
+      :init
+      (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+      :config
+      (lsp-enable-which-key-integration t))
+  ;; configs for lsp
+  (setq lsp-eldoc-enable-hover t)
+  (setq lsp-ui-doc-show-with-cursor t)
+  ;; you could manually request them via `lsp-signature-activate`
+  (setq lsp-signature-auto-activate t)
+  (setq lsp-signature-render-documentation nil)
 #+end_src
 
 **** lsp-ui
@@ -777,8 +815,8 @@ Try these commands with =M-x=:
     :commands dap-debug
     :config
     ;; Set up Node debugging
-    (require 'dap-node)
-    (dap-node-setup) ;; Automatically installs Node debug adapter if needed
+    ;;(require 'dap-node)
+    ;;(dap-node-setup) ;; Automatically installs Node debug adapter if needed
 
     ;; Bind `C-c l d` to `dap-hydra` for easy access
     (general-define-key
@@ -792,7 +830,8 @@ Try these commands with =M-x=:
 
 *** C
 #+begin_src emacs-lisp
-    (require 'dap-cpptools)
+  (require 'dap-cpptools)
+  (dap-cpptools-setup)
 #+end_src
 
 *** Python
@@ -893,6 +932,9 @@ We also use [[https://github.com/sebastiencs/company-box][company-box]] to furth
 
   (use-package magit
     :commands magit-status
+    :config
+    (global-set-key (kbd "C-c m s") 'magit-status)
+    (global-set-key (kbd "C-c m l") 'magit-log)
     :custom
     (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
@@ -986,7 +1028,6 @@ Install pdf-tools to view pdf documents.
   ;;     (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
 
 #+end_src
-
 
 * Terminals
 ** term-mode
@@ -1123,7 +1164,6 @@ For more thoughts on Eshell, check out these articles by Pierre Neidhardt:
 #+end_src
 
 * File Management
-
 ** Dired
 
 Dired is a built-in file manager for Emacs that does some pretty amazing things!  Here are some key bindings you should try out:
@@ -1222,7 +1262,11 @@ Dired is a built-in file manager for Emacs that does some pretty amazing things!
 
 #+end_src
 
-
+** Global auto revert mode
+Make emacs recognize whenever a change to a file has occured outside of emacs.
+#+begin_src emacs-lisp
+  (global-auto-revert-mode 1)
+#+end_src
 * Runtime Performance
 
 Dial the GC threshold back down so that garbage collection happens more frequently but in less time.

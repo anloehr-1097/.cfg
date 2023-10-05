@@ -260,5 +260,5 @@
           (lambda ()
             (linum-mode -1)
             ))
-(global-linum-mode -1)
+;; (global-linum-mode -1)
 (add-hook 'prog-mode-hook (lambda () (linum-mode 1)))
