@@ -186,17 +186,19 @@
   (setq dashboard-set-navigator t)
   (setq dashboard-init-info "Welcome to Emacs!")
 
-(use-package linum-relative
-    :ensure t
-    :hook (prog-mode . linum-relative-mode)
-         (org-mode . linum-relative-mode)
-         (text-mode . linum-relative-mode))
+;; (use-package linum-relative
+    ;; :ensure t
+    ;; :hook (prog-mode . linum-relative-mode)
+         ;; (org-mode . linum-relative-mode)
+         ;; (text-mode . linum-relative-mode))
 
-  
+
+(global-display-line-numbers-mode)
+(setq display-line-numbers-type 'relative)
+
 (add-hook 'doc-view-mode
           (lambda ()
-            (linum-mode -1)
-            ))
+            (display-line-numbers-mode -1)))
 
 (use-package which-key
   :defer 0
@@ -280,7 +282,12 @@
 (global-set-key (kbd "C-c s") 'shell-command)
 
 (use-package yasnippet
-  :ensure t)
+  :ensure t
+  :diminish yas-minor-mode
+  :config
+  (setq yas-snippet-dirs (list (expand-file-name "~/.config/emacs/snippets")))
+  (yas-global-mode 1)
+  :bind ("C-c e" . yas-expand))
 
 (defun efs/org-font-setup ()
     ;; Replace list hyphen with dot
@@ -491,6 +498,7 @@
   (org-roam-db-autosync-mode)
   (global-set-key (kbd "C-c r i") 'org-roam-node-insert)
   (global-set-key (kbd "C-c r c") 'org-roam-capture)
+  (global-set-key (kbd "C-c r f") 'org-roam-node-find)
   (setq org-roam-database-connector 'sqlite))
 
 (defun efs/lsp-mode-setup ()
@@ -564,13 +572,13 @@
 
 (use-package company
   :after lsp-mode
-  :hook (lsp-mode . company-mode)
+  :hook ((lsp-mode prog-mode org-mode text-mode) . company-mode)
   :bind (:map company-active-map
          ("<tab>" . company-complete-selection))
         (:map lsp-mode-map
          ("<tab>" . company-indent-or-complete-common))
   :custom
-  (company-minimum-prefix-length 1)
+  (company-minimum-prefix-length 3)
   (company-idle-delay 0.0))
 
 (use-package company-box
@@ -750,3 +758,19 @@
 (setq gc-cons-threshold (* 2 1000 1000))
 
 (server-start)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-agenda-files
+   '("~/KeepInSync/HWS23_24/SP2/Todos_SP2.org" "/Users/Andy/KeepInSync/HWS23_24/StoMoV/Todos_StoMov.org" "/Users/Andy/KeepInSync/HWS23_24/ConvOpt/Todos_ConvOpt.org" "/Users/Andy/KeepInSync/HWS23_24/Algo2/Todos_Algo2.org" "/Users/Andy/org/Tasks.org" "/Users/Andy/org/Habits.org" "/Users/Andy/org/Birthdays.org"))
+ '(package-selected-packages
+   '(auctex yasnippet which-key vterm visual-fill-column use-package undo-tree svgo rainbow-delimiters pyvenv python-mode popup org-roam org-noter-pdftools org-bullets no-littering lsp-ui lsp-ivy linum-relative ivy-rich ivy-prescient helpful gruber-darker-theme general forge fit-text-scale evil-surround evil-nerd-commenter evil-collection eterm-256color eshell-git-prompt doom-themes doom-modeline dockerfile-mode docker-compose-mode djvu dired-single dired-open dired-hide-dotfiles default-text-scale dashboard dap-mode counsel-projectile company-box command-log-mode clippy auto-package-update all-the-icons-dired))
+ '(pdf-tools-handle-upgrades t))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

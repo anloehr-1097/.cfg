@@ -288,17 +288,19 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
 Display relative line numbers instead of absolute line numbers.
 Only activate this in specific types of buffers.
 #+begin_src emacs-lisp
-  (use-package linum-relative
-    :ensure t
-    :hook (prog-mode . linum-relative-mode)
-         (org-mode . linum-relative-mode)
-         (text-mode . linum-relative-mode))
+    ;; (use-package linum-relative
+      ;; :ensure t
+      ;; :hook (prog-mode . linum-relative-mode)
+           ;; (org-mode . linum-relative-mode)
+           ;; (text-mode . linum-relative-mode))
 
-  
-(add-hook 'doc-view-mode
-          (lambda ()
-            (linum-mode -1)
-            ))
+
+  (global-display-line-numbers-mode)
+  (setq display-line-numbers-type 'relative)
+
+  (add-hook 'doc-view-mode
+            (lambda ()
+              (display-line-numbers-mode -1)))
 #+end_src
 
 ** Which Key
@@ -442,9 +444,15 @@ For this purpose, we may use the 'shell-command' function. Initial keybinding is
 
 ** Yasnippet
 #+begin_src emacs-lisp
-  (use-package yasnippet
-    :ensure t)
+                (use-package yasnippet
+                  :ensure t
+                  :diminish yas-minor-mode
+                  :config
+                  (setq yas-snippet-dirs (list (expand-file-name "~/.config/emacs/snippets")))
+                  (yas-global-mode 1)
+                  :bind ("C-c e" . yas-expand))
 #+end_src
+
 * Org Mode
 
 [[https://orgmode.org/][Org Mode]] is one of the hallmark features of Emacs.  It is a rich document editor, project planner, task and time tracker, blogging engine, and literate coding utility all wrapped up in one package.
@@ -720,6 +728,7 @@ This snippet adds a hook to =org-mode= buffers so that =efs/org-babel-tangle-con
         (org-roam-db-autosync-mode)
         (global-set-key (kbd "C-c r i") 'org-roam-node-insert)
         (global-set-key (kbd "C-c r c") 'org-roam-capture)
+        (global-set-key (kbd "C-c r f") 'org-roam-node-find)
         (setq org-roam-database-connector 'sqlite))
 #+end_src
 
@@ -888,18 +897,18 @@ We also use [[https://github.com/sebastiencs/company-box][company-box]] to furth
 
   (use-package company
     :after lsp-mode
-    :hook (lsp-mode . company-mode)
+    :hook ((lsp-mode prog-mode org-mode text-mode) . company-mode)
     :bind (:map company-active-map
            ("<tab>" . company-complete-selection))
           (:map lsp-mode-map
            ("<tab>" . company-indent-or-complete-common))
     :custom
-    (company-minimum-prefix-length 1)
+    (company-minimum-prefix-length 3)
     (company-idle-delay 0.0))
 
   (use-package company-box
     :hook (company-mode . company-box-mode))
-
+  
 #+end_src
 
 ** Projectile
@@ -1284,3 +1293,6 @@ Dial the GC threshold back down so that garbage collection happens more frequent
 #+begin_src emacs-lisp
   (server-start)
 #+end_src
+
+
+
