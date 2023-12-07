@@ -301,6 +301,10 @@ Only activate this in specific types of buffers.
   (add-hook 'doc-view-mode
             (lambda ()
               (display-line-numbers-mode -1)))
+
+  (add-hook 'pdf-view-mode
+            (lambda ()
+              (display-line-numbers-mode -1)))
 #+end_src
 
 ** Which Key
@@ -1038,6 +1042,37 @@ Install pdf-tools to view pdf documents.
   ;;   (with-eval-after-load 'pdf-annot
   ;;     (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
 
+#+end_src
+
+** Jupyter Notebook
+A simple IPython client for emacs porting jupyter notebooks / their functionality to emacs.
+#+begin_src emacs-lisp
+  (use-package ein
+    :ensure t
+    )
+#+end_src
+
+** Copilot
+#+begin_src emacs-lisp
+    (use-package dash
+      :ensure t)
+    (use-package s
+      :ensure t)
+    (use-package editorconfig
+      :ensure t)
+
+  (add-to-list 'load-path "~/.config/emacs/copilot.el")
+  (require 'copilot)
+  ;;  (use-package copilot
+  ;;    :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+  ;;    :ensure t)
+  (add-hook 'prog-mode-hook 'copilot-mode)
+  (define-key copilot-completion-map (kbd "C-a") 'copilot-accept-completion)
+#+end_src
+* Latex
+#+begin_src emacs-lisp
+  (use-package auctex
+  :ensure t)
 #+end_src
 
 * Terminals

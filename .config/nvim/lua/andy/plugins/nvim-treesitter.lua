@@ -22,6 +22,7 @@ return {
 				autotag = {
 					enable = true,
 				},
+				require("ts-context-commentstring").setup({}),
 
 				auto_install = true,
 				-- ensure these language parsers are installed

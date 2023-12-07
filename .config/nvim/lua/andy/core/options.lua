@@ -40,3 +40,6 @@ opt.splitbelow = true -- split horizontal window to the bottom
 
 -- turn off swapfile
 opt.swapfile = false
+
+-- context  commen string error fix
+vim.g.skip_ts_context_commentstring = true
