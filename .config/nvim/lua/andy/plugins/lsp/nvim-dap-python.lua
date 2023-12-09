@@ -10,6 +10,7 @@ return {
 			local path = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
 			require("dap-python").setup(path)
 			local keymap = vim.keymap
+			local dap_py = require("dap-python")
 
 			local opts_map = { noremap = true, silent = true }
 			local on_attach = function(client, bufnr)
@@ -17,7 +18,9 @@ return {
 
 				-- set keybinds
 				opts_map.desc = "Set denbugging breakpoint"
-				keymap.set("n", "<leader>ba", "<cmd> DapToggleBreakpoint <CR>", opts_map) -- show definition, references
+				keymap.set("n", "<leader>ba", function()
+					dap_py.test_method()
+				end, opts_map)
 			end
 		end,
 	},
