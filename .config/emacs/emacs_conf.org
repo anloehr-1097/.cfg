@@ -297,6 +297,10 @@ Only activate this in specific types of buffers.
 
 
 ** TODO Flycheck
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :ensure t)
+#+end_src
 
 ** Ivy and Counsel
 [[https://oremacs.com/swiper/][Ivy]] is an excellent completion framework for Emacs.  It provides a minimal yet powerful selection menu that appears when you open files, switch buffers, and for many other tasks in Emacs.  Counsel is a customized set of commands to replace `find-file` with `counsel-find-file`, etc which provide useful commands for each of the default completion commands.
@@ -793,7 +797,8 @@ Make sure you have the =pyls= language server installed before trying =lsp-mode=
 
 #+begin_src sh :tangle no
 
-pip install --user "python-language-server[all]"
+  pip install --user "python-language-server[all]"
+  pip install --user "pipenv"
 
 #+end_src
 
@@ -826,7 +831,12 @@ You can use the pyvenv package to use =virtualenv= environments in Emacs.  The =
 
 #+end_src
 
-**** TODO Pipenv
+#+begin_src emacs-lisp
+
+  (use-package pipenv
+    :ensure t)
+
+#+end_src
 
 ** Company Mode
 

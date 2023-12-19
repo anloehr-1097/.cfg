@@ -189,6 +189,9 @@
   (which-key-mode)
   (setq which-key-idle-delay 1))
 
+(use-package flycheck
+  :ensure t)
+
 (use-package ivy
   :diminish
   :bind (("C-s" . swiper)
@@ -527,6 +530,9 @@
   :after python-mode
   :config
   (pyvenv-mode 0))
+
+(use-package pipenv
+  :ensure t)
 
 (use-package company
   :after lsp-mode
