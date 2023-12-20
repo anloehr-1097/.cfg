@@ -1,5 +1,19 @@
 (setq user-full-name "Andreas Loehr"
-      user-mail-addess "andreas.loehr97@gmail.com")
+      user-mail-address "andreas.loehr97@gmail.com")
+
+;; setting directory program based on operating system
+    (defun set-insert-directory-program ()
+  "Set `insert-directory-program' based on the operating system."
+  (interactive)
+  (setq insert-directory-program
+        (cond
+         ((eq system-type 'gnu/linux) "ls")
+         ((eq system-type 'darwin) "gls" dired-use-ls-dired t)
+         ((eq system-type 'windows-nt) "dir")
+         (t "ls"))))
+
+;; Call the function to set insert-directory-program
+(set-insert-directory-program)
 
 ;; The default is 800 kilobytes.  Measured in bytes.
   (setq gc-cons-threshold (* 50 1000 1000))
@@ -14,7 +28,7 @@
   (add-hook 'emacs-startup-hook #'efs/display-startup-time)
   (defvar efs/default-font-size 200)
   (defvar efs/default-variable-font-size 200)
-  (setq insert-directory-program "gls" dired-use-ls-dired t)
+ ;; (setq insert-directory-program "gls" dired-use-ls-dired t)
   (setq dired-listing-switches "-al --group-directories-first")
 
 (setq default-frame-alist
