@@ -8,7 +8,7 @@
   (setq insert-directory-program
         (cond
          ((eq system-type 'gnu/linux) "ls")
-         ((eq system-type 'darwin) "gls" dired-use-ls-dired t)
+         ((eq system-type 'darwin) "gls")
          ((eq system-type 'windows-nt) "dir")
          (t "ls"))))
 
