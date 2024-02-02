@@ -358,7 +358,8 @@
   (setq org-agenda-files
         '("~/org/Tasks.org"
           "~/org/Habits.org"
-          "~/org/Birthdays.org"))
+          "~/org/Birthdays.org"
+          "~/KeepInSync/Life.org"))
 
   (require 'org-habit)
   (add-to-list 'org-modules 'org-habit)
@@ -466,7 +467,9 @@
   (define-key global-map (kbd "C-c j")
     (lambda () (interactive) (org-capture nil "jj")))
 
-  (efs/org-font-setup))
+  (efs/org-font-setup)
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 4.0))
+)
 
 (global-set-key (kbd "C-c c") 'org-agenda)
 
@@ -487,9 +490,13 @@
   (org-babel-do-load-languages
       'org-babel-load-languages
       '((emacs-lisp . t)
-      (python . t)))
+      (python . t)
+      (dot . t)))
 
-  (push '("conf-unix" . conf-unix) org-src-lang-modes))
+  (push '("conf-unix" . conf-unix) org-src-lang-modes)
+  (push '("dot" . graphviz-dot) org-src-lang-modes)
+  ;(add-to-list 'org-src-lang-modes (quote ("dot" . graphviz-dot)))
+ )
 
 (with-eval-after-load 'org
   ;; This is needed as of Org 9.2
@@ -587,6 +594,9 @@
   :after python-mode
   :config
   (pyvenv-mode 0))
+
+(use-package cuda-mode
+  :ensure t)
 
 (use-package company
   :after lsp-mode
@@ -705,6 +715,9 @@
 ;;    :ensure t)
 (add-hook 'prog-mode-hook 'copilot-mode)
 (define-key copilot-completion-map (kbd "C-a") 'copilot-accept-completion)
+
+(use-package graphviz-dot-mode
+  :ensure t)
 
 (use-package auctex
 :ensure t)
