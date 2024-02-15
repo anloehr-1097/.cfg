@@ -652,7 +652,7 @@ This section contains the basic configuration for =org-mode= plus the configurat
         (lambda () (interactive) (org-capture nil "jj")))
 
       (efs/org-font-setup)
-    (setq org-format-latex-options (plist-put org-format-latex-options :scale 4.0))
+    (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
     )
 
   
@@ -669,10 +669,16 @@ This section contains the basic configuration for =org-mode= plus the configurat
 
 #+begin_src emacs-lisp
 
-  (use-package org-bullets
-    :hook (org-mode . org-bullets-mode)
-    :custom
-    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+      (use-package org-bullets
+        :hook (org-mode . org-bullets-mode)
+        :custom
+        (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+
+      ;;(use-package org-superstar
+          ;;:ensure t
+          ;;:hook (org-mode . org-superstar-mode))
+
+
 
 #+end_src
 
@@ -838,6 +844,16 @@ Try these commands with =M-x=:
     :after lsp)
 
 #+end_src
+
+**** lsp tramp
+#+begin_src emacs-lisp
+(lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
+                    :major-modes '(c-mode c++-mode)
+                    :remote? t
+                    :server-id 'clangd-remote))
+#+end_src
+
 
 *** Debugging with dap-mode
 

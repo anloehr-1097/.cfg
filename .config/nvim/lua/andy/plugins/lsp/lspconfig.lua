@@ -95,6 +95,20 @@ return {
 			on_attach = on_attach,
 		})
 
+		-- configure mojo
+		require("lspconfig.configs").mojo = {
+			default_config = {
+				cmd = { "mojo-lsp-server" },
+				filetype = { "mojo" },
+				-- root_dir = lspconfig.util.root_pattern(".git"),
+				root_dir = lspconfig.util.root_pattern("/workspace"),
+			},
+		}
+		lspconfig.mojo.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
+
 		-- configure lua server (with special settings)
 		lspconfig["lua_ls"].setup({
 			capabilities = capabilities,

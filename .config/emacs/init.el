@@ -468,7 +468,7 @@
     (lambda () (interactive) (org-capture nil "jj")))
 
   (efs/org-font-setup)
-(setq org-format-latex-options (plist-put org-format-latex-options :scale 4.0))
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 )
 
 (global-set-key (kbd "C-c c") 'org-agenda)
@@ -477,6 +477,10 @@
   :hook (org-mode . org-bullets-mode)
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+
+;;(use-package org-superstar
+    ;;:ensure t
+    ;;:hook (org-mode . org-superstar-mode))
 
 (defun efs/org-mode-visual-fill ()
   (setq visual-fill-column-width 100
@@ -554,6 +558,12 @@
 
 (use-package lsp-ivy
   :after lsp)
+
+(lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
+                    :major-modes '(c-mode c++-mode)
+                    :remote? t
+                    :server-id 'clangd-remote))
 
 (use-package dap-mode
   ;; Uncomment the config below if you want all UI panes to be hidden by default!
@@ -811,3 +821,17 @@
 (setq gc-cons-threshold (* 2 1000 1000))
 
 (server-start)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(cmake-ide yasnippet which-key vterm visual-fill-column use-package undo-tree svgo speed-type rainbow-delimiters pyvenv python-mode popup org-superstar org-roam org-noter-pdftools org-bullets no-littering lsp-ui lsp-ivy linum-relative ivy-rich ivy-prescient helpful gruber-darker-theme graphviz-dot-mode general forge fit-text-scale evil-surround evil-nerd-commenter evil-collection eterm-256color eshell-git-prompt ein editorconfig doom-themes doom-modeline dockerfile-mode docker-compose-mode djvu dired-single dired-open dired-hide-dotfiles default-text-scale dashboard dap-mode cuda-mode counsel-projectile company-box command-log-mode clippy auto-package-update auctex all-the-icons-dired))
+ '(pdf-tools-handle-upgrades t))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
