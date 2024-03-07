@@ -56,15 +56,11 @@ I have been modifying it continuously to suit my needs.
                       (time-subtract after-init-time before-init-time)))
              gcs-done))
 
-  (add-hook 'emacs-startup-hook #'efs/display-startup-time)
-
-  (defvar efs/default-font-size 100)
-  (defvar efs/default-variable-font-size 100)
-  ;; uncomment this when working on smalelr screen
-  ;;(defvar efs/default-font-size 160)
-  ;;(defvar efs/default-variable-font-size 160)
-  ;; (setq insert-directory-program "gls" dired-use-ls-dired t)
-  (setq dired-listing-switches "-al --group-directories-first")
+    (add-hook 'emacs-startup-hook #'efs/display-startup-time)
+    (defvar efs/default-font-size 100)
+    (defvar efs/default-variable-font-size 100)
+   ;; (setq insert-directory-program "gls" dired-use-ls-dired t)
+    (setq dired-listing-switches "-al --group-directories-first")
 
   (setq default-frame-alist
         '((font . "Iosevka Nerd Font-22")
