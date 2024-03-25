@@ -94,7 +94,7 @@ You can also use =M-x auto-package-update-now= to update right now!
 
   (use-package auto-package-update
     :custom
-    (auto-package-update-interval 7)
+    (auto-package-update-interval 14)
     (auto-package-update-prompt-before-update t)
     (auto-package-update-hide-results t)
     :config
@@ -824,8 +824,12 @@ This package is built on the [[https://github.com/Alexander-Miller/treemacs][tre
 
 #+begin_src emacs-lisp
 
-  (use-package lsp-treemacs
-    :after lsp)
+     (use-package lsp-treemacs
+       :after lsp)
+
+     (use-package lsp-ivy
+       :ensure t
+       :commands lsp-ivy-workspace-symbol)
 
 #+end_src
 
@@ -847,11 +851,11 @@ Try these commands with =M-x=:
 
 **** lsp tramp
 #+begin_src emacs-lisp
-(lsp-register-client
-   (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
-                    :major-modes '(c-mode c++-mode)
-                    :remote? t
-                    :server-id 'clangd-remote))
+;(lsp-register-client
+   ;(make-lsp-client :new-connection (lsp-tramp-connection "clangd")
+                    ;:major-modes '(c-mode c++-mode)
+                    ;:remote? t
+                    ;:server-id 'clangd-remote))
 #+end_src
 
 
@@ -885,8 +889,12 @@ Try these commands with =M-x=:
 
 *** C
 #+begin_src emacs-lisp
-  (require 'dap-cpptools)
-  (dap-cpptools-setup)
+    (require 'dap-cpptools)
+    (dap-cpptools-setup)
+
+
+    (use-package cmake-mode
+      :ensure t)
 #+end_src
 
 *** Python
@@ -929,12 +937,36 @@ You can use the pyvenv package to use =virtualenv= environments in Emacs.  The =
 
 #+end_src
 
-**** TODO Pipenv
+**** Pipenv mode
+#+begin_src emacs-lisp
+  (use-package pipenv
+    :ensure t
+    :after python-mode
+    )
+
+#+end_src
+
+
+**** mypy
+#+begin_src emacs-lisp
+  (use-package flycheck-mypy
+    :ensure t
+    :after python-mode
+    )
+
+#+end_src
 
 *** Cuda
 #+begin_src emacs-lisp
   (use-package cuda-mode
     :ensure t)
+#+end_src
+
+
+*** Haskell
+#+begin_src emacs-lisp
+    (use-package haskell-mode
+      :ensure t)
 #+end_src
 ** Company Mode
 
@@ -1006,6 +1038,19 @@ We also use [[https://github.com/sebastiencs/company-box][company-box]] to furth
 
 #+end_src
 
+** Registers and marks
+#+begin_src emacs-lisp
+  (use-package evil-owl
+    :after evil
+    :config
+    (setq evil-owl-max-string-length 500)
+    (add-to-list 'display-buffer-alist
+                 '("*evil-owl*"
+                   (display-buffer-in-side-window)
+                   (side . bottom)
+                   (window-height . 0.3)))
+    (evil-owl-mode))
+#+end_src
 ** Commenting
 
 Emacs' built in commenting functionality =comment-dwim= (usually bound to =M-;=) doesn't always comment things in the way you might expect so we use [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]] to provide a more familiar behavior.  I've bound it to =M-/= since other editors sometimes use this binding but you could also replace Emacs' =M-;= binding with this command.

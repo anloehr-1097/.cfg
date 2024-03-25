@@ -58,7 +58,7 @@
 
 (use-package auto-package-update
   :custom
-  (auto-package-update-interval 7)
+  (auto-package-update-interval 14)
   (auto-package-update-prompt-before-update t)
   (auto-package-update-hide-results t)
   :config
@@ -557,13 +557,17 @@
   :after lsp)
 
 (use-package lsp-ivy
+  :ensure t
+  :commands lsp-ivy-workspace-symbol)
+
+(use-package lsp-ivy
   :after lsp)
 
-(lsp-register-client
-   (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
-                    :major-modes '(c-mode c++-mode)
-                    :remote? t
-                    :server-id 'clangd-remote))
+;(lsp-register-client
+   ;(make-lsp-client :new-connection (lsp-tramp-connection "clangd")
+                    ;:major-modes '(c-mode c++-mode)
+                    ;:remote? t
+                    ;:server-id 'clangd-remote))
 
 (use-package dap-mode
   ;; Uncomment the config below if you want all UI panes to be hidden by default!
@@ -589,6 +593,10 @@
 (require 'dap-cpptools)
 (dap-cpptools-setup)
 
+
+(use-package cmake-mode
+  :ensure t)
+
 (use-package python-mode
   :ensure t
   :hook (python-mode . lsp-deferred)
@@ -605,7 +613,20 @@
   :config
   (pyvenv-mode 0))
 
+(use-package pipenv
+  :ensure t
+  :after python-mode
+  )
+
+(use-package flycheck-mypy
+  :ensure t
+  :after python-mode
+  )
+
 (use-package cuda-mode
+  :ensure t)
+
+(use-package haskell-mode
   :ensure t)
 
 (use-package company
@@ -651,6 +672,17 @@
 ;; - https://magit.vc/manual/ghub/Getting-Started.html#Getting-Started
 (use-package forge
   :after magit)
+
+(use-package evil-owl
+  :after evil
+  :config
+  (setq evil-owl-max-string-length 500)
+  (add-to-list 'display-buffer-alist
+               '("*evil-owl*"
+                 (display-buffer-in-side-window)
+                 (side . bottom)
+                 (window-height . 0.3)))
+  (evil-owl-mode))
 
 (use-package evil-nerd-commenter
   :bind ("M-/" . evilnc-comment-or-uncomment-lines))
@@ -821,17 +853,3 @@
 (setq gc-cons-threshold (* 2 1000 1000))
 
 (server-start)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(cmake-ide yasnippet which-key vterm visual-fill-column use-package undo-tree svgo speed-type rainbow-delimiters pyvenv python-mode popup org-superstar org-roam org-noter-pdftools org-bullets no-littering lsp-ui lsp-ivy linum-relative ivy-rich ivy-prescient helpful gruber-darker-theme graphviz-dot-mode general forge fit-text-scale evil-surround evil-nerd-commenter evil-collection eterm-256color eshell-git-prompt ein editorconfig doom-themes doom-modeline dockerfile-mode docker-compose-mode djvu dired-single dired-open dired-hide-dotfiles default-text-scale dashboard dap-mode cuda-mode counsel-projectile company-box command-log-mode clippy auto-package-update auctex all-the-icons-dired))
- '(pdf-tools-handle-upgrades t))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
