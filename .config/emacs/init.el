@@ -80,7 +80,7 @@
 
 (scroll-bar-mode -1)        ; Disable visible scrollbar
 (tool-bar-mode -1)          ; Disable the toolbar
-(tooltip-mode -1)           ; Disable tooltips
+(tooltip-mode 1)           ; Disable tooltips
 (set-fringe-mode 10)        ; Give some breathing room
 
 (menu-bar-mode -1)            ; Disable the menu bar
@@ -131,6 +131,7 @@
 
 (use-package evil
   :init
+  (setq evil-search-module 'evil-search)
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
@@ -224,6 +225,11 @@
   :config
   (which-key-mode)
   (setq which-key-idle-delay 1))
+
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode)
+  )
 
 (use-package ivy
   :diminish
@@ -600,13 +606,13 @@
 (use-package python-mode
   :ensure t
   :hook (python-mode . lsp-deferred)
-  :custom
   ;; NOTE: Set these if Python 3 is called "python3" on your system!
   ;; (python-shell-interpreter "python3")
   ;; (dap-python-executable "python3")
-  (dap-python-debugger 'debugpy)
-  :config
-  (require 'dap-python))
+  )
+
+  (require  'dap-python)
+  (setq dap-python-debugger 'debugpy)
 
 (use-package pyvenv
   :after python-mode
@@ -683,6 +689,22 @@
                  (side . bottom)
                  (window-height . 0.3)))
   (evil-owl-mode))
+
+(with-eval-after-load 'tramp (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+   (customize-set-variable 'tramp-verbose 6 "Enable remote command traces")
+   ; (customize-set-variable 'tramp-connection-properties (list (regexp-quote "/sshx:user@host:") "remote-shell" "/usr/bin/bash") "remote shell")
+   (with-eval-after-load 'tramp (add-to-list 'tramp-connection-properties
+     (list (regexp-quote "/sshx:user@host:")
+       "remote-shell" "/usr/bin/bash")))
+       ;(add-to-list 'tramp-connection-properties
+                    ;(list (regexp-quote "/sshx:user@host:")
+                          ;"remote-shell" "/usr/bin/bash"));
+      ;(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+;(customize-set-variable 'tramp-encoding-shell "/usr/bin/bash")
+(with-eval-after-load 'tramp 
+(add-to-list 'tramp-connection-properties
+             (list (regexp-quote "/ssh:andy@192.168.178.60:")
+                   "remote-shell" "/bin/bash")))
 
 (use-package evil-nerd-commenter
   :bind ("M-/" . evilnc-comment-or-uncomment-lines))

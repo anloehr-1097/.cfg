@@ -3,7 +3,7 @@
 
 * Introduction
 This file generates [[file:init.el][init.el]] which can be loaded by Emacs at startup.
-All modifications to the custom configuration should be made in here.
+All modifications to the custom configuration should be made in her(e.
 This configuration file is based on the config file from Systemcrafters.
 ** TODO add link here.
 
@@ -131,7 +131,7 @@ This section configures basic UI settings that remove unneeded elements to make 
 
   (scroll-bar-mode -1)        ; Disable visible scrollbar
   (tool-bar-mode -1)          ; Disable the toolbar
-  (tooltip-mode -1)           ; Disable tooltips
+  (tooltip-mode 1)           ; Disable tooltips
   (set-fringe-mode 10)        ; Give some breathing room
 
   (menu-bar-mode -1)            ; Disable the menu bar
@@ -183,46 +183,47 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
 
 #+begin_src emacs-lisp
 
-    ;; Make ESC quit prompts
-    (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+  ;; Make ESC quit prompts
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-    (use-package general
-      :after evil
-      :config
-      (general-create-definer efs/leader-keys
-        :keymaps '(normal insert visual emacs)
-        :prefix "SPC"
-        :global-prefix "C-SPC")
+  (use-package general
+    :after evil
+    :config
+    (general-create-definer efs/leader-keys
+      :keymaps '(normal insert visual emacs)
+      :prefix "SPC"
+      :global-prefix "C-SPC")
 
-      (efs/leader-keys
-        "t"  '(:ignore t :which-key "toggles")
-        "tt" '(counsel-load-theme :which-key "choose theme")
-        "fde" '(lambda () (interactive) (find-file (expand-file-name "~/.emacs.d/emacs_conf.org")))))
+    (efs/leader-keys
+      "t"  '(:ignore t :which-key "toggles")
+      "tt" '(counsel-load-theme :which-key "choose theme")
+      "fde" '(lambda () (interactive) (find-file (expand-file-name "~/.emacs.d/emacs_conf.org")))))
 
-    (use-package evil
-      :init
-      (setq evil-want-integration t)
-      (setq evil-want-keybinding nil)
-      (setq evil-want-C-u-scroll t)
-      (setq evil-want-C-i-jump nil)
-      :config
-      (evil-mode 1)
-      (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-      (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+  (use-package evil
+    :init
+    (setq evil-search-module 'evil-search)
+    (setq evil-want-integration t)
+    (setq evil-want-keybinding nil)
+    (setq evil-want-C-u-scroll t)
+    (setq evil-want-C-i-jump nil)
+    :config
+    (evil-mode 1)
+    (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
 
-      ;; Use visual line motions even outside of visual-line-mode buffers
-      (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-      (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+    ;; Use visual line motions even outside of visual-line-mode buffers
+    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+    (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
-      (evil-set-initial-state 'messages-buffer-mode 'normal)
-      (evil-set-initial-state 'dashboard-mode 'normal)
-      (evil-set-undo-system 'undo-tree))
+    (evil-set-initial-state 'messages-buffer-mode 'normal)
+    (evil-set-initial-state 'dashboard-mode 'normal)
+    (evil-set-undo-system 'undo-tree))
 
 
-    (use-package evil-collection
-      :after evil
-      :config
-      (evil-collection-init))
+  (use-package evil-collection
+    :after evil
+    :config
+    (evil-collection-init))
 #+end_src
 
 * UI Configuration
@@ -340,6 +341,13 @@ Only activate this in specific types of buffers.
 
 
 ** TODO Flycheck
+#+begin_src emacs-lisp
+    (use-package flycheck
+      :ensure t
+      :init (global-flycheck-mode)
+      )
+
+#+end_src
 
 ** Ivy and Counsel
 [[https://oremacs.com/swiper/][Ivy]] is an excellent completion framework for Emacs.  It provides a minimal yet powerful selection menu that appears when you open files, switch buffers, and for many other tasks in Emacs.  Counsel is a customized set of commands to replace `find-file` with `counsel-find-file`, etc which provide useful commands for each of the default completion commands.
@@ -912,17 +920,16 @@ There are a number of other language servers for Python so if you find that =pyl
 
 #+begin_src emacs-lisp
 
-  (use-package python-mode
-    :ensure t
-    :hook (python-mode . lsp-deferred)
-    :custom
-    ;; NOTE: Set these if Python 3 is called "python3" on your system!
-    ;; (python-shell-interpreter "python3")
-    ;; (dap-python-executable "python3")
-    (dap-python-debugger 'debugpy)
-    :config
-    (require 'dap-python))
+              (use-package python-mode
+                :ensure t
+                :hook (python-mode . lsp-deferred)
+                ;; NOTE: Set these if Python 3 is called "python3" on your system!
+                ;; (python-shell-interpreter "python3")
+                ;; (dap-python-executable "python3")
+                )
 
+                (require  'dap-python)
+                (setq dap-python-debugger 'debugpy)
 
 #+end_src
 
@@ -958,8 +965,10 @@ You can use the pyvenv package to use =virtualenv= environments in Emacs.  The =
 
 *** Cuda
 #+begin_src emacs-lisp
-  (use-package cuda-mode
-    :ensure t)
+    (use-package cuda-mode
+      :ensure t)
+
+
 #+end_src
 
 
@@ -1050,6 +1059,25 @@ We also use [[https://github.com/sebastiencs/company-box][company-box]] to furth
                    (side . bottom)
                    (window-height . 0.3)))
     (evil-owl-mode))
+#+end_src
+** Remote work
+*** Tramp
+#+begin_src emacs-lisp
+      (with-eval-after-load 'tramp (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+     (customize-set-variable 'tramp-verbose 6 "Enable remote command traces")
+     ; (customize-set-variable 'tramp-connection-properties (list (regexp-quote "/sshx:user@host:") "remote-shell" "/usr/bin/bash") "remote shell")
+     (with-eval-after-load 'tramp (add-to-list 'tramp-connection-properties
+       (list (regexp-quote "/sshx:user@host:")
+         "remote-shell" "/usr/bin/bash")))
+         ;(add-to-list 'tramp-connection-properties
+                      ;(list (regexp-quote "/sshx:user@host:")
+                            ;"remote-shell" "/usr/bin/bash"));
+        ;(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+  ;(customize-set-variable 'tramp-encoding-shell "/usr/bin/bash")
+  (with-eval-after-load 'tramp 
+  (add-to-list 'tramp-connection-properties
+               (list (regexp-quote "/ssh:andy@192.168.178.60:")
+                     "remote-shell" "/bin/bash")))
 #+end_src
 ** Commenting
 
@@ -1165,6 +1193,7 @@ A simple IPython client for emacs porting jupyter notebooks / their functionalit
     (use-package graphviz-dot-mode
       :ensure t)
 #+end_src
+
 * Latex
 #+begin_src emacs-lisp
   (use-package auctex
