@@ -880,8 +880,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-agenda-files
+   '("~/KeepInSync/MasterThesis/structure.org" "/Users/Andy/org/Tasks.org" "/Users/Andy/org/Habits.org" "/Users/Andy/org/Birthdays.org" "/Users/Andy/KeepInSync/Life.org"))
  '(package-selected-packages
-   '(latex-preview-pane flycheck-eglot tramp-auto-auth helm-tramp yasnippet which-key vterm visual-fill-column use-package undo-tree svgo speed-type rainbow-delimiters python-mode python-black popup pipenv org-superstar org-roam org-noter-pdftools org-bullets no-littering lsp-ui lsp-python-ms lsp-pyright lsp-ivy linum-relative ivy-rich ivy-prescient helpful haskell-mode gruber-darker-theme graphviz-dot-mode general forge flycheck-mypy fit-text-scale evil-surround evil-owl evil-nerd-commenter evil-collection eterm-256color eshell-git-prompt ein editorconfig doom-themes doom-modeline dockerfile-mode docker-compose-mode djvu dired-single dired-open dired-hide-dotfiles default-text-scale dashboard dap-mode cuda-mode counsel-projectile company-box command-log-mode cmake-mode cmake-ide clippy auto-package-update auctex all-the-icons-dired))
+   '(evil-indent-plus latex-preview-pane flycheck-eglot tramp-auto-auth helm-tramp yasnippet which-key vterm visual-fill-column use-package undo-tree svgo speed-type rainbow-delimiters python-mode python-black popup pipenv org-superstar org-roam org-noter-pdftools org-bullets no-littering lsp-ui lsp-python-ms lsp-pyright lsp-ivy linum-relative ivy-rich ivy-prescient helpful haskell-mode gruber-darker-theme graphviz-dot-mode general forge flycheck-mypy fit-text-scale evil-surround evil-owl evil-nerd-commenter evil-collection eterm-256color eshell-git-prompt ein editorconfig doom-themes doom-modeline dockerfile-mode docker-compose-mode djvu dired-single dired-open dired-hide-dotfiles default-text-scale dashboard dap-mode cuda-mode counsel-projectile company-box command-log-mode cmake-mode cmake-ide clippy auto-package-update auctex all-the-icons-dired))
  '(pdf-tools-handle-upgrades t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

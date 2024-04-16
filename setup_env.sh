@@ -26,4 +26,11 @@ fi
 # brew install zathura-pdf-poppler
 # brew install zoxide
 # brew install fzf
+# brew install entr
+# brew install buku
 
+
+
+# other tools possibly over git 
+# zsh-autosuggestions
+#
