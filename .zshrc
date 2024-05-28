@@ -27,6 +27,7 @@ neofetch
 alias emst='open -a /Users/Andy/Applications/Emacs.app --args --bg-daemon'
 export PATH="/usr/local/Cellar/gdb/13.1/bin:$PATH"
 source ~/powerlevel10k/powerlevel10k.zsh-theme
+alias emc="emacsclient -nc"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

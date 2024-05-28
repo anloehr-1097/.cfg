@@ -155,6 +155,8 @@
   :config
   (evil-collection-init))
 
+(global-set-key (kbd "C-c f") 'rgrep)
+
 (use-package command-log-mode
   :commands command-log-mode)
 
@@ -207,17 +209,22 @@
          ;; (org-mode . linum-relative-mode)
          ;; (text-mode . linum-relative-mode))
 
-
-(global-display-line-numbers-mode)
 (setq display-line-numbers-type 'relative)
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+(add-hook 'org-mode-hook #'display-line-numbers-mode)
+(add-hook 'text-mode-hook #'display-line-numbers-mode)
+;; (global-display-line-numbers-mode)
+
 
 (add-hook 'doc-view-mode
           (lambda ()
             (display-line-numbers-mode -1)))
 
+(with-eval-after-load 'pdf-view-mode
 (add-hook 'pdf-view-mode
           (lambda ()
             (display-line-numbers-mode -1)))
+)
 
 (use-package which-key
   :defer 0
@@ -688,23 +695,36 @@
                  (display-buffer-in-side-window)
                  (side . bottom)
                  (window-height . 0.3)))
+  (setq evil-owl-local-mark-format " %m: [l: %-5l, c: %-5c]\n    %s")
+  (setq evil-owl-global-mark-format " %m: [l: %-5l, c: %-5c] %b\n    %s")
+  (setq evil-owl-max-string-length 50)
   (evil-owl-mode))
 
 (with-eval-after-load 'tramp (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
-   (customize-set-variable 'tramp-verbose 6 "Enable remote command traces")
-   ; (customize-set-variable 'tramp-connection-properties (list (regexp-quote "/sshx:user@host:") "remote-shell" "/usr/bin/bash") "remote shell")
-   (with-eval-after-load 'tramp (add-to-list 'tramp-connection-properties
-     (list (regexp-quote "/sshx:user@host:")
-       "remote-shell" "/usr/bin/bash")))
-       ;(add-to-list 'tramp-connection-properties
-                    ;(list (regexp-quote "/sshx:user@host:")
-                          ;"remote-shell" "/usr/bin/bash"));
-      ;(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
-;(customize-set-variable 'tramp-encoding-shell "/usr/bin/bash")
+(customize-set-variable 'tramp-verbose 6 "Enable remote command traces")
+                                        ; (customize-set-variable 'tramp-connection-properties (list (regexp-quote "/sshx:user@host:") "remote-shell" "/usr/bin/bash") "remote shell")
+(with-eval-after-load 'tramp (add-to-list 'tramp-connection-properties
+                                          (list (regexp-quote "/sshx:user@host:")
+                                                "remote-shell" "/usr/bin/bash")))
+                                        ;(add-to-list 'tramp-connection-properties
+                                        ;(list (regexp-quote "/sshx:user@host:")
+                                        ;"remote-shell" "/usr/bin/bash"));
+                                        ;(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+                                        ;(customize-set-variable 'tramp-encoding-shell "/usr/bin/bash")
 (with-eval-after-load 'tramp 
-(add-to-list 'tramp-connection-properties
-             (list (regexp-quote "/ssh:andy@192.168.178.60:")
-                   "remote-shell" "/bin/bash")))
+  (add-to-list 'tramp-connection-properties
+               (list (regexp-quote "/ssh:andy@192.168.178.60:")
+                     "remote-shell" "/usr/bin/zsh")))
+
+
+(with-eval-after-load 'tramp
+  (add-to-list 'tramp-connection-properties
+               (list (regexp-quote "/sshx:andy@192.168.178.60:")
+                     "remote-shell" "/usr/bin/zsh"))
+  )
+(with-eval-after-load 'tramp
+  (customize-set-variable 'tramp-encoding-shell "/bin/zsh")
+  )
 
 (use-package evil-nerd-commenter
   :bind ("M-/" . evilnc-comment-or-uncomment-lines))
@@ -881,9 +901,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(org-agenda-files
-   '("~/KeepInSync/MasterThesis/structure.org" "/Users/Andy/org/Tasks.org" "/Users/Andy/org/Habits.org" "/Users/Andy/org/Birthdays.org" "/Users/Andy/KeepInSync/Life.org"))
- '(package-selected-packages
-   '(evil-indent-plus latex-preview-pane flycheck-eglot tramp-auto-auth helm-tramp yasnippet which-key vterm visual-fill-column use-package undo-tree svgo speed-type rainbow-delimiters python-mode python-black popup pipenv org-superstar org-roam org-noter-pdftools org-bullets no-littering lsp-ui lsp-python-ms lsp-pyright lsp-ivy linum-relative ivy-rich ivy-prescient helpful haskell-mode gruber-darker-theme graphviz-dot-mode general forge flycheck-mypy fit-text-scale evil-surround evil-owl evil-nerd-commenter evil-collection eterm-256color eshell-git-prompt ein editorconfig doom-themes doom-modeline dockerfile-mode docker-compose-mode djvu dired-single dired-open dired-hide-dotfiles default-text-scale dashboard dap-mode cuda-mode counsel-projectile company-box command-log-mode cmake-mode cmake-ide clippy auto-package-update auctex all-the-icons-dired))
+   '("/Users/Andy/KeepInSync/Life.org" "/Users/Andy/org/Tasks.org" "/Users/Andy/org/Habits.org" "/Users/Andy/org/Birthdays.org"))
  '(pdf-tools-handle-upgrades t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

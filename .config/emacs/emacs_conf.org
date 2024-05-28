@@ -226,6 +226,11 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
     (evil-collection-init))
 #+end_src
 
+
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c f") 'rgrep)
+#+end_src
 * UI Configuration
 ** Command Log Mode
 
@@ -312,17 +317,22 @@ Only activate this in specific types of buffers.
            ;; (org-mode . linum-relative-mode)
            ;; (text-mode . linum-relative-mode))
 
-
-  (global-display-line-numbers-mode)
   (setq display-line-numbers-type 'relative)
+  (add-hook 'prog-mode-hook #'display-line-numbers-mode)
+  (add-hook 'org-mode-hook #'display-line-numbers-mode)
+  (add-hook 'text-mode-hook #'display-line-numbers-mode)
+  ;; (global-display-line-numbers-mode)
+
 
   (add-hook 'doc-view-mode
             (lambda ()
               (display-line-numbers-mode -1)))
 
+  (with-eval-after-load 'pdf-view-mode
   (add-hook 'pdf-view-mode
             (lambda ()
               (display-line-numbers-mode -1)))
+  )
 #+end_src
 
 ** Which Key
@@ -1049,35 +1059,52 @@ We also use [[https://github.com/sebastiencs/company-box][company-box]] to furth
 
 ** Registers and marks
 #+begin_src emacs-lisp
-  (use-package evil-owl
-    :after evil
-    :config
-    (setq evil-owl-max-string-length 500)
-    (add-to-list 'display-buffer-alist
-                 '("*evil-owl*"
-                   (display-buffer-in-side-window)
-                   (side . bottom)
-                   (window-height . 0.3)))
-    (evil-owl-mode))
+    (use-package evil-owl
+      :after evil
+      :config
+      (setq evil-owl-max-string-length 500)
+      (add-to-list 'display-buffer-alist
+                   '("*evil-owl*"
+                     (display-buffer-in-side-window)
+                     (side . bottom)
+                     (window-height . 0.3)))
+      (setq evil-owl-local-mark-format " %m: [l: %-5l, c: %-5c]\n    %s")
+      (setq evil-owl-global-mark-format " %m: [l: %-5l, c: %-5c] %b\n    %s")
+      (setq evil-owl-max-string-length 50)
+      (evil-owl-mode))
 #+end_src
 ** Remote work
 *** Tramp
 #+begin_src emacs-lisp
-      (with-eval-after-load 'tramp (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
-     (customize-set-variable 'tramp-verbose 6 "Enable remote command traces")
-     ; (customize-set-variable 'tramp-connection-properties (list (regexp-quote "/sshx:user@host:") "remote-shell" "/usr/bin/bash") "remote shell")
-     (with-eval-after-load 'tramp (add-to-list 'tramp-connection-properties
-       (list (regexp-quote "/sshx:user@host:")
-         "remote-shell" "/usr/bin/bash")))
-         ;(add-to-list 'tramp-connection-properties
-                      ;(list (regexp-quote "/sshx:user@host:")
-                            ;"remote-shell" "/usr/bin/bash"));
-        ;(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
-  ;(customize-set-variable 'tramp-encoding-shell "/usr/bin/bash")
+
+
+  (with-eval-after-load 'tramp (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+  (customize-set-variable 'tramp-verbose 6 "Enable remote command traces")
+                                          ; (customize-set-variable 'tramp-connection-properties (list (regexp-quote "/sshx:user@host:") "remote-shell" "/usr/bin/bash") "remote shell")
+  (with-eval-after-load 'tramp (add-to-list 'tramp-connection-properties
+                                            (list (regexp-quote "/sshx:user@host:")
+                                                  "remote-shell" "/usr/bin/bash")))
+                                          ;(add-to-list 'tramp-connection-properties
+                                          ;(list (regexp-quote "/sshx:user@host:")
+                                          ;"remote-shell" "/usr/bin/bash"));
+                                          ;(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+                                          ;(customize-set-variable 'tramp-encoding-shell "/usr/bin/bash")
   (with-eval-after-load 'tramp 
-  (add-to-list 'tramp-connection-properties
-               (list (regexp-quote "/ssh:andy@192.168.178.60:")
-                     "remote-shell" "/bin/bash")))
+    (add-to-list 'tramp-connection-properties
+                 (list (regexp-quote "/ssh:andy@192.168.178.60:")
+                       "remote-shell" "/usr/bin/zsh")))
+
+
+  (with-eval-after-load 'tramp
+    (add-to-list 'tramp-connection-properties
+                 (list (regexp-quote "/sshx:andy@192.168.178.60:")
+                       "remote-shell" "/usr/bin/zsh"))
+    )
+  (with-eval-after-load 'tramp
+    (customize-set-variable 'tramp-encoding-shell "/bin/zsh")
+    )
+
+
 #+end_src
 ** Commenting
 
