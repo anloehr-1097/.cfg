@@ -973,6 +973,18 @@ You can use the pyvenv package to use =virtualenv= environments in Emacs.  The =
 
 #+end_src
 
+
+**** Conda
+
+#+begin_src emacs-lisp
+  (use-package conda
+    :ensure t)
+  (custom-set-variables
+   '(conda-anaconda-home "/usr/local/Caskroom/miniconda/base/")
+   )
+
+#+end_src
+
 *** Cuda
 #+begin_src emacs-lisp
     (use-package cuda-mode
@@ -1223,9 +1235,23 @@ A simple IPython client for emacs porting jupyter notebooks / their functionalit
 
 * Latex
 #+begin_src emacs-lisp
-  (use-package auctex
-  :ensure t)
+
+    (use-package tex
+    :ensure auctex)
+
+    (use-package auctex
+      :ensure t)
+
+    (use-package company-auctex
+      :ensure t)
+
+    (latex-preview-pane-enable)
+    (setq TeX-auto-save t)
+    (setq TeX-parse-self t)
+    (setq-default TeX-master nil)
+
 #+end_src
+
 
 * Terminals
 ** term-mode

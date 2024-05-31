@@ -636,6 +636,12 @@
   :after python-mode
   )
 
+(use-package conda
+  :ensure t)
+(custom-set-variables
+ '(conda-anaconda-home "/usr/local/Caskroom/miniconda/base/")
+ )
+
 (use-package cuda-mode
   :ensure t)
 
@@ -803,8 +809,19 @@
 (use-package graphviz-dot-mode
   :ensure t)
 
+(use-package tex
+:ensure auctex)
+
 (use-package auctex
-:ensure t)
+  :ensure t)
+
+(use-package company-auctex
+  :ensure t)
+
+(latex-preview-pane-enable)
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq-default TeX-master nil)
 
 (use-package term
   :commands term
@@ -895,17 +912,3 @@
 (setq gc-cons-threshold (* 2 1000 1000))
 
 (server-start)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-agenda-files
-   '("/Users/Andy/KeepInSync/Life.org" "/Users/Andy/org/Tasks.org" "/Users/Andy/org/Habits.org" "/Users/Andy/org/Birthdays.org"))
- '(pdf-tools-handle-upgrades t))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
