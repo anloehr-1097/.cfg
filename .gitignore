@@ -1,20 +1,25 @@
 /*
 !.gitignore
-!.config
-.config/*
-!.config/.gitignore
-
-!.config/emacs/text.*
+!/.config
+/.config/*
 !.config/emacs/
+.config/emacs/*
+!.config/emacs/snippets/
+.config/emacs/snippets/**/~
+/.config/emacs/snippets/snippet-mode/**~
+/.config/emacs/snippets/snippet-mode/.prob_measure_over_A.~undo-tree~
 
 
-
-
+# .config/
+# !.config/.gitignore
+# !.config/emacs/
+# .config/emacs/.local
+# !.config/emacs/text.*
+# !.config/emacs/snippets/
 # !.config/emacs/snippets/
 # !.config/emacs/text.txt
 # !emacs/text.txt
 # !.config/test_dir/
-
 
 
 
