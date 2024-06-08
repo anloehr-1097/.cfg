@@ -1,5 +1,6 @@
 *
 /*
+~.config/emacs/
 !.config/emacs/snippets
 !.config/emacs/emacs_conf.org
 !.config/emacs/init.el
