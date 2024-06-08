@@ -1,30 +1,45 @@
-/*
-/**~
-*~undo-tree~
-!.gitignore
-!/.config
-/.config/*
-!.config/emacs/
-.config/emacs/*
-!.config/emacs/snippets/
-!.config/emacs/*.el
-!.config/emacs/*.org
+*
+/*  # exclude everything to allow 'git add .'
+/**~  # exclude ~ files
+*~undo-tree~  # exclude undo-tree files
+!.gitignore  # include gitignore
+!/.config  # include config
+/.config/*  # but only selectively include files / dirs from config
 
-.config/emacs/snippets/**/~
-# /.config/emacs/snippets/snippet-mode/**~
+
+# emacs
+!.config/emacs  # include emacs
+.config/emacs/*  # but exclude everything from emacs
+.config/emacs/
+!.config/emacs/snippets/  # only include snippets
+!.config/emacs/*.el  # and .el files
+!.config/emacs/*.org  # and .org files
 .config/emacs/snippets/snippet-mode/
 
 
-# .config/
-# !.config/.gitignore
-# !.config/emacs/
-# .config/emacs/.local
-# !.config/emacs/text.*
-# !.config/emacs/snippets/
-# !.config/emacs/snippets/
-# !.config/emacs/text.txt
-# !emacs/text.txt
-# !.config/test_dir/
+# vim & nvim
+!.config/nvim/  # include everything from nvim 
+!.vimrc
+
+
+# tmux
+!.tmux/
+.tmux/*
+!.tmux.conf
+!.setup_tmux_plugins.sh
+
+
+# X window system and utils 
+!.Xresources  # include Xresources
+!.Xauthority  # include Xauthority
+
+# zsh
+!.zshrc  # include zshrc
+!.zsh/
+.zsh/*
+!.zsh/*.sh
 
 
 
+# custom scripts
+!setup_env.sh

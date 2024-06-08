@@ -1,4 +1,4 @@
-
+# Script holding everythin to be installed in new setup
 if [[ "$OSTYPE" == "darwin"* ]]; then
     echo "OS TYPE: macOS"
 
