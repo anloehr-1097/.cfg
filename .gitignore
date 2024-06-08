@@ -1,2 +1,9 @@
 /*
 !.gitignore
+!.config/emacs/text.txt
+!emacs/text.txt
+!.config/test_dir/
+
+
+
+
