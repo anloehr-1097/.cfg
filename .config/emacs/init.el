@@ -639,8 +639,14 @@
 (use-package conda
   :ensure t)
 (custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(conda-anaconda-home "/usr/local/Caskroom/miniconda/base/")
- )
+ '(package-selected-packages
+   '(nov which-key wfnames vterm visual-fill-column use-package undo-tree tramp-auto-auth svgo speed-type rainbow-delimiters python-mode python-black popup pipenv org-superstar org-roam org-noter-pdftools org-bullets no-littering lsp-ui lsp-python-ms lsp-pyright lsp-ivy linum-relative latex-preview-pane ivy-rich ivy-prescient helpful haskell-mode gruber-darker-theme graphviz-dot-mode general forge flycheck-mypy flycheck-eglot fit-text-scale evil-surround evil-owl evil-nerd-commenter evil-indent-plus evil-collection eterm-256color eshell-git-prompt ein editorconfig doom-themes doom-modeline dockerfile-mode docker-compose-mode djvu dired-single dired-open dired-hide-dotfiles default-text-scale dashboard dap-mode cuda-mode counsel-projectile conda company-box company-auctex command-log-mode cmake-mode cmake-ide clippy auto-package-update async anaconda-mode all-the-icons-dired))
+ '(pdf-tools-handle-upgrades t))
 
 (use-package cuda-mode
   :ensure t)
@@ -750,7 +756,10 @@
   (custom-set-variables
    '(pdf-tools-handle-upgrades t)))
 
-(use-package org-noter)
+(use-package nov
+  :ensure t)
+
+  (use-package org-noter)
 
   (use-package org-pdftools)
 
@@ -912,3 +921,9 @@
 (setq gc-cons-threshold (* 2 1000 1000))
 
 (server-start)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
