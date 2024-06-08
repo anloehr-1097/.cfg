@@ -28,6 +28,7 @@ fi
 # brew install fzf
 # brew install entr
 # brew install buku
+# brew install --cask amethyst
 
 
 
