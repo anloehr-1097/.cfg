@@ -1,8 +1,19 @@
 /*
 !.gitignore
-!.config/emacs/text.txt
-!emacs/text.txt
-!.config/test_dir/
+!.config
+.config/*
+!.config/.gitignore
+
+!.config/emacs/text.*
+!.config/emacs/
+
+
+
+
+# !.config/emacs/snippets/
+# !.config/emacs/text.txt
+# !emacs/text.txt
+# !.config/test_dir/
 
 
 
