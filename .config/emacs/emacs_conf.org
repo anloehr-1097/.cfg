@@ -48,8 +48,8 @@ This configuration file is based on the config file from Systemcrafters.
     (add-hook 'emacs-startup-hook #'efs/display-startup-time)
     (defvar efs/default-font-size 200)
     (defvar efs/default-variable-font-size 200)
-   ;; (setq insert-directory-program "gls" dired-use-ls-dired t)
-    (setq dired-listing-switches "-al --group-directories-first")
+
+  (setq dired-listing-switches "-al --group-directories-first")
 
   (setq default-frame-alist
         '((font . "Iosevka Nerd Font-22")
