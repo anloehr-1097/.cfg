@@ -2,4 +2,4 @@
 # name: Prob measures over A
 # key: proba
 # --
-\mathcal{P}(\mathcal{A})
+\mathcal{P}(\R)^{\mathcal{A}}

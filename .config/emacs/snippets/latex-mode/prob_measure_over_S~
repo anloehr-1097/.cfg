@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: Prob measures over S
-# key: probs
-# --
-\mathcal{P}(\mathcal{S})

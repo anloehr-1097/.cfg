@@ -1,13 +1,18 @@
 /*
+/**~
+*~undo-tree~
 !.gitignore
 !/.config
 /.config/*
 !.config/emacs/
 .config/emacs/*
 !.config/emacs/snippets/
+!.config/emacs/*.el
+!.config/emacs/*.org
+
 .config/emacs/snippets/**/~
 # /.config/emacs/snippets/snippet-mode/**~
-/.config/emacs/snippets/snippet-mode/.*
+.config/emacs/snippets/snippet-mode/
 
 
 # .config/
