@@ -22,7 +22,6 @@ if [[ $OSTYPE == darwin* ]]; then
     echo "OS: Linux"
 fi
 
->>>>>>> 8d649c3 (companion)
 export PATH="/usr/local/opt/llvm/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/opt/ncurses/bin:$PATH"
