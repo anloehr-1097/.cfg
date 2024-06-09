@@ -5,14 +5,24 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-set LANG=en_US.UTF-8
-export PATH="$PATH:/Users/Andy/.local/bin"
-export PATH="/Users/Andy/.config/emacs/bin:$PATH"
-export PATH="$HOME/.emacs.d/bin:$PATH"
-export PATH="$HOME/homebrew/bin:$PATH"
-export PATH="$HOME/homebrew/sbin:$PATH"
-alias emacs="open -a ~/Applications/Emacs.app"
-alias em="~/Applications/Emacs.app/Contents/MacOs/bin/emacsclient -cn"
+if [[ $OSTYPE == darwin* ]]; then
+    echo "OS: MacOs"
+    export PATH="$HOME/.emacs.d/bin:$PATH"
+    export PATH="$HOME/homebrew/bin:$PATH"
+    export PATH="$HOME/homebrew/sbin:$PATH"
+    export PATH="$PATH:/Users/Andy/.local/bin"
+    export PATH="/Users/Andy/.config/emacs/bin:$PATH"
+    export PATH="/Users/Andy/Library/Python/3.9/bin:$PATH"
+    export PATH="/Users/Andy/lldb/lldb-mi/src:$PATH"
+    alias emacs="open -a ~/Applications/Emacs.app"
+    alias em="~/Applications/Emacs.app/Contents/MacOs/bin/emacsclient -cn"
+    alias emst='open -a /Users/Andy/Applications/Emacs.app --args --bg-daemon'
+
+    elif [[ $OSTYPE == linux* ]]; then
+    echo "OS: Linux"
+fi
+
+>>>>>>> 8d649c3 (companion)
 export PATH="/usr/local/opt/llvm/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/opt/ncurses/bin:$PATH"
@@ -25,7 +35,6 @@ alias gconf='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 neofetch
 
-alias emst='open -a /Users/Andy/Applications/Emacs.app --args --bg-daemon'
 export PATH="/usr/local/Cellar/gdb/13.1/bin:$PATH"
 source ~/powerlevel10k/powerlevel10k.zsh-theme
 alias emc="emacsclient -nc"
@@ -33,31 +42,31 @@ alias emc="emacsclient -nc"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-source /Users/Andy/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /Users/Andy/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /Users/Andy/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $HOME/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
 
 export PATH="/usr/local/opt/python@3.11:$PATH"
 export PATH="/usr/local/opt/sqlite/bin:$PATH"
-export PATH="/Users/Andy/Library/Python/3.9/bin:$PATH"
 export PATH="/usr/local/bin:$PATH"
-export PATH="/Users/Andy/lldb/lldb-mi/src:$PATH"
 export PATH="/usr/local/Cellar/gdb/13.2/bin:$PATH"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/usr/local/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/andy/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
-        . "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh"
+    if [ -f "/home/andy/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/andy/miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/usr/local/Caskroom/miniconda/base/bin:$PATH"
+        export PATH="/home/andy/miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+#
+export PATH="/opt/nvim-linux64/bin:$PATH"
 
 # zoxide init
 eval "$(zoxide init zsh)"

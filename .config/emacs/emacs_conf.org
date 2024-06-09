@@ -46,13 +46,15 @@ This configuration file is based on the config file from Systemcrafters.
                gcs-done))
 
     (add-hook 'emacs-startup-hook #'efs/display-startup-time)
-    (defvar efs/default-font-size 200)
-    (defvar efs/default-variable-font-size 200)
-
-  (setq dired-listing-switches "-al --group-directories-first")
+;;    (defvar efs/default-font-size 200)
+;;    (defvar efs/default-variable-font-size 200)
+    (defvar efs/default-font-size 160)
+    (defvar efs/default-variable-font-size 160)
+   ;; (setq insert-directory-program "gls" dired-use-ls-dired t)
+    (setq dired-listing-switches "-al --group-directories-first")
 
   (setq default-frame-alist
-        '((font . "Iosevka Nerd Font-22")
+        '((font . "Iosevka Nerd Font-18")
           (width . 160)
           (height . 160)))
   (setq visible-bell nil)
@@ -158,10 +160,10 @@ This section configures basic UI settings that remove unneeded elements to make 
 I am using the Iosevka Nerd Fonts  and [[https://fonts.google.com/specimen/Cantarell][Cantarell]] fonts for this configuration which will more than likely need to be installed on your machine.  Both can usually be found in the various Linux distro package managers or downloaded from the links above.
 
 #+begin_src emacs-lisp
-(set-face-attribute 'default nil :font "Iosevka Nerd Font-13" :height efs/default-font-size)
+(set-face-attribute 'default nil :font "Iosevka Nerd Font-10" :height efs/default-font-size)
 
 ;; Set the fixed pitch face
-(set-face-attribute 'fixed-pitch nil :font "Iosevka Nerd Font-16" :height efs/default-font-size)
+(set-face-attribute 'fixed-pitch nil :font "Iosevka Nerd Font-13" :height efs/default-font-size)
 
 ;; Set the variable pitch face
 (set-face-attribute 'variable-pitch nil :font "Cantarell" :height efs/default-variable-font-size :weight 'regular)
