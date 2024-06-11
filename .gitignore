@@ -4,7 +4,7 @@
 *~undo-tree~  # exclude undo-tree files
 !.gitignore  # include gitignore
 !.config  # include config
-.config/*  # but only selectively include files / dirs from config
+# .config/  # but only selectively include files / dirs from config
 
 
 # emacs
@@ -14,7 +14,7 @@
 !.config/emacs/snippets/  # only include snippets
 !.config/emacs/*.el  # and .el files
 !.config/emacs/*.org  # and .org files
-.config/emacs/snippets/snippet-mode/
+# .config/emacs/snippets/snippet-mode/
 
 
 # vim & nvim
@@ -43,4 +43,5 @@
 
 # custom scripts
 !setup_env.sh
-# *~
+*~  # exclude ~ files
+/**~  # exclude ~ files
