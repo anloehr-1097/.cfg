@@ -26,13 +26,16 @@
              gcs-done))
 
   (add-hook 'emacs-startup-hook #'efs/display-startup-time)
-  (defvar efs/default-font-size 160)
-  (defvar efs/default-variable-font-size 160)
+
+(defvar efs/default-font-size 200)
+(defvar efs/default-variable-font-size 200)
+  ;;(defvar efs/default-font-size 160)
+  ;;(defvar efs/default-variable-font-size 160)
  ;; (setq insert-directory-program "gls" dired-use-ls-dired t)
   (setq dired-listing-switches "-al --group-directories-first")
 
 (setq default-frame-alist
-      '((font . "Iosevka Nerd Font-18")
+      '((font . "Iosevka Nerd Font-22")
         (width . 160)
         (height . 160)))
 (setq visible-bell nil)
@@ -100,10 +103,10 @@
 ;;                 pdf-view-mode-hook))
 ;;   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-(set-face-attribute 'default nil :font "Iosevka Nerd Font-10" :height efs/default-font-size)
+(set-face-attribute 'default nil :font "Iosevka Nerd Font-16" :height efs/default-font-size)
 
 ;; Set the fixed pitch face
-(set-face-attribute 'fixed-pitch nil :font "Iosevka Nerd Font-13" :height efs/default-font-size)
+(set-face-attribute 'fixed-pitch nil :font "Iosevka Nerd Font-18" :height efs/default-font-size)
 
 ;; Set the variable pitch face
 (set-face-attribute 'variable-pitch nil :font "Cantarell" :height efs/default-variable-font-size :weight 'regular)

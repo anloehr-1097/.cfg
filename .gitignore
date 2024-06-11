@@ -3,8 +3,8 @@
 /**~  # exclude ~ files
 *~undo-tree~  # exclude undo-tree files
 !.gitignore  # include gitignore
-!/.config  # include config
-/.config/*  # but only selectively include files / dirs from config
+!.config  # include config
+.config/*  # but only selectively include files / dirs from config
 
 
 # emacs
