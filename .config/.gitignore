@@ -1,0 +1,17 @@
+
+!emacs
+!emacs/snippets
+!emacs/snippets/
+!emacs/snippets/**
+emacs/snippets/**/*~
+emacs/snippets/*/*~
+
+
+!/nvim
+!/nvim/
+!/nvim/lua
+!/nvim/lua/andy
+!/nvim/lua/andy/plugins
+!/nvim/lua/andy/plugins/*.lua
+
+

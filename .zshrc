@@ -69,3 +69,4 @@ export PATH="/opt/nvim-linux64/bin:$PATH"
 
 # zoxide init
 eval "$(zoxide init zsh)"
+

@@ -3,28 +3,20 @@
 /**~  # exclude ~ files
 *~undo-tree~  # exclude undo-tree files
 !.gitignore  # include gitignore
-!.config  # include config
-# .config/  # but only selectively include files / dirs from config
+!/.config
+
+# gitignore .config folder
+!/.config/.gitignore
 
 
-# emacs
-!.config/emacs  # include emacs
-.config/emacs/*  # but exclude everything from emacs
-.config/emacs/
-!.config/emacs/snippets/  # only include snippets
-!.config/emacs/*.el  # and .el files
-!.config/emacs/*.org  # and .org files
-# .config/emacs/snippets/snippet-mode/
-
-
-# vim & nvim
-!.config/nvim/  # include everything from nvim 
+# vim
 !.vimrc
 
 
 # tmux
 !.tmux/
 .tmux/*
+!.tmux/*.sh
 !.tmux.conf
 !.setup_tmux_plugins.sh
 
@@ -44,4 +36,3 @@
 # custom scripts
 !setup_env.sh
 *~  # exclude ~ files
-/**~  # exclude ~ files
