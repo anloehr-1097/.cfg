@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: big parantheses
+# key: leftpar
+# --
+
+\left ( $1 \right) $0
