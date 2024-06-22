@@ -365,43 +365,60 @@ Only activate this in specific types of buffers.
 
 #+end_src
 
-** Ivy and Counsel
+** Ivy / Vertico and Counsel
 [[https://oremacs.com/swiper/][Ivy]] is an excellent completion framework for Emacs.  It provides a minimal yet powerful selection menu that appears when you open files, switch buffers, and for many other tasks in Emacs.  Counsel is a customized set of commands to replace `find-file` with `counsel-find-file`, etc which provide useful commands for each of the default completion commands.
 [[https://github.com/Yevgnen/ivy-rich][ivy-rich]] adds extra columns to a few of the Counsel commands to provide more information about each item.
 
 #+begin_src emacs-lisp
 
-  (use-package ivy
-    :diminish
-    :bind (("C-s" . swiper)
-           :map ivy-minibuffer-map
-           ("TAB" . ivy-alt-done)
-           ("C-l" . ivy-alt-done)
-           ("C-j" . ivy-next-line)
-           ("C-k" . ivy-previous-line)
-           :map ivy-switch-buffer-map
-           ("C-k" . ivy-previous-line)
-           ("C-l" . ivy-done)
-           ("C-d" . ivy-switch-buffer-kill)
-           :map ivy-reverse-i-search-map
-           ("C-k" . ivy-previous-line)
-           ("C-d" . ivy-reverse-i-search-kill))
-    :config
-    (ivy-mode 1))
+    ;;(use-package ivy
+      ;;:diminish
+      ;;:ensure t
+      ;;:bind (("C-s" . swiper)
+             ;;:map ivy-miniBuffer-map
+             ;;("TAB" . ivy-alt-done)
+             ;;("C-l" . ivy-alt-done)
+             ;;("C-j" . ivy-next-line)
+             ;;("C-k" . ivy-previous-line)
+             ;;:map ivy-switch-buffer-map
+             ;;("C-k" . ivy-previous-line)
+             ;;("C-l" . ivy-done)
+             ;;("C-d" . ivy-switch-buffer-kill)
+             ;;:map ivy-reverse-i-search-map
+             ;;("C-k" . ivy-previous-line)
+             ;;("C-d" . ivy-reverse-i-search-kill))
+      ;;:config
+      ;;(ivy-mode 1))
+  ;;
+    ;;(use-package ivy-rich
+      ;;:after ivy
+      ;;:init
+      ;;(ivy-rich-mode 1))
 
-  (use-package ivy-rich
-    :after ivy
-    :init
-    (ivy-rich-mode 1))
+    (use-package vertico
+      :ensure t
+      :init
+      (vertico-mode 1)
+    )
 
-  (use-package counsel
-    :bind (("C-M-j" . 'counsel-switch-buffer)
-           :map minibuffer-local-map
-           ("C-r" . 'counsel-minibuffer-history))
-    :custom
-    (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
-    :config
-    (counsel-mode 1))
+  ;;(use-package orderless
+    ;;:ensure t
+    ;;:init
+    ;;(setq completion-styles '(orderless-basic)
+          ;;completion-category-defaults nil
+          ;;completion-category-overrides '((file (styles parial-completion)))
+    ;;)
+    ;;)
+
+    (use-package counsel
+      :bind (("C-M-j" . 'counsel-switch-buffer)
+             :map minibuffer-local-map
+             ("C-r" . 'counsel-minibuffer-history))
+      :custom
+      (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
+      :config
+      (counsel-mode 1))
+
 
 #+end_src
 
