@@ -29,6 +29,8 @@ fi
 # brew install entr
 # brew install buku
 # brew install --cask amethyst
+# brew install aspell
+# brew install ispell  -- potentially worse than aspell
 
 
 
