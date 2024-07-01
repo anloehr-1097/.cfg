@@ -47,4 +47,6 @@ opt.undofile = true
 -- context  commen string error fix
 --vim.g.skip_ts_context_commentstring = true
 
+opt.laststatus = 3 -- always show status line
+
 

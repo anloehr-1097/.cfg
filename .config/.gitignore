@@ -1,4 +1,4 @@
-
+# emacs
 !emacs
 !emacs/snippets
 !emacs/snippets/
@@ -6,12 +6,23 @@
 emacs/snippets/**/*~
 emacs/snippets/*/*~
 
-
+# nvim
 !/nvim
 !/nvim/
 !/nvim/lua
 !/nvim/lua/andy
+!/nvim/lua/andy/core
 !/nvim/lua/andy/plugins
 !/nvim/lua/andy/plugins/*.lua
+
+# aerospace window manager
+!/aerospace
+!/aerospace/aerospace.toml
+
+
+# kitty terminal
+!/kitty
+!/kitty/kitty.conf
+
 
 
