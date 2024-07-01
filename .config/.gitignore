@@ -24,5 +24,6 @@ emacs/snippets/*/*~
 !/kitty
 !/kitty/kitty.conf
 
-
-
+# i3 window manager for linux systems
+!i3
+!i3/config
