@@ -18,7 +18,8 @@ if [[ $OSTYPE == darwin* ]]; then
     alias em="~/Applications/Emacs.app/Contents/MacOs/bin/emacsclient -cn"
     alias emst='open -a /Users/Andy/Applications/Emacs.app --args --bg-daemon'
 
-    elif [[ $OSTYPE == linux* ]]; then
+elif [[ $OSTYPE == linux* ]]; then
+    setxkbmap us
     echo "OS: Linux"
 fi
 
@@ -71,5 +72,4 @@ export PATH="/opt/nvim-linux64/bin:$PATH"
 # zoxide init
 eval "$(zoxide init zsh)"
 
-setxkbmap us
 
