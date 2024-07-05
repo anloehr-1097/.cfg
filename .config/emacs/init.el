@@ -110,7 +110,7 @@
 (set-face-attribute 'fixed-pitch nil :font "Iosevka Nerd Font-18" :height efs/default-font-size)
 
 ;; Set the variable pitch face
-(set-face-attribute 'variable-pitch nil :font "Cantarell" :height efs/default-variable-font-size :weight 'regular)
+(set-face-attribute 'variable-pitch nil :font "Iosevka Nerd Font-18" :height efs/default-variable-font-size :weight 'regular)
 
 (use-package undo-tree
   :ensure t
@@ -134,6 +134,7 @@
     "fde" '(lambda () (interactive) (find-file (expand-file-name "~/.emacs.d/emacs_conf.org")))))
 
 (use-package evil
+  :after counsel
   :init
   (setq evil-search-module 'evil-search)
   (setq evil-want-integration t)
@@ -142,6 +143,50 @@
   (setq evil-want-C-i-jump nil)
   :config
   (evil-mode 1)
+  (evil-set-leader nil (kbd "SPC"))
+                                        ;   window movement
+  ;; (evil-define-key 'normal 'global (kbd "<leader>o")  'other-window)
+  (evil-define-key 'normal 'global (kbd "<leader>wh") 'windmove-left)
+  (evil-define-key 'normal 'global (kbd "<leader>wj") 'windmove-down)
+  (evil-define-key 'normal 'global (kbd "<leader>wk") 'windmove-up)
+  (evil-define-key 'normal 'global (kbd "<leader>wl") 'windmove-right)
+  (evil-define-key 'normal 'global (kbd "<leader>sv") 'split-window-horizontally)
+  (evil-define-key 'normal 'global (kbd "<leader>sh") 'split-window-vertically)
+  ; buffer select, buffer list, find file, delete window
+  (evil-define-key 'normal 'global (kbd "<leader>b") 'counsel-switch-buffer)
+  (evil-define-key 'normal 'global (kbd "<leader>B") 'list-buffers)
+  (evil-define-key 'normal 'global (kbd "<leader>ff") 'find-file)
+  (evil-define-key 'normal 'global (kbd "<leader>fs") 'rgrep)
+
+  (evil-define-key 'normal 'global (kbd "<leader>0") 'delete-window)
+  ; definition jumping (gd already goes to definition)
+  (evil-define-key 'normal 'global (kbd "gD") 'xref-pop-marker-stack)
+  ; allow replacement only in selection for visual block mode
+  (evil-define-key 'visual 'global (kbd "<leader>vbr")
+    'evil-visual-replace-replace-regexp)
+  ; commenting
+  (evil-define-key '(normal visual) 'global (kbd "gc") 'smart-comment)
+  ; indentation
+  (evil-define-key '(normal visual) 'global (kbd "gi") 'indent-region)
+
+
+  ;; tabbing
+  (evil-define-key '(normal visual) 'global (kbd "<leader>to") 'tab-new)
+  (evil-define-key '(normal visual) 'global (kbd "<leader>tn") 'tab-next)
+  (evil-define-key '(normal visual) 'global (kbd "<leader>tp") 'tab-previous)
+  (evil-define-key '(normal visual) 'global (kbd "<leader>tx") 'tab-close)
+
+
+
+  ; statusline commands (available as ":<command>")
+  (evil-ex-define-cmd "done" 'save-buffers-kill-emacs)
+  (evil-ex-define-cmd "at"   'open-ansi-term)
+  (evil-ex-define-cmd "rb"   'rename-buffer)  
+  (evil-ex-define-cmd "hsp"  'split-window-below)
+  (evil-ex-define-cmd "sw"   'rotate-frame)
+  (evil-ex-define-cmd "tp"   'transpose-frame)
+  (evil-ex-define-cmd "rshp" 'reshape-window)
+
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
   (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
 
@@ -164,8 +209,8 @@
 (use-package command-log-mode
   :commands command-log-mode)
 
-(use-package doom-themes
-  :init (load-theme 'doom-palenight t))
+;;(use-package doom-themes
+  ;;:init (load-theme 'doom-palenight t))
 
 (use-package gruber-darker-theme
   :ensure t)
@@ -207,28 +252,22 @@
   (setq dashboard-set-navigator t)
   (setq dashboard-init-info "Welcome to Emacs!")
 
-;; (use-package linum-relative
-    ;; :ensure t
-    ;; :hook (prog-mode . linum-relative-mode)
-         ;; (org-mode . linum-relative-mode)
-         ;; (text-mode . linum-relative-mode))
-
 (setq display-line-numbers-type 'relative)
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (add-hook 'org-mode-hook #'display-line-numbers-mode)
 (add-hook 'text-mode-hook #'display-line-numbers-mode)
-;; (global-display-line-numbers-mode)
-
 
 (add-hook 'doc-view-mode
           (lambda ()
             (display-line-numbers-mode -1)))
 
-(with-eval-after-load 'pdf-view-mode
-(add-hook 'pdf-view-mode
-          (lambda ()
-            (display-line-numbers-mode -1)))
-)
+(with-eval-after-load 'pdf-tools
+  (add-hook 'pdf-view-mode-hook
+            (lambda ()
+              (progn
+                (display-line-numbers-mode -1)
+                (tooltip-mode -1)
+                ))))
 
 (use-package which-key
   :defer 0
@@ -242,53 +281,28 @@
   :init (global-flycheck-mode)
   )
 
-;;(use-package ivy
-    ;;:diminish
-    ;;:ensure t
-    ;;:bind (("C-s" . swiper)
-           ;;:map ivy-miniBuffer-map
-           ;;("TAB" . ivy-alt-done)
-           ;;("C-l" . ivy-alt-done)
-           ;;("C-j" . ivy-next-line)
-           ;;("C-k" . ivy-previous-line)
-           ;;:map ivy-switch-buffer-map
-           ;;("C-k" . ivy-previous-line)
-           ;;("C-l" . ivy-done)
-           ;;("C-d" . ivy-switch-buffer-kill)
-           ;;:map ivy-reverse-i-search-map
-           ;;("C-k" . ivy-previous-line)
-           ;;("C-d" . ivy-reverse-i-search-kill))
-    ;;:config
-    ;;(ivy-mode 1))
-;;
-  ;;(use-package ivy-rich
-    ;;:after ivy
-    ;;:init
-    ;;(ivy-rich-mode 1))
-
-  (use-package vertico
-    :ensure t
-    :init
-    (vertico-mode 1)
+(use-package vertico
+  :ensure t
+  :config
+  (vertico-mode 1)
+  :bind (("C-s" . swiper))
   )
 
-;;(use-package orderless
-  ;;:ensure t
-  ;;:init
-  ;;(setq completion-styles '(orderless-basic)
-        ;;completion-category-defaults nil
-        ;;completion-category-overrides '((file (styles parial-completion)))
-  ;;)
-  ;;)
+(use-package counsel
+  :bind (("C-x b" . 'counsel-switch-buffer)
+         ("C-x d" . 'counsel-dired)
+         :map minibuffer-local-map
+         ("C-r" . 'counsel-minibuffer-history)
+         )
+  :custom
+  (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
+  :config
+  (counsel-mode 1))
 
-  (use-package counsel
-    :bind (("C-M-j" . 'counsel-switch-buffer)
-           :map minibuffer-local-map
-           ("C-r" . 'counsel-minibuffer-history))
-    :custom
-    (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
-    :config
-    (counsel-mode 1))
+(use-package ido
+  :ensure t
+  :config
+  (ido-mode t))
 
 (use-package ivy-prescient
   :after counsel
@@ -532,7 +546,6 @@
 
   (push '("conf-unix" . conf-unix) org-src-lang-modes)
   (push '("dot" . graphviz-dot) org-src-lang-modes)
-  ;(add-to-list 'org-src-lang-modes (quote ("dot" . graphviz-dot)))
  )
 
 (with-eval-after-load 'org
@@ -574,9 +587,10 @@
     (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
     :config
     (lsp-enable-which-key-integration t))
+
 ;; configs for lsp
 (setq lsp-eldoc-enable-hover t)
-(setq lsp-ui-doc-show-with-cursor t)
+;; (setq lsp-ui-doc-show-with-cursor t)
 ;; you could manually request them via `lsp-signature-activate`
 (setq lsp-signature-auto-activate t)
 (setq lsp-signature-render-documentation nil)
@@ -591,10 +605,8 @@
 
 (use-package lsp-ivy
   :ensure t
+  :after lsp
   :commands lsp-ivy-workspace-symbol)
-
-(use-package lsp-ivy
-  :after lsp)
 
 ;(lsp-register-client
    ;(make-lsp-client :new-connection (lsp-tramp-connection "clangd")
@@ -815,25 +827,26 @@
   )
 
 (use-package dash
-    :ensure t)
-  (use-package s
-    :ensure t)
-  (use-package editorconfig
-    :ensure t)
+  :ensure t)
+(use-package s
+  :ensure t)
+(use-package editorconfig
+  :ensure t)
 
 (add-to-list 'load-path "~/.config/emacs/copilot.el")
-(require 'copilot)
-;;  (use-package copilot
-;;    :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
-;;    :ensure t)
-(add-hook 'prog-mode-hook 'copilot-mode)
-(define-key copilot-completion-map (kbd "C-a") 'copilot-accept-completion)
+(use-package copilot
+  :load-path "~/.config/emacs/copilot.el"
+  :defer t
+  :config
+  (add-hook 'prog-mode-hook 'copilot-mode)
+  (define-key copilot-completion-map (kbd "C-a") 'copilot-accept-completion)
+  )
 
 (use-package graphviz-dot-mode
   :ensure t)
 
 (use-package tex
-:ensure auctex)
+  :ensure auctex)
 
 (use-package auctex
   :ensure t)
@@ -841,15 +854,33 @@
 (use-package company-auctex
   :ensure t)
 
+(use-package auto-complete-auctex
+  :ensure t
+  :defer t
+  )
+
+(use-package magic-latex-buffer
+  :ensure t
+  :defer t
+  )
+
 (latex-preview-pane-enable)
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
 
+(use-package org-latex-impatient
+  :defer t
+  :hook (org-mode . org-latex-impatient-mode)
+  :init)
+;;(setq org-latex-impatient-tex2svg-bin
+;; location of tex2svg executable
+;;"~/node_modules/mathjax-node-cli/bin/tex2svg"))
+
 (use-package term
   :commands term
   :config
-  (setq explicit-shell-file-name "bash") ;; Change this to zsh, etc
+  (setq explicit-shell-file-name "zsh") ;; Change this to zsh, etc
   ;;(setq explicit-zsh-args '())         ;; Use 'explicit-<shell>-args for shell-specific args
 
   ;; Match the default Bash shell prompt.  Update this if you have a custom prompt
@@ -862,7 +893,7 @@
   :commands vterm
   :config
   (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *")  ;; Set this to match your custom shell prompt
-  ;;(setq vterm-shell "zsh")                       ;; Set this to customize the shell to launch
+  (setq vterm-shell "zsh")                       ;; Set this to customize the shell to launch
   (setq vterm-max-scrollback 10000))
 
 (when (eq system-type 'windows-nt)
@@ -935,3 +966,7 @@
 (setq gc-cons-threshold (* 2 1000 1000))
 
 (server-start)
+
+(when (daemonp)
+(message "Home directory: %s" (getenv "HOME"))
+)
