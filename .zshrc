@@ -32,6 +32,7 @@ export PKG_CONFIG_PATH="/usr/local/opt/ncurses/lib/pkgconfig"
 alias ls='ls --color'
 export PATH="/usr/local/opt/m4/bin:$PATH"
 alias gconf='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias fzfp="fzf --preview='cat {}'"
 
 neofetch
 
@@ -54,14 +55,14 @@ export PATH="/usr/local/Cellar/gdb/13.2/bin:$PATH"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/andy/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/usr/local/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/andy/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/andy/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
+        . "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh"
     else
-        export PATH="/home/andy/miniconda3/bin:$PATH"
+        export PATH="/usr/local/Caskroom/miniconda/base/bin:$PATH"
     fi
 fi
 unset __conda_setup
@@ -73,3 +74,42 @@ export PATH="/opt/nvim-linux64/bin:$PATH"
 eval "$(zoxide init zsh)"
 
 
+# vim:et:ts=4:sw=4
+#
+#// SPDX-License-Identifier: Apache-2.0
+
+# Example hook to change profile based on directory.
+# update_profile()
+# {
+#     case "$PWD" in
+#         "$HOME"/work*) contour set profile to work ;;
+#         "$HOME"/projects*) contour set profile to main ;;
+#         *) contour set profile to mobile ;;
+#     esac
+# }
+
+autoload -Uz add-zsh-hook
+
+precmd_hook_contour()
+{
+    # Disable text reflow for the command prompt (and below).
+    print -n '\e[?2028l' >$TTY
+
+    # Marks the current line (command prompt) so that you can jump to it via key bindings.
+    echo -n '\e[>M' >$TTY
+
+    # Informs contour terminal about the current working directory, so that e.g. OpenFileManager works.
+    echo -ne '\e]7;'$(pwd)'\e\\' >$TTY
+
+    # Example hook to update configuration profile based on base directory.
+    # update_profile >$TTY
+}
+
+preexec_hook_contour()
+{
+    # Enables text reflow for the main page area again, so that a window resize will reflow again.
+    print -n "\e[?2028h" >$TTY
+}
+
+add-zsh-hook precmd precmd_hook_contour
+add-zsh-hook preexec preexec_hook_contour

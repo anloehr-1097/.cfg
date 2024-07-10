@@ -520,6 +520,8 @@
 
 (global-set-key (kbd "C-c c") 'org-agenda)
 
+(setq diary-file "~/KeepInSync/diary")
+
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode)
   :custom
@@ -536,6 +538,11 @@
 
 (use-package visual-fill-column
   :hook (org-mode . efs/org-mode-visual-fill))
+
+(use-package org-modern
+  :after org
+  :ensure t
+  :hook (org-mode . org-modern-mode))
 
 (with-eval-after-load 'org
   (org-babel-do-load-languages
@@ -575,6 +582,11 @@
   (global-set-key (kbd "C-c r c") 'org-roam-capture)
   (global-set-key (kbd "C-c r f") 'org-roam-node-find)
   (setq org-roam-database-connector 'sqlite))
+
+
+(use-package org-roam-ui
+  :after org-roam
+  :ensure t)
 
 (defun efs/lsp-mode-setup ()
     (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
@@ -872,10 +884,10 @@
 (use-package org-latex-impatient
   :defer t
   :hook (org-mode . org-latex-impatient-mode)
-  :init)
-;;(setq org-latex-impatient-tex2svg-bin
-;; location of tex2svg executable
-;;"~/node_modules/mathjax-node-cli/bin/tex2svg"))
+  :init
+(setq org-latex-impatient-tex2svg-bin
+ ;;location of tex2svg executable
+"/usr/local/Caskroom/miniconda/base/bin/tex2svg"))
 
 (use-package term
   :commands term
@@ -970,3 +982,12 @@
 (when (daemonp)
 (message "Home directory: %s" (getenv "HOME"))
 )
+
+(defun load-init-file ()
+  "Load a init file."
+  (interactive)
+  (load-file "~/.config/emacs/init.el"))
+
+
+(evil-define-key 'normal 'global (kbd "<leader>cl")
+  'load-init-file)
