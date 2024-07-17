@@ -70,6 +70,9 @@ return {
                         }
                     }
                 end,
+                -- ["pyright"] = function()
+                --
+                -- end,
             },
 
 			-- auto-install configured servers (with lspconfig)
@@ -82,8 +85,10 @@ return {
 				"stylua", -- lua formatter
 				"isort", -- python formatter
 				"black", -- python formatter
-				"pylint", -- python linter
+                -- "pylint", -- python linter
+                "flake8", -- python linter
 				"debugpy", -- python debugger
+                "mypy"
 			},
 		})
 	end,

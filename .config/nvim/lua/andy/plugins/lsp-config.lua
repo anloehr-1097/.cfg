@@ -54,6 +54,36 @@ return {
             })
         end
 
+        local lspconfig = require('lspconfig')
+        lspconfig.pylsp.setup {
+            settings = {
+                pylsp = {
+                    plugins = {
+                        -- formatter options
+                        black = { enabled = false },
+                        autopep8 = { enabled = false },
+                        yapf = { enabled = false },
+                        -- linter options
+                        pylint = { enabled = true, executable = "pylint", ignore = {"E252"}},
+                        pyflakes = { enabled = false },
+                        pycodestyle = { enabled = false },
+                        flake8 = { enabled = false, ignore = { "E252" }},
+                        -- type checker
+                        pylsp_mypy = { enabled = true, live = true },
+                        -- auto-completion options
+                        jedi_completion = { fuzzy = true },
+                        -- import sorting
+                        pyls_isort = { enabled = true },
+                    },
+                },
+            },
+            flags = {
+                debounce_text_changes = 200,
+            },
+        }
+
+
+
         require('mason').setup({})
         require('mason-lspconfig').setup({
             ensure_installed = {'pylsp', 'clangd', 'lua_ls', 'bashls'},
@@ -81,5 +111,6 @@ return {
                 end,
             },
         })
-    end
+    end;
+
 }
