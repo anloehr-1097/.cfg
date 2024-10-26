@@ -175,6 +175,7 @@
   (evil-define-key '(normal visual) 'global (kbd "<leader>tn") 'tab-next)
   (evil-define-key '(normal visual) 'global (kbd "<leader>tp") 'tab-previous)
   (evil-define-key '(normal visual) 'global (kbd "<leader>tx") 'tab-close)
+  (evil-define-key '(normal) 'global (kbd "S-RET") 'org-insert-item)
 
 
 
@@ -683,14 +684,8 @@
 (use-package conda
   :ensure t)
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  '(conda-anaconda-home "/usr/local/Caskroom/miniconda/base/")
- '(package-selected-packages
-   '(wanderlust elfeed which-key vterm visual-fill-column vertico use-package undo-tree tramp-auto-auth svgo speed-type rainbow-delimiters python-mode python-black pipenv org-timeblock org-superstar org-roam-ui org-noter-pdftools org-modern org-latex-impatient org-bullets orderless nov no-littering magic-latex-buffer lsp-ui lsp-python-ms lsp-pyright lsp-ivy linum-relative latex-preview-pane ivy-rich ivy-prescient helpful helm haskell-mode gruber-darker-theme graphviz-dot-mode general forge flycheck-mypy flycheck-eglot fit-text-scale evil-surround evil-owl evil-nerd-commenter evil-indent-plus evil-collection eterm-256color eshell-git-prompt embark ein editorconfig doom-themes doom-modeline dockerfile-mode docker-compose-mode djvu dired-single dired-open dired-hide-dotfiles default-text-scale dashboard dap-mode cuda-mode counsel-projectile consult conda company-box company-auctex command-log-mode cmake-mode cmake-ide clippy calfw-org calfw auto-package-update auto-complete-auctex anaconda-mode all-the-icons-dired))
- '(pdf-tools-handle-upgrades t))
+ )
 
 (use-package cuda-mode
   :ensure t)
@@ -997,9 +992,3 @@
 
 (evil-define-key 'normal 'global (kbd "<leader>cl")
   'load-init-file)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

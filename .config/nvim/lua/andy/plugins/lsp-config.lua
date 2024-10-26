@@ -64,7 +64,7 @@ return {
                         autopep8 = { enabled = false },
                         yapf = { enabled = false },
                         -- linter options
-                        pylint = { enabled = true, executable = "pylint", ignore = {"E252"}},
+                        pylint = { enabled = true, executable = "pylint", ignore = {"E252", "E701"}},
                         pyflakes = { enabled = false },
                         pycodestyle = { enabled = false },
                         flake8 = { enabled = false, ignore = { "E252" }},
