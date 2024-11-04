@@ -8,29 +8,31 @@ elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
 else
     echo "OS TYPE: Unknown"
 fi
-# brew install cmake
-# brew install curl
-# brew install git
-# brew install htop
-# brew install neovim
-# brew install python3
-# brew install ripgrep
-# brew install silversearcher-ag
-# brew install tmux
-# brew install tree
-# brew install unzip
-# brew install wget
-# brew install zsh
-# brew install ripgrep-all
-# brew install zathura
-# brew install zathura-pdf-poppler
-# brew install zoxide
-# brew install fzf
-# brew install entr
-# brew install buku
-# brew install --cask amethyst
-# brew install aspell
-# brew install ispell  -- potentially worse than aspell
+brew install cmake
+brew install curl
+brew install git
+brew install htop
+brew install neovim
+brew install python3
+brew install ripgrep
+brew install silversearcher-ag
+brew install tmux
+brew install tree
+brew install unzip
+brew install wget
+brew install zsh
+brew install ripgrep-all
+brew install zathura
+brew install zathura-pdf-poppler
+brew install zoxide
+brew install fzf
+brew install entr
+brew install buku
+brew install --cask amethyst
+brew install aspell
+brew install ispell  -- potentially worse than aspell
+brew install emacs
+
 
 
 
