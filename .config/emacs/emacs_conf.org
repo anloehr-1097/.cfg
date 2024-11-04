@@ -736,7 +736,7 @@ This section contains the basic configuration for =org-mode= plus the configurat
   (use-package org-bullets
     :hook (org-mode . org-bullets-mode)
     :custom
-    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+    (org-bullets-bullet-list '("♔" "♕" "♜" "♝" "♞" "♟" "♻")))
 
   ;;(use-package org-superstar
       ;;:ensure t
@@ -764,10 +764,10 @@ We use [[https://github.com/joostkremers/visual-fill-column][visual-fill-column]
 
 
 #+begin_src emacs-lisp
-          (use-package org-modern
-            :after org
-            :ensure t
-            :hook (org-mode . org-modern-mode))
+          ;(use-package org-modern
+            ;:after org
+            ;:ensure t
+            ;:hook (org-mode . org-modern-mode))
 #+end_src
 
 ** Configure Babel Languages
