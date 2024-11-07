@@ -34,7 +34,6 @@ export PATH="/usr/local/opt/m4/bin:$PATH"
 alias gconf='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 alias fzfp="fzf --preview='cat {}'"
 
-neofetch
 
 export PATH="/usr/local/Cellar/gdb/13.1/bin:$PATH"
 source ~/powerlevel10k/powerlevel10k.zsh-theme
@@ -113,3 +112,6 @@ preexec_hook_contour()
 
 add-zsh-hook precmd precmd_hook_contour
 add-zsh-hook preexec preexec_hook_contour
+source /Users/anlhr/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /Users/anlhr/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /Users/anlhr/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
