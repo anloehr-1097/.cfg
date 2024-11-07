@@ -36,3 +36,4 @@
 # custom scripts
 !setup_env.sh
 *~  # exclude ~ files
+.cfg
