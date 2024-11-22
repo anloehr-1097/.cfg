@@ -597,7 +597,7 @@ This section contains the basic configuration for =org-mode= plus the configurat
     (setq org-agenda-files
           '("~/org/Tasks.org"
             "~/org/Habits.org"
-            "~/org/Birthdays.org"
+            "~/org/Birthdays.org")
             "~/KeepInSync/Life.org"))
 
     (require 'org-habit)
@@ -1314,7 +1314,7 @@ A simple IPython client for emacs porting jupyter notebooks / their functionalit
     :defer t
     )
 
-  (latex-preview-pane-enable)
+  ;;(latex-preview-pane-enable)
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
   (setq-default TeX-master nil)
@@ -1541,8 +1541,8 @@ Dired is a built-in file manager for Emacs that does some pretty amazing things!
       "h" 'dired-single-up-directory
       "l" 'dired-single-buffer))
 
-  (use-package dired-single
-    :commands (dired dired-jump))
+  ;;(use-package dired-single
+    ;;:commands (dired dired-jump))
 
   (use-package all-the-icons-dired
     :hook (dired-mode . all-the-icons-dired-mode))

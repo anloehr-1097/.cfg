@@ -14,9 +14,9 @@ if [[ $OSTYPE == darwin* ]]; then
     export PATH="/Users/Andy/.config/emacs/bin:$PATH"
     export PATH="/Users/Andy/Library/Python/3.9/bin:$PATH"
     export PATH="/Users/Andy/lldb/lldb-mi/src:$PATH"
-    alias emacs="open -a ~/Applications/Emacs.app"
-    alias em="~/Applications/Emacs.app/Contents/MacOs/bin/emacsclient -cn"
-    alias emst='open -a /Users/Andy/Applications/Emacs.app --args --bg-daemon'
+    # alias emacs="open -a ~/Applications/Emacs.app"
+    # alias em="~/Applications/Emacs.app/Contents/MacOs/bin/emacsclient -cn"
+    alias emst='emacs --daemon &'
 
 elif [[ $OSTYPE == linux* ]]; then
     setxkbmap us
@@ -36,7 +36,6 @@ alias fzfp="fzf --preview='cat {}'"
 
 
 export PATH="/usr/local/Cellar/gdb/13.1/bin:$PATH"
-source ~/powerlevel10k/powerlevel10k.zsh-theme
 alias emc="emacsclient -nc"
 alias emct="emacsclient -t"
 
@@ -115,3 +114,4 @@ add-zsh-hook preexec preexec_hook_contour
 source /Users/anlhr/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /Users/anlhr/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /Users/anlhr/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme

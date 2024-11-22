@@ -35,10 +35,18 @@ ispell  # potentially worse than aspell
 --cask emacs
 --cask miniconda
 --cask font-iosevka-nerd-font
+--cask anki
 node
-
-
-
+powerlevel10k
+brew tap d12frosted/emacs-plus
+emacs-plus
+syncthing
+--cask visual-studio-code
+--cask miniconda
+--cask eloston-chromium
+--cask keepassxc
+pass
+tldr
 
 
 
