@@ -14,9 +14,10 @@ if [[ $OSTYPE == darwin* ]]; then
     export PATH="/Users/Andy/.config/emacs/bin:$PATH"
     export PATH="/Users/Andy/Library/Python/3.9/bin:$PATH"
     export PATH="/Users/Andy/lldb/lldb-mi/src:$PATH"
-    alias emacs="open -a ~/Applications/Emacs.app"
-    alias em="~/Applications/Emacs.app/Contents/MacOs/bin/emacsclient -cn"
-    alias emst='open -a /Users/Andy/Applications/Emacs.app --args --bg-daemon'
+    # alias emacs="open -a ~/Applications/Emacs.app"
+    # alias em="~/Applications/Emacs.app/Contents/MacOs/bin/emacsclient -cn"
+    alias emst='emacs --bg-daemon'
+    alias code='open -a /Applications/Visual\ Studio\ Code.app'
 
 elif [[ $OSTYPE == linux* ]]; then
     setxkbmap us
