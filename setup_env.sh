@@ -29,12 +29,25 @@ brew install fzf
 brew install entr
 brew install buku
 brew install --cask amethyst
+
 brew install aspell
-brew install ispell  -- potentially worse than aspell
+# -- potentially worse than aspell
+brew install ispell  
+
 brew install emacs
-
-
-
+brew install --cask anki
+brew install --cask font-cantarell
+brew install --cask font-iosevka-nerd-font
+brew install node
+brwe install powerlevel10k
+brew tap d12frosted/emacs-plus
+brew install emacs-plus
+brew install --cask visual-studio-code
+brew install --cask miniconda
+brew install --cask eloston-chromium
+brew install --cask keepassxc
+brew install pass
+brew install tldr
 
 # other tools possibly over git 
 # zsh-autosuggestions

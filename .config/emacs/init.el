@@ -406,7 +406,7 @@
   (setq org-agenda-files
         '("~/org/Tasks.org"
           "~/org/Habits.org"
-          "~/org/Birthdays.org"
+          "~/org/Birthdays.org")
           "~/KeepInSync/Life.org"))
 
   (require 'org-habit)
@@ -684,14 +684,8 @@
 (use-package conda
   :ensure t)
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  '(conda-anaconda-home "/usr/local/Caskroom/miniconda/base/")
- '(custom-safe-themes
-   '("e27c9668d7eddf75373fa6b07475ae2d6892185f07ebed037eedf783318761d7" default))
- '(pdf-tools-handle-upgrades t))
+ )
 
 (use-package cuda-mode
   :ensure t)
@@ -883,7 +877,7 @@
   :defer t
   )
 
-(latex-preview-pane-enable)
+;;(latex-preview-pane-enable)
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
@@ -959,8 +953,8 @@
     "h" 'dired-single-up-directory
     "l" 'dired-single-buffer))
 
-(use-package dired-single
-  :commands (dired dired-jump))
+;;(use-package dired-single
+  ;;:commands (dired dired-jump))
 
 (use-package all-the-icons-dired
   :hook (dired-mode . all-the-icons-dired-mode))
@@ -998,9 +992,3 @@
 
 (evil-define-key 'normal 'global (kbd "<leader>cl")
   'load-init-file)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

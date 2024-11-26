@@ -1,0 +1,55 @@
+# Script holding everythin to be installed in new setup
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "OS TYPE: macOS"
+
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    echo "OS TYPE: Linux"
+
+else
+    echo "OS TYPE: Unknown"
+fi
+
+cmake
+curl
+git
+htop
+neovim
+python3
+ripgrep
+silversearcher-ag
+tmux
+tree
+unzip
+wget
+zsh
+ripgrep-all
+# brew tap zegervdv/zathura
+zathura
+zathura-pdf-poppler
+zoxide
+fzf
+entr
+buku
+aspell
+ispell  # potentially worse than aspell
+--cask emacs
+--cask miniconda
+--cask font-iosevka-nerd-font
+--cask anki
+node
+powerlevel10k
+brew tap d12frosted/emacs-plus
+emacs-plus
+syncthing
+--cask visual-studio-code
+--cask miniconda
+--cask eloston-chromium
+--cask keepassxc
+pass
+tldr
+
+
+
+# other tools possibly over git 
+# zsh-autosuggestions
+#
