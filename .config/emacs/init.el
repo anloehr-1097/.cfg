@@ -62,7 +62,7 @@
 
 (use-package auto-package-update
   :custom
-  (auto-package-update-interval 14)
+  (auto-package-update-interval 30)
   (auto-package-update-prompt-before-update t)
   (auto-package-update-hide-results t)
   :config
@@ -123,14 +123,29 @@
 (use-package general
   :after evil
   :config
+  ;; SPC leader key
+  (general-create-definer space-leader
+  :prefix "SPC")
+
+(space-leader
+  :states '(normal visual emacs)
+  :keymaps 'override
+  "f" '(:ignore t :which-key "find")
+  "ff" 'counsel-find-file
+  "fs" 'rgrep
+  "e" '(:ignore t :which-key "emacs-specific")
+  "ee" 'eval-region
+  "eb" 'eval-buffer
+  "b" 'counsel-switch-buffer
+  "k" 'kill-buffer)
+
   (general-create-definer efs/leader-keys
     :keymaps '(normal insert visual emacs)
     :prefix "SPC"
     :global-prefix "C-SPC")
-
   (efs/leader-keys
     "t"  '(:ignore t :which-key "toggles")
-    "tt" '(counsel-load-theme :which-key "choose theme")
+    "tl" '(counsel-load-theme :which-key "choose theme")
     "fde" '(lambda () (interactive) (find-file (expand-file-name "~/.emacs.d/emacs_conf.org")))))
 
 (use-package evil
@@ -143,7 +158,7 @@
   (setq evil-want-C-i-jump nil)
   :config
   (evil-mode 1)
-  (evil-set-leader nil (kbd "SPC"))
+  ;;(evil-set-leader nil (kbd "SPC"))
                                         ;   window movement
   ;; (evil-define-key 'normal 'global (kbd "<leader>o")  'other-window)
   (evil-define-key 'normal 'global (kbd "<leader>wh") 'windmove-left)
@@ -205,7 +220,18 @@
   :config
   (evil-collection-init))
 
-(global-set-key (kbd "C-c f") 'rgrep)
+(use-package fzf
+:config
+(setq fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll"
+      fzf/executable "fzf"
+      fzf/git-grep-args "-i --line-number %s"
+      ;; command used for `fzf-grep-*` functions
+      ;; example usage for ripgrep:
+      ;; fzf/grep-command "rg --no-heading -nH"
+      fzf/grep-command "grep -nrH"
+      ;; If nil, the fzf buffer will appear at the top of the window
+      fzf/position-bottom t
+      fzf/window-height 15))
 
 (use-package command-log-mode
   :commands command-log-mode)
@@ -214,9 +240,13 @@
   ;;:init (load-theme 'doom-palenight t))
 
 (use-package gruber-darker-theme
-  :ensure t)
-(load-theme 'gruber-darker t)
-(set-background-color "black")
+  :ensure t
+  :config
+  (load-theme 'gruber-darker t)
+  (set-background-color "black"))
+
+; (load-theme 'gruber-darker t)
+;(set-background-color "black")
 
 (use-package all-the-icons)
 
@@ -398,16 +428,15 @@
   :hook (org-mode . efs/org-mode-setup)
   :config
   (setq org-ellipsis " ▾")
-
   (setq org-agenda-start-with-log-mode t)
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
-
   (setq org-agenda-files
         '("~/org/Tasks.org"
           "~/org/Habits.org"
-          "~/org/Birthdays.org")
-          "~/KeepInSync/Life.org"))
+          "~/org/Birthdays.org"
+          "~/KeepInSync/Life.org")
+  ))
 
   (require 'org-habit)
   (add-to-list 'org-modules 'org-habit)
@@ -517,7 +546,6 @@
 
   (efs/org-font-setup)
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
-)
 
 (global-set-key (kbd "C-c c") 'org-agenda)
 
@@ -978,11 +1006,148 @@
 ;; Make gc pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 2 1000 1000))
 
+(use-package elfeed
+  :config
+  (defun my/elfeed-entry-to-arxiv ()
+    "Fetch an arXiv paper into the local library from the current elfeed entry."
+    (interactive)
+    (let* ((link (elfeed-entry-link elfeed-show-entry))
+           (match-idx (string-match "arxiv.org/abs/\\([0-9.]*\\)" link))
+           (matched-arxiv-number (match-string 1 link)))
+      (when matched-arxiv-number
+        (message "Going to arXiv: %s" matched-arxiv-number)
+        (arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/bibliography/archive.bib" "~/bibliography/bibtex-pdfs/"))))
+  (setq elfeed-feeds
+        '("https://rss.arxiv.org/rss/cs"))
+  :bind (:map elfeed-show-mode-map
+              ("a" . my/elfeed-entry-to-arxiv))
+  )
+
+
+
+(use-package elfeed-score
+  :ensure t
+  :after elfeed
+  :config
+  (elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
+  (setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
+  (elfeed-score-enable)
+  (define-key elfeed-search-mode-map "=" elfeed-score-map)
+  )
+
+
+(use-package org-ref
+  :after org
+  :config
+  (setq bibtex-dialect 'biblatex)
+  (setq bibtex-completion-bibliography '("~/bibliography/references.bib"
+                                         "~/bibliography/archive.bib")
+        bibtex-completion-library-path '("~/bibliography/bibtex-pdfs/")
+        bibtex-completion-notes-path "~/bibliography/notes/"
+        bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
+
+        bibtex-completion-additional-search-fields '(keywords)
+        bibtex-completion-display-formats
+        '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
+          (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
+          (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+          (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+          (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
+        bibtex-completion-pdf-open-function
+        (lambda (fpath)
+          (call-process "open" nil 0 nil fpath)))
+  (setq bibtex-autokey-year-length 4
+        bibtex-autokey-name-year-separator "-"
+        bibtex-autokey-year-title-separator "-"
+        bibtex-autokey-titleword-separator "-"
+        bibtex-autokey-titlewords 2
+        bibtex-autokey-titlewords-stretch 1
+        bibtex-autokey-titleword-length 5)
+
+  (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
+  (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
+  )
+
+(use-package ivy-bibtex
+  :ensure t)
+
+(use-package marginalia
+  :ensure t
+  :config
+  (marginalia-mode))
+
+(use-package embark
+  :ensure t
+
+  :bind
+  (("C-x C-e" . embark-act)         ;; pick some comfortable binding
+   ("C-;" . embark-dwim)        ;; good alternative: M-.
+   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+
+  :init
+
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+
+  ;; Show the Embark target at point via Eldoc. You may adjust the
+  ;; Eldoc strategy, if you want to see the documentation from
+  ;; multiple providers. Beware that using this can be a little
+  ;; jarring since the message shown in the minibuffer can be more
+  ;; than one line, causing the modeline to move up and down:
+
+  ;; (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
+  ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
+
+  :config
+
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+;; Consult users will also want the embark-consult package.
+(use-package embark-consult
+  :ensure t ; only need to install it, embark loads it after consult if found
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
+
+(use-package citar
+:ensure t
+:custom
+(citar-bibliography
+ '("~/bibliography/archive.bib")))
+
+
+(use-package citar-embark
+:ensure t
+:after citar embark
+:no-require
+:config (citar-embark-mode))
+
+(use-package citar-org-roam
+:after (citar org-roam)
+:config (citar-org-roam-mode))
+
+(use-package org-roam-bibtex
+:after org-roam
+:config
+(require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
+
 (server-start)
 
 (when (daemonp)
 (message "Home directory: %s" (getenv "HOME"))
 )
+
+(defun setup-theme (frame)
+(with-selected-frame frame
+  (load-theme 'gruber-darker t)
+  (set-background-color "black")))
+
+(if (daemonp)
+    (add-hook 'after-make-frame-functions #'setup-theme)
+  (setup-theme (selected-frame)))
 
 (defun load-init-file ()
   "Load a init file."

@@ -113,7 +113,8 @@ preexec_hook_contour()
 
 add-zsh-hook precmd precmd_hook_contour
 add-zsh-hook preexec preexec_hook_contour
-source /Users/anlhr/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /Users/anlhr/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /Users/anlhr/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
+source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $HOME/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+# source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
+source ~/powerlevel10k/powerlevel10k.zsh-theme

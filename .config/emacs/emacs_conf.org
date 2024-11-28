@@ -4,7 +4,7 @@
 
 * Introduction
 This file generates [[file:init.el][init.el]] which can be loaded by Emacs at startup.
-All modifications to the custom configuration should be made in her(e.
+All modifications to the custom configuration should be made in here.
 This configuration file is based on the config file from Systemcrafters.
 I have been modifying it continuously to suit my needs.
 ** TODO add link here.
@@ -100,7 +100,7 @@ You can also use =M-x auto-package-update-now= to update right now!
 
   (use-package auto-package-update
     :custom
-    (auto-package-update-interval 14)
+    (auto-package-update-interval 30)
     (auto-package-update-prompt-before-update t)
     (auto-package-update-hide-results t)
     :config
@@ -195,14 +195,29 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
   (use-package general
     :after evil
     :config
+    ;; SPC leader key
+    (general-create-definer space-leader
+    :prefix "SPC")
+
+  (space-leader
+    :states '(normal visual emacs)
+    :keymaps 'override
+    "f" '(:ignore t :which-key "find")
+    "ff" 'counsel-find-file
+    "fs" 'rgrep
+    "e" '(:ignore t :which-key "emacs-specific")
+    "ee" 'eval-region
+    "eb" 'eval-buffer
+    "b" 'counsel-switch-buffer
+    "k" 'kill-buffer)
+    
     (general-create-definer efs/leader-keys
       :keymaps '(normal insert visual emacs)
       :prefix "SPC"
       :global-prefix "C-SPC")
-
     (efs/leader-keys
       "t"  '(:ignore t :which-key "toggles")
-      "tt" '(counsel-load-theme :which-key "choose theme")
+      "tl" '(counsel-load-theme :which-key "choose theme")
       "fde" '(lambda () (interactive) (find-file (expand-file-name "~/.emacs.d/emacs_conf.org")))))
 
   (use-package evil
@@ -215,7 +230,7 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
     (setq evil-want-C-i-jump nil)
     :config
     (evil-mode 1)
-    (evil-set-leader nil (kbd "SPC"))
+    ;;(evil-set-leader nil (kbd "SPC"))
                                           ;   window movement
     ;; (evil-define-key 'normal 'global (kbd "<leader>o")  'other-window)
     (evil-define-key 'normal 'global (kbd "<leader>wh") 'windmove-left)
@@ -278,10 +293,23 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
     (evil-collection-init))
 #+end_src
 
-
+* FZF
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c f") 'rgrep)
+
+  (use-package fzf
+  :config
+  (setq fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll"
+        fzf/executable "fzf"
+        fzf/git-grep-args "-i --line-number %s"
+        ;; command used for `fzf-grep-*` functions
+        ;; example usage for ripgrep:
+        ;; fzf/grep-command "rg --no-heading -nH"
+        fzf/grep-command "grep -nrH"
+        ;; If nil, the fzf buffer will appear at the top of the window
+        fzf/position-bottom t
+        fzf/window-height 15))
+
 #+end_src
 * UI Configuration
 ** Command Log Mode
@@ -305,9 +333,13 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
     ;;:init (load-theme 'doom-palenight t))
 
   (use-package gruber-darker-theme
-    :ensure t)
-  (load-theme 'gruber-darker t)
-  (set-background-color "black")
+    :ensure t
+    :config
+    (load-theme 'gruber-darker t)
+    (set-background-color "black"))
+
+  ; (load-theme 'gruber-darker t)
+  ;(set-background-color "black")
 #+end_src
 
 ** Better Modeline
@@ -578,137 +610,135 @@ This section contains the basic configuration for =org-mode= plus the configurat
 
 #+begin_src emacs-lisp
 
-  (defun efs/org-mode-setup ()
-    (org-indent-mode)
-    (variable-pitch-mode 1)
-    (visual-line-mode 1))
+    (defun efs/org-mode-setup ()
+      (org-indent-mode)
+      (variable-pitch-mode 1)
+      (visual-line-mode 1))
 
-  (use-package org
-    :pin org
-    :commands (org-capture org-agenda)
-    :hook (org-mode . efs/org-mode-setup)
-    :config
-    (setq org-ellipsis " ▾")
+    (use-package org
+      :pin org
+      :commands (org-capture org-agenda)
+      :hook (org-mode . efs/org-mode-setup)
+      :config
+      (setq org-ellipsis " ▾")
+      (setq org-agenda-start-with-log-mode t)
+      (setq org-log-done 'time)
+      (setq org-log-into-drawer t)
+      (setq org-agenda-files
+            '("~/org/Tasks.org"
+              "~/org/Habits.org"
+              "~/org/Birthdays.org"
+              "~/KeepInSync/Life.org")
+      ))
 
-    (setq org-agenda-start-with-log-mode t)
-    (setq org-log-done 'time)
-    (setq org-log-into-drawer t)
+      (require 'org-habit)
+      (add-to-list 'org-modules 'org-habit)
+      (setq org-habit-graph-column 60)
 
-    (setq org-agenda-files
-          '("~/org/Tasks.org"
-            "~/org/Habits.org"
-            "~/org/Birthdays.org")
-            "~/KeepInSync/Life.org"))
+      (setq org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+          (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
 
-    (require 'org-habit)
-    (add-to-list 'org-modules 'org-habit)
-    (setq org-habit-graph-column 60)
+      (setq org-refile-targets
+        '(("Archive.org" :maxlevel . 1)
+          ("Tasks.org" :maxlevel . 1)))
 
-    (setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
-        (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
+      ;; Save Org buffers after refiling!
+      (advice-add 'org-refile :after 'org-save-all-org-buffers)
 
-    (setq org-refile-targets
-      '(("Archive.org" :maxlevel . 1)
-        ("Tasks.org" :maxlevel . 1)))
+      (setq org-tag-alist
+        '((:startgroup)
+           ; Put mutually exclusive tags here
+           (:endgroup)
+           ("@errand" . ?E)
+           ("@home" . ?H)
+           ("@work" . ?W)
+           ("agenda" . ?a)
+           ("planning" . ?p)
+           ("publish" . ?P)
+           ("batch" . ?b)
+           ("note" . ?n)
+           ("idea" . ?i)))
 
-    ;; Save Org buffers after refiling!
-    (advice-add 'org-refile :after 'org-save-all-org-buffers)
+      ;; Configure custom agenda views
+      (setq org-agenda-custom-commands
+       '(("d" "Dashboard"
+         ((agenda "" ((org-deadline-warning-days 7)))
+          (todo "NEXT"
+            ((org-agenda-overriding-header "Next Tasks")))
+          (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
 
-    (setq org-tag-alist
-      '((:startgroup)
-         ; Put mutually exclusive tags here
-         (:endgroup)
-         ("@errand" . ?E)
-         ("@home" . ?H)
-         ("@work" . ?W)
-         ("agenda" . ?a)
-         ("planning" . ?p)
-         ("publish" . ?P)
-         ("batch" . ?b)
-         ("note" . ?n)
-         ("idea" . ?i)))
+        ("n" "Next Tasks"
+         ((todo "NEXT"
+            ((org-agenda-overriding-header "Next Tasks")))))
 
-    ;; Configure custom agenda views
-    (setq org-agenda-custom-commands
-     '(("d" "Dashboard"
-       ((agenda "" ((org-deadline-warning-days 7)))
-        (todo "NEXT"
-          ((org-agenda-overriding-header "Next Tasks")))
-        (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
+        ("W" "Work Tasks" tags-todo "+work-email")
 
-      ("n" "Next Tasks"
-       ((todo "NEXT"
-          ((org-agenda-overriding-header "Next Tasks")))))
+        ;; Low-effort next actions
+        ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
+         ((org-agenda-overriding-header "Low Effort Tasks")
+          (org-agenda-max-todos 20)
+          (org-agenda-files org-agenda-files)))
 
-      ("W" "Work Tasks" tags-todo "+work-email")
+        ("w" "Workflow Status"
+         ((todo "WAIT"
+                ((org-agenda-overriding-header "Waiting on External")
+                 (org-agenda-files org-agenda-files)))
+          (todo "REVIEW"
+                ((org-agenda-overriding-header "In Review")
+                 (org-agenda-files org-agenda-files)))
+          (todo "PLAN"
+                ((org-agenda-overriding-header "In Planning")
+                 (org-agenda-todo-list-sublevels nil)
+                 (org-agenda-files org-agenda-files)))
+          (todo "BACKLOG"
+                ((org-agenda-overriding-header "Project Backlog")
+                 (org-agenda-todo-list-sublevels nil)
+                 (org-agenda-files org-agenda-files)))
+          (todo "READY"
+                ((org-agenda-overriding-header "Ready for Work")
+                 (org-agenda-files org-agenda-files)))
+          (todo "ACTIVE"
+                ((org-agenda-overriding-header "Active Projects")
+                 (org-agenda-files org-agenda-files)))
+          (todo "COMPLETED"
+                ((org-agenda-overriding-header "Completed Projects")
+                 (org-agenda-files org-agenda-files)))
+          (todo "CANC"
+                ((org-agenda-overriding-header "Cancelled Projects")
+                 (org-agenda-files org-agenda-files)))))))
 
-      ;; Low-effort next actions
-      ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
-       ((org-agenda-overriding-header "Low Effort Tasks")
-        (org-agenda-max-todos 20)
-        (org-agenda-files org-agenda-files)))
+      (setq org-capture-templates
+        `(("t" "Tasks / Projects")
+          ("tt" "Task" entry (file+olp "~/org/Tasks.org" "Inbox")
+               "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
 
-      ("w" "Workflow Status"
-       ((todo "WAIT"
-              ((org-agenda-overriding-header "Waiting on External")
-               (org-agenda-files org-agenda-files)))
-        (todo "REVIEW"
-              ((org-agenda-overriding-header "In Review")
-               (org-agenda-files org-agenda-files)))
-        (todo "PLAN"
-              ((org-agenda-overriding-header "In Planning")
-               (org-agenda-todo-list-sublevels nil)
-               (org-agenda-files org-agenda-files)))
-        (todo "BACKLOG"
-              ((org-agenda-overriding-header "Project Backlog")
-               (org-agenda-todo-list-sublevels nil)
-               (org-agenda-files org-agenda-files)))
-        (todo "READY"
-              ((org-agenda-overriding-header "Ready for Work")
-               (org-agenda-files org-agenda-files)))
-        (todo "ACTIVE"
-              ((org-agenda-overriding-header "Active Projects")
-               (org-agenda-files org-agenda-files)))
-        (todo "COMPLETED"
-              ((org-agenda-overriding-header "Completed Projects")
-               (org-agenda-files org-agenda-files)))
-        (todo "CANC"
-              ((org-agenda-overriding-header "Cancelled Projects")
-               (org-agenda-files org-agenda-files)))))))
+          ("j" "Journal Entries")
+          ("jj" "Journal" entry
+               (file+olp+datetree "~/org/Journal.org")
+               "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
+               ;; ,(dw/read-file-as-string "~/Notes/Templates/Daily.org")
+               :clock-in :clock-resume
+               :empty-lines 1)
+          ("jm" "Meeting" entry
+               (file+olp+datetree "~/org/Journal.org")
+               "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
+               :clock-in :clock-resume
+               :empty-lines 1)
 
-    (setq org-capture-templates
-      `(("t" "Tasks / Projects")
-        ("tt" "Task" entry (file+olp "~/org/Tasks.org" "Inbox")
-             "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
+          ("w" "Workflows")
+          ("we" "Checking Email" entry (file+olp+datetree "~/org/Journal.org")
+               "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
 
-        ("j" "Journal Entries")
-        ("jj" "Journal" entry
-             (file+olp+datetree "~/org/Journal.org")
-             "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
-             ;; ,(dw/read-file-as-string "~/Notes/Templates/Daily.org")
-             :clock-in :clock-resume
-             :empty-lines 1)
-        ("jm" "Meeting" entry
-             (file+olp+datetree "~/org/Journal.org")
-             "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
-             :clock-in :clock-resume
-             :empty-lines 1)
+          ("m" "Metrics Capture")
+          ("mw" "Weight" table-line (file+headline "~/org/Metrics.org" "Weight")
+           "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)))
 
-        ("w" "Workflows")
-        ("we" "Checking Email" entry (file+olp+datetree "~/org/Journal.org")
-             "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
+      (define-key global-map (kbd "C-c j")
+        (lambda () (interactive) (org-capture nil "jj")))
 
-        ("m" "Metrics Capture")
-        ("mw" "Weight" table-line (file+headline "~/org/Metrics.org" "Weight")
-         "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)))
-
-    (define-key global-map (kbd "C-c j")
-      (lambda () (interactive) (org-capture nil "jj")))
-
-    (efs/org-font-setup)
-  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
-  )
+      (efs/org-font-setup)
+    (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
 #+end_src
 
@@ -790,7 +820,7 @@ To execute or export code in =org-mode= code blocks, you'll need to set up =org-
 
 ** Structure Templates
 
-Org Mode's [[https://orgmode.org/manual/Structure-Templates.html][structure templates]] feature enables you to quickly insert code blocks into your Org files in combination with =org-tempo= by typing =<= followed by the template name like =el= or =py= and then press =TAB=.  For example, to insert an empty =emacs-lisp= block below, you can type =<el= and press =TAB= to expand into such a block.
+Org Mode's [[https://orgmode.org/manual/Structure-Templates.html][structure templates]] feature enables you to quickly insert code blocks into your Org files in combination with =org-tempo= by typing 'leq sign' followed by the template name like =el= or =py= and then press =TAB=.  For example, to insert an empty =emacs-lisp= block below, you can type =<el= and press =TAB= to expand into such a block.
 
 You can add more =src= block templates below by copying one of the lines and changing the two strings at the end, the first to be the template name and the second to contain the name of the language [[https://orgmode.org/worg/org-contrib/babel/languages.html][as it is known by Org Babel]].
 
@@ -1329,7 +1359,6 @@ A simple IPython client for emacs porting jupyter notebooks / their functionalit
 
 #+end_src
 
-
 * Terminals
 ** term-mode
 
@@ -1579,8 +1608,158 @@ Dial the GC threshold back down so that garbage collection happens more frequent
 
 #+end_src
 
+* Research Workflow
+#+begin_src emacs-lisp
+  (use-package elfeed
+    :config
+    (defun my/elfeed-entry-to-arxiv ()
+      "Fetch an arXiv paper into the local library from the current elfeed entry."
+      (interactive)
+      (let* ((link (elfeed-entry-link elfeed-show-entry))
+             (match-idx (string-match "arxiv.org/abs/\\([0-9.]*\\)" link))
+             (matched-arxiv-number (match-string 1 link)))
+        (when matched-arxiv-number
+          (message "Going to arXiv: %s" matched-arxiv-number)
+          (arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/bibliography/archive.bib" "~/bibliography/bibtex-pdfs/"))))
+    (setq elfeed-feeds
+          '("https://rss.arxiv.org/rss/cs"))
+    :bind (:map elfeed-show-mode-map
+                ("a" . my/elfeed-entry-to-arxiv))
+    )
+
+
+
+  (use-package elfeed-score
+    :ensure t
+    :after elfeed
+    :config
+    (elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
+    (setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
+    (elfeed-score-enable)
+    (define-key elfeed-search-mode-map "=" elfeed-score-map)
+    )
+
+
+  (use-package org-ref
+    :after org
+    :config
+    (setq bibtex-dialect 'biblatex)
+    (setq bibtex-completion-bibliography '("~/bibliography/references.bib"
+                                           "~/bibliography/archive.bib")
+          bibtex-completion-library-path '("~/bibliography/bibtex-pdfs/")
+          bibtex-completion-notes-path "~/bibliography/notes/"
+          bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
+
+          bibtex-completion-additional-search-fields '(keywords)
+          bibtex-completion-display-formats
+          '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
+            (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
+            (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+            (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+            (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
+          bibtex-completion-pdf-open-function
+          (lambda (fpath)
+            (call-process "open" nil 0 nil fpath)))
+    (setq bibtex-autokey-year-length 4
+          bibtex-autokey-name-year-separator "-"
+          bibtex-autokey-year-title-separator "-"
+          bibtex-autokey-titleword-separator "-"
+          bibtex-autokey-titlewords 2
+          bibtex-autokey-titlewords-stretch 1
+          bibtex-autokey-titleword-length 5)
+
+    (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
+    (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
+    )
+
+  (use-package ivy-bibtex
+    :ensure t)
+#+end_src
+
+** Embark
+
+#+begin_src emacs-lisp
+  (use-package marginalia
+  :ensure t
+  :config
+  (marginalia-mode))
+
+(use-package embark
+  :ensure t
+
+  :bind
+  (("C-x C-e" . embark-act)         ;; pick some comfortable binding
+   ("C-;" . embark-dwim)        ;; good alternative: M-.
+   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+
+  :init
+
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+
+  ;; Show the Embark target at point via Eldoc. You may adjust the
+  ;; Eldoc strategy, if you want to see the documentation from
+  ;; multiple providers. Beware that using this can be a little
+  ;; jarring since the message shown in the minibuffer can be more
+  ;; than one line, causing the modeline to move up and down:
+
+  ;; (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
+  ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
+
+  :config
+
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+;; Consult users will also want the embark-consult package.
+(use-package embark-consult
+  :ensure t ; only need to install it, embark loads it after consult if found
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
+
+#+end_src
+
+** citar
+
+
+
+#+begin_src emacs-lisp
+  (use-package citar
+  :ensure t
+  :custom
+  (citar-bibliography
+   '("~/bibliography/archive.bib")))
+
+
+  (use-package citar-embark
+  :ensure t
+  :after citar embark
+  :no-require
+  :config (citar-embark-mode))
+#+end_src
+** Org roam citar
+#+begin_src emacs-lisp
+  (use-package citar-org-roam
+  :after (citar org-roam)
+  :config (citar-org-roam-mode))
+#+end_src
+
+** Org roam bibtex
+#+begin_src emacs-lisp
+  (use-package org-roam-bibtex
+  :after org-roam
+  :config
+  (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
+
+#+end_src
+
+
 * Start Emacs Server
 #+begin_src emacs-lisp
+
   (server-start)
 #+end_src
 
@@ -1592,6 +1771,18 @@ Dial the GC threshold back down so that garbage collection happens more frequent
 #+end_src
 
 
+
+#+begin_src emacs-lisp
+  (defun setup-theme (frame)
+  (with-selected-frame frame
+    (load-theme 'gruber-darker t)
+    (set-background-color "black")))
+
+  (if (daemonp)
+      (add-hook 'after-make-frame-functions #'setup-theme)
+    (setup-theme (selected-frame)))
+
+#+end_src
 
 
 * Load init el for client if server does not pick up config correctly
@@ -1605,3 +1796,4 @@ Dial the GC threshold back down so that garbage collection happens more frequent
   (evil-define-key 'normal 'global (kbd "<leader>cl")
     'load-init-file) 
 #+end_src
+
