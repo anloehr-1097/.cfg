@@ -820,8 +820,20 @@
   :ensure t
   :config
   (pdf-tools-install)
+
   (custom-set-variables
-   '(pdf-tools-handle-upgrades t)))
+   '(pdf-tools-handle-upgrades t))
+
+  (general-create-definer space-leader
+  :prefix "SPC")
+
+(space-leader
+  :states '(normal visual emacs)
+  :keymaps 'override
+  "p" '(:ignore t :which-key "find")
+  "ph" 'pdf-annot-add-highlight-markup-annotation
+  "pt" 'pdf-annot-add-text-annotation)
+  )
 
 (use-package nov
   :ensure t)

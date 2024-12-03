@@ -1239,8 +1239,20 @@ Install pdf-tools to view pdf documents.
     :ensure t
     :config
     (pdf-tools-install)
+
     (custom-set-variables
-     '(pdf-tools-handle-upgrades t)))
+     '(pdf-tools-handle-upgrades t))
+
+    (general-create-definer space-leader
+    :prefix "SPC")
+
+  (space-leader
+    :states '(normal visual emacs)
+    :keymaps 'override
+    "p" '(:ignore t :which-key "find")
+    "ph" 'pdf-annot-add-highlight-markup-annotation
+    "pt" 'pdf-annot-add-text-annotation)
+    )
 #+end_src
 
 **** Annotate
@@ -1288,6 +1300,8 @@ Install pdf-tools to view pdf documents.
     ;;     (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
 
 #+end_src
+
+
 
 ** Jupyter Notebook
 A simple IPython client for emacs porting jupyter notebooks / their functionality to emacs.
