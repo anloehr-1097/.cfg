@@ -1018,6 +1018,9 @@
 ;; Make gc pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 2 1000 1000))
 
+(use-package async
+  :ensure t)
+
 (use-package elfeed
   :config
   (defun my/elfeed-entry-to-arxiv ()
@@ -1028,7 +1031,7 @@
            (matched-arxiv-number (match-string 1 link)))
       (when matched-arxiv-number
         (message "Going to arXiv: %s" matched-arxiv-number)
-        (arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/bibliography/archive.bib" "~/bibliography/bibtex-pdfs/"))))
+        (arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/research/references.bib" "~/research/paper-pdfs/"))))
   (setq elfeed-feeds
         '("https://rss.arxiv.org/rss/cs.AI"
           "https://rss.arxiv.org/rss/stat.ML"
@@ -1076,10 +1079,10 @@
   :after org
   :config
   (setq bibtex-dialect 'biblatex)
-  (setq bibtex-completion-bibliography '("~/bibliography/references.bib"
-                                         "~/bibliography/archive.bib")
-        bibtex-completion-library-path '("~/bibliography/bibtex-pdfs/")
-        bibtex-completion-notes-path "~/bibliography/notes/"
+  (setq bibtex-completion-bibliography '("~/research/references.bib"
+                                         )
+        bibtex-completion-library-path '("~/research/paper-pdfs/")
+        bibtex-completion-notes-path "~/research/notes/"
         bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
 
         bibtex-completion-additional-search-fields '(keywords)
@@ -1102,7 +1105,15 @@
 
   (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
   (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
-  )
+
+  (defun research/arxiv-to-my-lib (arxiv-id)
+    "Fetch an arXiv paper into the local library from the given arxive entry identifier."
+    (interactive "sEnter Arxive id: ")
+    (let ((arxiv-bib "~/research/references.bib")
+          (arxiv-pdf-dir (expand-file-name "~/research/paper-pdfs/")))
+    (arxiv-get-pdf-add-bibtex-entry arxiv-id arxiv-bib arxiv-pdf-dir)
+    (message "Paper fetched, bib entry created."))))
+
 
 (use-package ivy-bibtex
   :ensure t)
@@ -1152,7 +1163,7 @@
 :ensure t
 :custom
 (citar-bibliography
- '("~/bibliography/archive.bib")))
+ '("~/research/references.bib")))
 
 
 (use-package citar-embark
