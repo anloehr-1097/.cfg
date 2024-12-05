@@ -1636,7 +1636,30 @@ Dial the GC threshold back down so that garbage collection happens more frequent
           (message "Going to arXiv: %s" matched-arxiv-number)
           (arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/bibliography/archive.bib" "~/bibliography/bibtex-pdfs/"))))
     (setq elfeed-feeds
-          '("https://rss.arxiv.org/rss/cs"))
+          '("https://rss.arxiv.org/rss/cs.AI"
+            "https://rss.arxiv.org/rss/stat.ML"
+            "https://rss.arxiv.org/rss/cs.AR"
+            "https://rss.arxiv.org/rss/cs.CE"
+            "https://rss.arxiv.org/rss/cs.CL"
+            "https://rss.arxiv.org/rss/cs.CV"
+            "https://rss.arxiv.org/rss/cs.DB"
+            "https://rss.arxiv.org/rss/cs.DC"
+            "https://rss.arxiv.org/rss/cs.DS"
+            "https://rss.arxiv.org/rss/cs.GR"
+            "https://rss.arxiv.org/rss/cs.GT"
+            "https://rss.arxiv.org/rss/cs.IR"
+            "https://rss.arxiv.org/rss/cs.IT"
+            "https://rss.arxiv.org/rss/cs.LG"
+            "https://rss.arxiv.org/rss/cs.MA"
+            "https://rss.arxiv.org/rss/cs.NE"
+            "https://rss.arxiv.org/rss/cs.NI"
+            "https://rss.arxiv.org/rss/cs.OH"
+            "https://rss.arxiv.org/rss/cs.OS"
+            "https://rss.arxiv.org/rss/cs.PF"
+            "https://rss.arxiv.org/rss/cs.PL"
+            "https://rss.arxiv.org/rss/cs.RO"
+            "https://rss.arxiv.org/rss/cs.SE"
+            "https://rss.arxiv.org/rss/cs.SY"))
     :bind (:map elfeed-show-mode-map
                 ("a" . my/elfeed-entry-to-arxiv))
     )
@@ -1649,6 +1672,7 @@ Dial the GC threshold back down so that garbage collection happens more frequent
     :config
     (elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
     (setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
+    (setq elfeed-search-print-entry-function #'elfeed-score-print-entry)
     (elfeed-score-enable)
     (define-key elfeed-search-mode-map "=" elfeed-score-map)
     )
