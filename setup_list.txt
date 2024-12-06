@@ -48,6 +48,7 @@ syncthing
 pass
 tldr
 graphviz
+--cask microsoft-teams
 
 
 
