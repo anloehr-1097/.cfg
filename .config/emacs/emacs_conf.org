@@ -15,6 +15,14 @@ I have been modifying it continuously to suit my needs.
         user-mail-address "andreas.loehr97@gmail.com")
 #+end_src
 
+* Custom elisp files
+
+#+begin_src emacs-lisp
+  (add-to-list 'load-path "~/.config/emacs/custom_elisp/")
+  (require 'ob-dot2tex)
+
+#+end_src
+
 * Startup Performance
 - Changing the behavior of the garbage collector will speed up startup.
 
@@ -395,22 +403,24 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
 Display relative line numbers instead of absolute line numbers.
 Only activate this in specific types of buffers.
 #+begin_src emacs-lisp
-  (setq display-line-numbers-type 'relative)
-  (add-hook 'prog-mode-hook #'display-line-numbers-mode)
-  (add-hook 'org-mode-hook #'display-line-numbers-mode)
-  (add-hook 'text-mode-hook #'display-line-numbers-mode)
+    (setq display-line-numbers-type 'relative)
+    (add-hook 'prog-mode-hook #'display-line-numbers-mode)
+    (add-hook 'org-mode-hook #'display-line-numbers-mode)
+    (add-hook 'text-mode-hook #'display-line-numbers-mode)
 
-  (add-hook 'doc-view-mode
-            (lambda ()
-              (display-line-numbers-mode -1)))
-
-  (with-eval-after-load 'pdf-tools
-    (add-hook 'pdf-view-mode-hook
+    (add-hook 'doc-view-mode
               (lambda ()
-                (progn
-                  (display-line-numbers-mode -1)
-                  (tooltip-mode -1)
-                  ))))
+                (display-line-numbers-mode -1)))
+
+    (with-eval-after-load 'pdf-tools
+      (add-hook 'pdf-view-mode-hook
+                (lambda ()
+                  (progn
+                    (display-line-numbers-mode -1)
+                    (tooltip-mode -1)
+                    (setq use-system-tooltips nil)
+                    (setq pdf-annot-activate-created-annotations 'minibuffer)
+                    ))))
 #+end_src
 
 ** Which Key
@@ -806,16 +816,42 @@ To execute or export code in =org-mode= code blocks, you'll need to set up =org-
 
 #+begin_src emacs-lisp
 
-  (with-eval-after-load 'org
-    (org-babel-do-load-languages
-        'org-babel-load-languages
-        '((emacs-lisp . t)
-        (python . t)
-        (dot . t)))
+    ;;(defun org-babel-execute:dot2tex (body params)
+      ;;"Exec block of dot code with dot2tex."
+    ;;(let((out-file (cdr (assq :file params))))
+      ;;(with-temp-file out-file
+        ;;(call-process-region body nil "dot2tex" nil t nil "-ftikz"))))
 
-    (push '("conf-unix" . conf-unix) org-src-lang-modes)
-    (push '("dot" . graphviz-dot) org-src-lang-modes)
-   ) 
+
+  (defun org-babel-execute:dot2tex (body params)
+    "Execute a block of Dot code with dot2tex."
+    (let* ((out-file (or (cdr (assq :file params))
+                         (error "You need to specify a :file parameter")))
+           (cmdline (or (cdr (assq :cmdline params)) ""))
+           (cmd (format "dot2tex -o %s %s" (org-babel-process-file-name out-file) cmdline)))
+      (org-babel-eval cmd body)
+      nil))
+
+
+    (defalias 'org-babel-execute:dot2tex 'org-babel-execute:dot)
+
+    (add-to-list 'org-src-lang-modes '("dot2tex" . graphviz-dot))
+
+    (with-eval-after-load 'org
+      (org-babel-do-load-languages
+          'org-babel-load-languages
+          '((emacs-lisp . t)
+          (python . t)
+          (dot . t)
+          (dot2tex . t)
+          (latex . t)
+          )
+    )
+
+      ; (push '("conf-unix" . conf-unix) org-src-lang-modes)
+      ; (push '("dot" . graphviz-dot) org-src-lang-modes)
+
+     ) 
 #+end_src
 
 ** Structure Templates
@@ -1060,11 +1096,26 @@ You can use the pyvenv package to use =virtualenv= environments in Emacs.  The =
 **** Conda
 
 #+begin_src emacs-lisp
-  (use-package conda
-    :ensure t)
-  (custom-set-variables
-   '(conda-anaconda-home "/usr/local/Caskroom/miniconda/base/")
-   )
+
+  ;; Setting conda path depending on location of homebrew
+  (let (
+        (primary-path "/usr/local/Caskroom/miniconda/base/")
+        (fallback-path "/opt/homebrew/Caskroom/miniconda/base/")
+          )
+    (if (file-exists-p primary-path)
+        (setq conda-path primary-path)
+      (setq conda-path fallback-path)
+        )
+    )
+
+
+    (use-package conda
+      :ensure t)
+
+
+    (custom-set-variables
+     '(conda-anaconda-home conda-path)
+     )
 
 #+end_src
 
@@ -1252,6 +1303,8 @@ Install pdf-tools to view pdf documents.
     "p" '(:ignore t :which-key "find")
     "ph" 'pdf-annot-add-highlight-markup-annotation
     "pt" 'pdf-annot-add-text-annotation)
+
+  (setq pdf-annot-activate-created-annotations 'minibuffer)
     )
 #+end_src
 
@@ -1369,7 +1422,8 @@ A simple IPython client for emacs porting jupyter notebooks / their functionalit
     :init
   (setq org-latex-impatient-tex2svg-bin
    ;;location of tex2svg executable
-  "/usr/local/Caskroom/miniconda/base/bin/tex2svg"))
+        (concat conda-path "bin/tex2svg")))
+  ;;"/usr/local/Caskroom/miniconda/base/bin/tex2svg"))
 
 #+end_src
 

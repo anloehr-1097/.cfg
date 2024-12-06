@@ -5,6 +5,13 @@
 !emacs/snippets/**
 emacs/snippets/**/*~
 emacs/snippets/*/*~
+!emacs/custom-elisp
+!emacs/custom-elisp/
+!emacs/custom-elisp/**
+emacs/custom-elisp/*~
+emacs/custom-elisp/**/*~
+
+
 
 # nvim
 !/nvim

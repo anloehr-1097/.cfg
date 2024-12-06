@@ -1,6 +1,9 @@
 (setq user-full-name "Andreas Loehr"
       user-mail-address "andreas.loehr97@gmail.com")
 
+(add-to-list 'load-path "~/.config/emacs/custom_elisp/")
+(require 'ob-dot2tex)
+
 ;; setting directory program based on operating system
     (defun set-insert-directory-program ()
   "Set `insert-directory-program' based on the operating system."
@@ -298,6 +301,8 @@
               (progn
                 (display-line-numbers-mode -1)
                 (tooltip-mode -1)
+                (setq use-system-tooltips nil)
+                (setq pdf-annot-activate-created-annotations 'minibuffer)
                 ))))
 
 (use-package which-key
@@ -573,16 +578,42 @@
   ;:ensure t
   ;:hook (org-mode . org-modern-mode))
 
-(with-eval-after-load 'org
-  (org-babel-do-load-languages
-      'org-babel-load-languages
-      '((emacs-lisp . t)
-      (python . t)
-      (dot . t)))
+;;(defun org-babel-execute:dot2tex (body params)
+    ;;"Exec block of dot code with dot2tex."
+  ;;(let((out-file (cdr (assq :file params))))
+    ;;(with-temp-file out-file
+      ;;(call-process-region body nil "dot2tex" nil t nil "-ftikz"))))
 
-  (push '("conf-unix" . conf-unix) org-src-lang-modes)
-  (push '("dot" . graphviz-dot) org-src-lang-modes)
- )
+
+(defun org-babel-execute:dot2tex (body params)
+  "Execute a block of Dot code with dot2tex."
+  (let* ((out-file (or (cdr (assq :file params))
+                       (error "You need to specify a :file parameter")))
+         (cmdline (or (cdr (assq :cmdline params)) ""))
+         (cmd (format "dot2tex -o %s %s" (org-babel-process-file-name out-file) cmdline)))
+    (org-babel-eval cmd body)
+    nil))
+
+
+  (defalias 'org-babel-execute:dot2tex 'org-babel-execute:dot)
+
+  (add-to-list 'org-src-lang-modes '("dot2tex" . graphviz-dot))
+
+  (with-eval-after-load 'org
+    (org-babel-do-load-languages
+        'org-babel-load-languages
+        '((emacs-lisp . t)
+        (python . t)
+        (dot . t)
+        (dot2tex . t)
+        (latex . t)
+        )
+  )
+
+    ; (push '("conf-unix" . conf-unix) org-src-lang-modes)
+    ; (push '("dot" . graphviz-dot) org-src-lang-modes)
+
+   )
 
 (with-eval-after-load 'org
   ;; This is needed as of Org 9.2
@@ -709,11 +740,25 @@
   :after python-mode
   )
 
-(use-package conda
-  :ensure t)
-(custom-set-variables
- '(conda-anaconda-home "/usr/local/Caskroom/miniconda/base/")
- )
+;; Setting conda path depending on location of homebrew
+(let (
+      (primary-path "/usr/local/Caskroom/miniconda/base/")
+      (fallback-path "/opt/homebrew/Caskroom/miniconda/base/")
+        )
+  (if (file-exists-p primary-path)
+      (setq conda-path primary-path)
+    (setq conda-path fallback-path)
+      )
+  )
+
+
+  (use-package conda
+    :ensure t)
+
+
+  (custom-set-variables
+   '(conda-anaconda-home conda-path)
+   )
 
 (use-package cuda-mode
   :ensure t)
@@ -833,6 +878,8 @@
   "p" '(:ignore t :which-key "find")
   "ph" 'pdf-annot-add-highlight-markup-annotation
   "pt" 'pdf-annot-add-text-annotation)
+
+(setq pdf-annot-activate-created-annotations 'minibuffer)
   )
 
 (use-package nov
@@ -928,7 +975,8 @@
   :init
 (setq org-latex-impatient-tex2svg-bin
  ;;location of tex2svg executable
-"/usr/local/Caskroom/miniconda/base/bin/tex2svg"))
+      (concat conda-path "bin/tex2svg")))
+;;"/usr/local/Caskroom/miniconda/base/bin/tex2svg"))
 
 (use-package term
   :commands term
