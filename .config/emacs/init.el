@@ -712,8 +712,18 @@
 (use-package conda
   :ensure t)
 (custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(conda-anaconda-home "/usr/local/Caskroom/miniconda/base/")
- )
+ '(elfeed-feeds
+   '("https://arxiv.org/rss/cs.CV" "https://export.arxiv.org/rss/cs.CV" "https://rss.arxiv.org/rss/cs"))
+ '(org-agenda-files
+   '("/Users/Andy/org/Tasks.org" "/Users/Andy/org/Habits.org" "/Users/Andy/org/Birthdays.org" "/Users/Andy/KeepInSync/Life.org"))
+ '(package-selected-packages
+   '(elfeed which-key wanderlust vterm visual-fill-column vertico use-package undo-tree tramp-auto-auth svgo speed-type rainbow-delimiters python-mode python-black pipenv org-timeblock org-superstar org-roam-ui org-roam-bibtex org-ref org-noter-pdftools org-modern org-latex-impatient org-bullets orderless nov no-littering marginalia magic-latex-buffer lsp-ui lsp-python-ms lsp-pyright lsp-ivy linum-relative latex-preview-pane ivy-rich ivy-prescient ivy-bibtex helpful helm haskell-mode gruber-darker-theme graphviz-dot-mode git-commit general fzf forge flycheck-mypy flycheck-eglot fit-text-scale evil-surround evil-owl evil-nerd-commenter evil-indent-plus evil-collection eterm-256color eshell-git-prompt embark-consult ein editorconfig doom-themes doom-modeline dockerfile-mode docker-compose-mode djvu dired-single dired-open dired-hide-dotfiles default-text-scale dashboard dap-mode cuda-mode counsel-projectile conda company-box company-auctex command-log-mode cmake-mode cmake-ide clippy citar-org-roam citar-embark calfw-org calfw bibtex-utils auto-package-update auto-complete-auctex anaconda-mode all-the-icons-dired))
+ '(pdf-tools-handle-upgrades t))
 
 (use-package cuda-mode
   :ensure t)
@@ -1006,70 +1016,102 @@
 ;; Make gc pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 2 1000 1000))
 
+(defun my/ ()
+      "Fetch an arXiv paper into the local library from the current elfeed entry."
+      (interactive)
+      (let* ((link (elfeed-entry-link elfeed-show-entry))
+             (match-idx (string-match "arxiv.org/abs/\\([0-9.]*\\)" link))
+             (matched-arxiv-number (match-string 1 link)))
+        (when matched-arxiv-number
+          (message "Going to arXiv: %s" matched-arxiv-number)
+          (arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/research/references.bib" "~/research/paper-pdfs/"))))
+
+(defun org-ref-arxiv-download-and-store (arxiv-number)
+  "Download and store a paper from arXiv using its ARXIV-NUMBER."
+  (interactive "sEnter arXiv number: ")
+  (let* ((pdf-url (format "https://arxiv.org/pdf/%s.pdf" arxiv-number))))
+    (arxiv-get-pdf-add-bibtex-entry arxiv-number
+    "~/research/references.bib" "~/research/paper-pdfs/")
+    (message "Paper downloaded and stored: %s" pdf-url))
+
 (use-package elfeed
-  :config
-  (defun my/elfeed-entry-to-arxiv ()
-    "Fetch an arXiv paper into the local library from the current elfeed entry."
-    (interactive)
-    (let* ((link (elfeed-entry-link elfeed-show-entry))
-           (match-idx (string-match "arxiv.org/abs/\\([0-9.]*\\)" link))
-           (matched-arxiv-number (match-string 1 link)))
-      (when matched-arxiv-number
-        (message "Going to arXiv: %s" matched-arxiv-number)
-        (arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/bibliography/archive.bib" "~/bibliography/bibtex-pdfs/"))))
-  (setq elfeed-feeds
-        '("https://rss.arxiv.org/rss/cs"))
-  :bind (:map elfeed-show-mode-map
-              ("a" . my/elfeed-entry-to-arxiv))
-  )
+    :config
+    (defun my/elfeed-entry-to-arxiv ()
+      "Fetch an arXiv paper into the local library from the current elfeed entry."
+      (interactive)
+      (let* ((link (elfeed-entry-link elfeed-show-entry))
+             (match-idx (string-match "arxiv.org/abs/\\([0-9.]*\\)" link))
+             (matched-arxiv-number (match-string 1 link)))
+        (when matched-arxiv-number
+          (message "Going to arXiv: %s" matched-arxiv-number)
+          (arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/research/references.bib" "~/research/paper-pdfs/"))))
+    (setq elfeed-feeds
+          '("https://rss.arxiv.org/rss/cs"))
+    :bind (:map elfeed-show-mode-map
+                ("a" . my/elfeed-entry-to-arxiv))
+    )
+
+;; (use-package elfeed-score
+;;   :ensure t
+;;   :after elfeed
+;;   :config
+;;   (define-key elfeed-search-mode-map "=" elfeed-score-map)
+;;   (elfeed-score-enable))
+
+  ;;(setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
+  ;; (use-package elfeed-score
+  ;;   :ensure t
+  ;;   :after elfeed
+  ;;   :config
+  ;;   (setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
+  ;;   (elfeed-score-enable)
+  ;;   (define-key elfeed-search-mode-map "=" elfeed-score-map))
+
+    ;;(elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
+
+  (use-package org-ref
+    :after org
+    :config
+    (setq bibtex-dialect 'biblatex)
+    (setq bibtex-completion-bibliography '("~/research/references.bib")
+          bibtex-completion-library-path '("~/research/paper-pdfs/")
+          bibtex-completion-notes-path "~/bibliography/notes/"
+          bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
+
+          bibtex-completion-additional-search-fields '(keywords)
+          bibtex-completion-display-formats
+          '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
+            (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
+            (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+            (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+            (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
+          bibtex-completion-pdf-open-function
+          (lambda (fpath)
+            (call-process "open" nil 0 nil fpath)))
+    (setq bibtex-autokey-year-length 4
+          bibtex-autokey-name-year-separator "-"
+          bibtex-autokey-year-title-separator "-"
+          bibtex-autokey-titleword-separator "-"
+          bibtex-autokey-titlewords 4
+          bibtex-autokey-titlewords-stretch 1
+          bibtex-autokey-titleword-length 5)
 
 
+    (general-create-definer ref-keybinds-set
+      :keymaps 'bibtex-mode-map
+      :prefix "SPC")
 
-(use-package elfeed-score
-  :ensure t
-  :after elfeed
-  :config
-  (elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
-  (setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
-  (elfeed-score-enable)
-  (define-key elfeed-search-mode-map "=" elfeed-score-map)
-  )
+    (ref-keybinds-set
+      "r"  '(:ignore t :which-key "ref mgmt")
+     "rh" 'org-ref-bibtex-hydra/body
+    "ri" 'org-ref-insert-link))
 
+    ;; (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
+    ;; (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
+    ;; )
 
-(use-package org-ref
-  :after org
-  :config
-  (setq bibtex-dialect 'biblatex)
-  (setq bibtex-completion-bibliography '("~/bibliography/references.bib"
-                                         "~/bibliography/archive.bib")
-        bibtex-completion-library-path '("~/bibliography/bibtex-pdfs/")
-        bibtex-completion-notes-path "~/bibliography/notes/"
-        bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
-
-        bibtex-completion-additional-search-fields '(keywords)
-        bibtex-completion-display-formats
-        '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
-          (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
-          (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-          (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-          (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
-        bibtex-completion-pdf-open-function
-        (lambda (fpath)
-          (call-process "open" nil 0 nil fpath)))
-  (setq bibtex-autokey-year-length 4
-        bibtex-autokey-name-year-separator "-"
-        bibtex-autokey-year-title-separator "-"
-        bibtex-autokey-titleword-separator "-"
-        bibtex-autokey-titlewords 2
-        bibtex-autokey-titlewords-stretch 1
-        bibtex-autokey-titleword-length 5)
-
-  (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
-  (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
-  )
-
-(use-package ivy-bibtex
-  :ensure t)
+  (use-package ivy-bibtex
+    :ensure t)
 
 (use-package marginalia
   :ensure t
@@ -1116,7 +1158,7 @@
 :ensure t
 :custom
 (citar-bibliography
- '("~/bibliography/archive.bib")))
+ '("~/research/references.bib")))
 
 
 (use-package citar-embark
@@ -1157,3 +1199,9 @@
 
 (evil-define-key 'normal 'global (kbd "<leader>cl")
   'load-init-file)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
