@@ -1,10 +1,12 @@
 return {
   {
     "williamboman/mason.nvim",
+
     config = function()
       require("mason").setup()
     end
   },
+
 
   {
     "williamboman/mason-lspconfig.nvim",
@@ -29,8 +31,43 @@ return {
         "L3MON4D3/LuaSnip",
     },
     config = function()
+
+
+
+      -- basic completion setup
+            local cmp = require('cmp')
+
+            cmp.setup({
+                snippet = {
+                    expand = function(args)
+                        require('luasnip').lsp_expand(args.body) -- For LuaSnip users
+                    end,
+                },
+                mapping = cmp.mapping.preset.insert({
+                    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+                    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+                    ['<C-Space>'] = cmp.mapping.complete(),
+                    ['<C-e>'] = cmp.mapping.abort(),
+                    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+                }),
+                sources = {
+                    { name = 'nvim_lsp' },
+                    { name = 'buffer' },
+                },
+            })
+            vim.opt.completeopt = {'menu', 'menuone', 'noselect'}
+
+
       local lspconfig = require("lspconfig")
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+        local lspconfig_default_caps = lspconfig.util.default_config
+        lspconfig_default_caps.capabilities = vim.tbl_deep_extend(
+                'force',
+                lspconfig_default_caps.capabilities,
+                capabilities
+            )
+
       -- Detect virtual environment
       local venv_path = os.getenv('VIRTUAL_ENV')
       local py_path = nil
@@ -44,14 +81,17 @@ return {
         -- Default handler
         function (server_name)
           lspconfig[server_name].setup {
-            capabilities = capabilities,
+            capabilities = lspconfig_default_caps
+                        --capabilities,
           }
         end,
+
 
         -- Custom handler for lua_ls
         ["lua_ls"] = function ()
           lspconfig.lua_ls.setup {
-            capabilities = capabilities,
+            capabilities = lspconfig_default_caps,
+                        --capabilities,
             settings = {
               Lua = {
                 diagnostics = {
@@ -64,6 +104,9 @@ return {
 
         ["pylsp"] = function ()
             require("lspconfig").pylsp.setup {
+                on_attach = function (client, buffer)
+                            require("lsp_compl").attach(client, buffer)
+                end,
                 settings = {
                     pylsp = {
                         plugins = {

@@ -1,6 +1,9 @@
 (setq user-full-name "Andreas Loehr"
       user-mail-address "andreas.loehr97@gmail.com")
 
+(add-to-list 'load-path "~/.config/emacs/custom_elisp/")
+(require 'ob-dot2tex)
+
 ;; setting directory program based on operating system
     (defun set-insert-directory-program ()
   "Set `insert-directory-program' based on the operating system."
@@ -298,6 +301,8 @@
               (progn
                 (display-line-numbers-mode -1)
                 (tooltip-mode -1)
+                (setq use-system-tooltips nil)
+                (setq pdf-annot-activate-created-annotations 'minibuffer)
                 ))))
 
 (use-package which-key
@@ -573,16 +578,42 @@
   ;:ensure t
   ;:hook (org-mode . org-modern-mode))
 
-(with-eval-after-load 'org
-  (org-babel-do-load-languages
-      'org-babel-load-languages
-      '((emacs-lisp . t)
-      (python . t)
-      (dot . t)))
+;;(defun org-babel-execute:dot2tex (body params)
+    ;;"Exec block of dot code with dot2tex."
+  ;;(let((out-file (cdr (assq :file params))))
+    ;;(with-temp-file out-file
+      ;;(call-process-region body nil "dot2tex" nil t nil "-ftikz"))))
 
-  (push '("conf-unix" . conf-unix) org-src-lang-modes)
-  (push '("dot" . graphviz-dot) org-src-lang-modes)
- )
+
+(defun org-babel-execute:dot2tex (body params)
+  "Execute a block of Dot code with dot2tex."
+  (let* ((out-file (or (cdr (assq :file params))
+                       (error "You need to specify a :file parameter")))
+         (cmdline (or (cdr (assq :cmdline params)) ""))
+         (cmd (format "dot2tex -o %s %s" (org-babel-process-file-name out-file) cmdline)))
+    (org-babel-eval cmd body)
+    nil))
+
+
+  (defalias 'org-babel-execute:dot2tex 'org-babel-execute:dot)
+
+  (add-to-list 'org-src-lang-modes '("dot2tex" . graphviz-dot))
+
+  (with-eval-after-load 'org
+    (org-babel-do-load-languages
+        'org-babel-load-languages
+        '((emacs-lisp . t)
+        (python . t)
+        (dot . t)
+        (dot2tex . t)
+        (latex . t)
+        )
+  )
+
+    ; (push '("conf-unix" . conf-unix) org-src-lang-modes)
+    ; (push '("dot" . graphviz-dot) org-src-lang-modes)
+
+   )
 
 (with-eval-after-load 'org
   ;; This is needed as of Org 9.2
@@ -709,21 +740,25 @@
   :after python-mode
   )
 
-(use-package conda
-  :ensure t)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(conda-anaconda-home "/usr/local/Caskroom/miniconda/base/")
- '(elfeed-feeds
-   '("https://arxiv.org/rss/cs.CV" "https://export.arxiv.org/rss/cs.CV" "https://rss.arxiv.org/rss/cs"))
- '(org-agenda-files
-   '("/Users/Andy/org/Tasks.org" "/Users/Andy/org/Habits.org" "/Users/Andy/org/Birthdays.org" "/Users/Andy/KeepInSync/Life.org"))
- '(package-selected-packages
-   '(elfeed which-key wanderlust vterm visual-fill-column vertico use-package undo-tree tramp-auto-auth svgo speed-type rainbow-delimiters python-mode python-black pipenv org-timeblock org-superstar org-roam-ui org-roam-bibtex org-ref org-noter-pdftools org-modern org-latex-impatient org-bullets orderless nov no-littering marginalia magic-latex-buffer lsp-ui lsp-python-ms lsp-pyright lsp-ivy linum-relative latex-preview-pane ivy-rich ivy-prescient ivy-bibtex helpful helm haskell-mode gruber-darker-theme graphviz-dot-mode git-commit general fzf forge flycheck-mypy flycheck-eglot fit-text-scale evil-surround evil-owl evil-nerd-commenter evil-indent-plus evil-collection eterm-256color eshell-git-prompt embark-consult ein editorconfig doom-themes doom-modeline dockerfile-mode docker-compose-mode djvu dired-single dired-open dired-hide-dotfiles default-text-scale dashboard dap-mode cuda-mode counsel-projectile conda company-box company-auctex command-log-mode cmake-mode cmake-ide clippy citar-org-roam citar-embark calfw-org calfw bibtex-utils auto-package-update auto-complete-auctex anaconda-mode all-the-icons-dired))
- '(pdf-tools-handle-upgrades t))
+;; Setting conda path depending on location of homebrew
+(let (
+      (primary-path "/usr/local/Caskroom/miniconda/base/")
+      (fallback-path "/opt/homebrew/Caskroom/miniconda/base/")
+        )
+  (if (file-exists-p primary-path)
+      (setq conda-path primary-path)
+    (setq conda-path fallback-path)
+      )
+  )
+
+
+  (use-package conda
+    :ensure t)
+
+
+  (custom-set-variables
+   '(conda-anaconda-home conda-path)
+   )
 
 (use-package cuda-mode
   :ensure t)
@@ -830,8 +865,22 @@
   :ensure t
   :config
   (pdf-tools-install)
+
   (custom-set-variables
-   '(pdf-tools-handle-upgrades t)))
+   '(pdf-tools-handle-upgrades t))
+
+  (general-create-definer space-leader
+  :prefix "SPC")
+
+(space-leader
+  :states '(normal visual emacs)
+  :keymaps 'override
+  "p" '(:ignore t :which-key "find")
+  "ph" 'pdf-annot-add-highlight-markup-annotation
+  "pt" 'pdf-annot-add-text-annotation)
+
+(setq pdf-annot-activate-created-annotations 'minibuffer)
+  )
 
 (use-package nov
   :ensure t)
@@ -926,7 +975,8 @@
   :init
 (setq org-latex-impatient-tex2svg-bin
  ;;location of tex2svg executable
-"/usr/local/Caskroom/miniconda/base/bin/tex2svg"))
+      (concat conda-path "bin/tex2svg")))
+;;"/usr/local/Caskroom/miniconda/base/bin/tex2svg"))
 
 (use-package term
   :commands term
@@ -1016,6 +1066,9 @@
 ;; Make gc pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 2 1000 1000))
 
+(use-package async
+  :ensure t)
+
 (defun my/ ()
       "Fetch an arXiv paper into the local library from the current elfeed entry."
       (interactive)
@@ -1035,21 +1088,61 @@
     (message "Paper downloaded and stored: %s" pdf-url))
 
 (use-package elfeed
-    :config
-    (defun my/elfeed-entry-to-arxiv ()
-      "Fetch an arXiv paper into the local library from the current elfeed entry."
-      (interactive)
-      (let* ((link (elfeed-entry-link elfeed-show-entry))
-             (match-idx (string-match "arxiv.org/abs/\\([0-9.]*\\)" link))
-             (matched-arxiv-number (match-string 1 link)))
-        (when matched-arxiv-number
-          (message "Going to arXiv: %s" matched-arxiv-number)
-          (arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/research/references.bib" "~/research/paper-pdfs/"))))
-    (setq elfeed-feeds
-          '("https://rss.arxiv.org/rss/cs"))
-    :bind (:map elfeed-show-mode-map
-                ("a" . my/elfeed-entry-to-arxiv))
-    )
+  :config
+  (defun my/elfeed-entry-to-arxiv ()
+    "Fetch an arXiv paper into the local library from the current elfeed entry."
+    (interactive)
+    (let* ((link (elfeed-entry-link elfeed-show-entry))
+           (match-idx (string-match "arxiv.org/abs/\\([0-9.]*\\)" link))
+           (matched-arxiv-number (match-string 1 link)))
+      (when matched-arxiv-number
+        (message "Going to arXiv: %s" matched-arxiv-number)
+        (arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/research/references.bib" "~/research/paper-pdfs/"))))
+  (setq elfeed-feeds
+        '("https://rss.arxiv.org/rss/cs.AI"
+          "https://rss.arxiv.org/rss/stat.ML"
+          "https://rss.arxiv.org/rss/cs.AR"
+          "https://rss.arxiv.org/rss/cs.CE"
+          "https://rss.arxiv.org/rss/cs.CL"
+          "https://rss.arxiv.org/rss/cs.CV"
+          "https://rss.arxiv.org/rss/cs.DB"
+          "https://rss.arxiv.org/rss/cs.DC"
+          "https://rss.arxiv.org/rss/cs.DS"
+          "https://rss.arxiv.org/rss/cs.GR"
+          "https://rss.arxiv.org/rss/cs.GT"
+          "https://rss.arxiv.org/rss/cs.IR"
+          "https://rss.arxiv.org/rss/cs.IT"
+          "https://rss.arxiv.org/rss/cs.LG"
+          "https://rss.arxiv.org/rss/cs.MA"
+          "https://rss.arxiv.org/rss/cs.NE"
+          "https://rss.arxiv.org/rss/cs.NI"
+          "https://rss.arxiv.org/rss/cs.OH"
+          "https://rss.arxiv.org/rss/cs.OS"
+          "https://rss.arxiv.org/rss/cs.PF"
+          "https://rss.arxiv.org/rss/cs.PL"
+          "https://rss.arxiv.org/rss/cs.RO"
+          "https://rss.arxiv.org/rss/cs.SE"
+          "https://rss.arxiv.org/rss/cs.SY"))
+  :bind (:map elfeed-show-mode-map
+              ("a" . my/elfeed-entry-to-arxiv))
+  )
+
+;;(use-package elfeed
+    ;;:config
+    ;;(defun my/elfeed-entry-to-arxiv ()
+      ;;"Fetch an arXiv paper into the local library from the current elfeed entry."
+      ;;(interactive)
+      ;;(let* ((link (elfeed-entry-link elfeed-show-entry))
+             ;;(match-idx (string-match "arxiv.org/abs/\\([0-9.]*\\)" link))
+             ;;(matched-arxiv-number (match-string 1 link)))
+        ;;(when matched-arxiv-number
+          ;;(message "Going to arXiv: %s" matched-arxiv-number)
+          ;;(arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/research/references.bib" "~/research/paper-pdfs/"))))
+    ;;(setq elfeed-feeds
+          ;;'("https://rss.arxiv.org/rss/cs"))
+    ;;:bind (:map elfeed-show-mode-map
+                ;;("a" . my/elfeed-entry-to-arxiv))
+    ;;)
 
 ;; (use-package elfeed-score
 ;;   :ensure t
@@ -1100,15 +1193,44 @@
     (general-create-definer ref-keybinds-set
       :keymaps 'bibtex-mode-map
       :prefix "SPC")
+(use-package elfeed-score
+  :ensure t
+  :after elfeed
+  :config
+  (elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
+  (setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
+  (setq elfeed-search-print-entry-function #'elfeed-score-print-entry)
+  (elfeed-score-enable)
+  (define-key elfeed-search-mode-map "=" elfeed-score-map)
+  )
+
+
+(use-package org-ref
+  :after org
+  :config
+  (setq bibtex-dialect 'biblatex)
+  (setq bibtex-completion-bibliography '("~/research/references.bib"
+                                         )
+        bibtex-completion-library-path '("~/research/paper-pdfs/")
+        bibtex-completion-notes-path "~/research/notes/"
+        bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
 
     (ref-keybinds-set
       "r"  '(:ignore t :which-key "ref mgmt")
      "rh" 'org-ref-bibtex-hydra/body
     "ri" 'org-ref-insert-link))
 
-    ;; (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
-    ;; (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
-    ;; )
+  (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
+  (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
+
+  (defun research/arxiv-to-my-lib (arxiv-id)
+    "Fetch an arXiv paper into the local library from the given arxive entry identifier."
+    (interactive "sEnter Arxive id: ")
+    (let ((arxiv-bib "~/research/references.bib")
+          (arxiv-pdf-dir (expand-file-name "~/research/paper-pdfs/")))
+    (arxiv-get-pdf-add-bibtex-entry arxiv-id arxiv-bib arxiv-pdf-dir)
+    (message "Paper fetched, bib entry created."))))
+
 
   (use-package ivy-bibtex
     :ensure t)
@@ -1199,9 +1321,3 @@
 
 (evil-define-key 'normal 'global (kbd "<leader>cl")
   'load-init-file)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

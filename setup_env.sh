@@ -48,6 +48,8 @@ brew install --cask eloston-chromium
 brew install --cask keepassxc
 brew install pass
 brew install tldr
+brew install graphviz
+brew install --cask microsoft-teams
 
 # other tools possibly over git 
 # zsh-autosuggestions

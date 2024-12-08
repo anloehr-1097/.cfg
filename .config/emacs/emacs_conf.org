@@ -15,6 +15,14 @@ I have been modifying it continuously to suit my needs.
         user-mail-address "andreas.loehr97@gmail.com")
 #+end_src
 
+* Custom elisp files
+
+#+begin_src emacs-lisp
+  (add-to-list 'load-path "~/.config/emacs/custom_elisp/")
+  (require 'ob-dot2tex)
+
+#+end_src
+
 * Startup Performance
 - Changing the behavior of the garbage collector will speed up startup.
 
@@ -395,22 +403,24 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
 Display relative line numbers instead of absolute line numbers.
 Only activate this in specific types of buffers.
 #+begin_src emacs-lisp
-  (setq display-line-numbers-type 'relative)
-  (add-hook 'prog-mode-hook #'display-line-numbers-mode)
-  (add-hook 'org-mode-hook #'display-line-numbers-mode)
-  (add-hook 'text-mode-hook #'display-line-numbers-mode)
+    (setq display-line-numbers-type 'relative)
+    (add-hook 'prog-mode-hook #'display-line-numbers-mode)
+    (add-hook 'org-mode-hook #'display-line-numbers-mode)
+    (add-hook 'text-mode-hook #'display-line-numbers-mode)
 
-  (add-hook 'doc-view-mode
-            (lambda ()
-              (display-line-numbers-mode -1)))
-
-  (with-eval-after-load 'pdf-tools
-    (add-hook 'pdf-view-mode-hook
+    (add-hook 'doc-view-mode
               (lambda ()
-                (progn
-                  (display-line-numbers-mode -1)
-                  (tooltip-mode -1)
-                  ))))
+                (display-line-numbers-mode -1)))
+
+    (with-eval-after-load 'pdf-tools
+      (add-hook 'pdf-view-mode-hook
+                (lambda ()
+                  (progn
+                    (display-line-numbers-mode -1)
+                    (tooltip-mode -1)
+                    (setq use-system-tooltips nil)
+                    (setq pdf-annot-activate-created-annotations 'minibuffer)
+                    ))))
 #+end_src
 
 ** Which Key
@@ -806,16 +816,42 @@ To execute or export code in =org-mode= code blocks, you'll need to set up =org-
 
 #+begin_src emacs-lisp
 
-  (with-eval-after-load 'org
-    (org-babel-do-load-languages
-        'org-babel-load-languages
-        '((emacs-lisp . t)
-        (python . t)
-        (dot . t)))
+    ;;(defun org-babel-execute:dot2tex (body params)
+      ;;"Exec block of dot code with dot2tex."
+    ;;(let((out-file (cdr (assq :file params))))
+      ;;(with-temp-file out-file
+        ;;(call-process-region body nil "dot2tex" nil t nil "-ftikz"))))
 
-    (push '("conf-unix" . conf-unix) org-src-lang-modes)
-    (push '("dot" . graphviz-dot) org-src-lang-modes)
-   ) 
+
+  (defun org-babel-execute:dot2tex (body params)
+    "Execute a block of Dot code with dot2tex."
+    (let* ((out-file (or (cdr (assq :file params))
+                         (error "You need to specify a :file parameter")))
+           (cmdline (or (cdr (assq :cmdline params)) ""))
+           (cmd (format "dot2tex -o %s %s" (org-babel-process-file-name out-file) cmdline)))
+      (org-babel-eval cmd body)
+      nil))
+
+
+    (defalias 'org-babel-execute:dot2tex 'org-babel-execute:dot)
+
+    (add-to-list 'org-src-lang-modes '("dot2tex" . graphviz-dot))
+
+    (with-eval-after-load 'org
+      (org-babel-do-load-languages
+          'org-babel-load-languages
+          '((emacs-lisp . t)
+          (python . t)
+          (dot . t)
+          (dot2tex . t)
+          (latex . t)
+          )
+    )
+
+      ; (push '("conf-unix" . conf-unix) org-src-lang-modes)
+      ; (push '("dot" . graphviz-dot) org-src-lang-modes)
+
+     ) 
 #+end_src
 
 ** Structure Templates
@@ -1060,11 +1096,26 @@ You can use the pyvenv package to use =virtualenv= environments in Emacs.  The =
 **** Conda
 
 #+begin_src emacs-lisp
-  (use-package conda
-    :ensure t)
-  (custom-set-variables
-   '(conda-anaconda-home "/usr/local/Caskroom/miniconda/base/")
-   )
+
+  ;; Setting conda path depending on location of homebrew
+  (let (
+        (primary-path "/usr/local/Caskroom/miniconda/base/")
+        (fallback-path "/opt/homebrew/Caskroom/miniconda/base/")
+          )
+    (if (file-exists-p primary-path)
+        (setq conda-path primary-path)
+      (setq conda-path fallback-path)
+        )
+    )
+
+
+    (use-package conda
+      :ensure t)
+
+
+    (custom-set-variables
+     '(conda-anaconda-home conda-path)
+     )
 
 #+end_src
 
@@ -1239,8 +1290,22 @@ Install pdf-tools to view pdf documents.
     :ensure t
     :config
     (pdf-tools-install)
+
     (custom-set-variables
-     '(pdf-tools-handle-upgrades t)))
+     '(pdf-tools-handle-upgrades t))
+
+    (general-create-definer space-leader
+    :prefix "SPC")
+
+  (space-leader
+    :states '(normal visual emacs)
+    :keymaps 'override
+    "p" '(:ignore t :which-key "find")
+    "ph" 'pdf-annot-add-highlight-markup-annotation
+    "pt" 'pdf-annot-add-text-annotation)
+
+  (setq pdf-annot-activate-created-annotations 'minibuffer)
+    )
 #+end_src
 
 **** Annotate
@@ -1288,6 +1353,8 @@ Install pdf-tools to view pdf documents.
     ;;     (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
 
 #+end_src
+
+
 
 ** Jupyter Notebook
 A simple IPython client for emacs porting jupyter notebooks / their functionality to emacs.
@@ -1355,7 +1422,8 @@ A simple IPython client for emacs porting jupyter notebooks / their functionalit
     :init
   (setq org-latex-impatient-tex2svg-bin
    ;;location of tex2svg executable
-  "/usr/local/Caskroom/miniconda/base/bin/tex2svg"))
+        (concat conda-path "bin/tex2svg")))
+  ;;"/usr/local/Caskroom/miniconda/base/bin/tex2svg"))
 
 #+end_src
 
@@ -1609,6 +1677,12 @@ Dial the GC threshold back down so that garbage collection happens more frequent
 #+end_src
 
 * Research Workflow
+
+
+#+begin_src emacs-lisp
+    (use-package async
+      :ensure t)
+#+end_src
 #+begin_src emacs-lisp
           (defun my/ ()
               "Fetch an arXiv paper into the local library from the current elfeed entry."
@@ -1628,25 +1702,67 @@ Dial the GC threshold back down so that garbage collection happens more frequent
             "~/research/references.bib" "~/research/paper-pdfs/")
             (message "Paper downloaded and stored: %s" pdf-url))
 #+end_src
+#+begin_src emacs-lisp
+
+  (use-package elfeed
+    :config
+    (defun my/elfeed-entry-to-arxiv ()
+      "Fetch an arXiv paper into the local library from the current elfeed entry."
+      (interactive)
+      (let* ((link (elfeed-entry-link elfeed-show-entry))
+             (match-idx (string-match "arxiv.org/abs/\\([0-9.]*\\)" link))
+             (matched-arxiv-number (match-string 1 link)))
+        (when matched-arxiv-number
+          (message "Going to arXiv: %s" matched-arxiv-number)
+          (arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/research/references.bib" "~/research/paper-pdfs/"))))
+    (setq elfeed-feeds
+          '("https://rss.arxiv.org/rss/cs.AI"
+            "https://rss.arxiv.org/rss/stat.ML"
+            "https://rss.arxiv.org/rss/cs.AR"
+            "https://rss.arxiv.org/rss/cs.CE"
+            "https://rss.arxiv.org/rss/cs.CL"
+            "https://rss.arxiv.org/rss/cs.CV"
+            "https://rss.arxiv.org/rss/cs.DB"
+            "https://rss.arxiv.org/rss/cs.DC"
+            "https://rss.arxiv.org/rss/cs.DS"
+            "https://rss.arxiv.org/rss/cs.GR"
+            "https://rss.arxiv.org/rss/cs.GT"
+            "https://rss.arxiv.org/rss/cs.IR"
+            "https://rss.arxiv.org/rss/cs.IT"
+            "https://rss.arxiv.org/rss/cs.LG"
+            "https://rss.arxiv.org/rss/cs.MA"
+            "https://rss.arxiv.org/rss/cs.NE"
+            "https://rss.arxiv.org/rss/cs.NI"
+            "https://rss.arxiv.org/rss/cs.OH"
+            "https://rss.arxiv.org/rss/cs.OS"
+            "https://rss.arxiv.org/rss/cs.PF"
+            "https://rss.arxiv.org/rss/cs.PL"
+            "https://rss.arxiv.org/rss/cs.RO"
+            "https://rss.arxiv.org/rss/cs.SE"
+            "https://rss.arxiv.org/rss/cs.SY"))
+    :bind (:map elfeed-show-mode-map
+                ("a" . my/elfeed-entry-to-arxiv))
+    )
+#+end_src
 
 
 #+begin_src emacs-lisp
-    (use-package elfeed
-      :config
-      (defun my/elfeed-entry-to-arxiv ()
-        "Fetch an arXiv paper into the local library from the current elfeed entry."
-        (interactive)
-        (let* ((link (elfeed-entry-link elfeed-show-entry))
-               (match-idx (string-match "arxiv.org/abs/\\([0-9.]*\\)" link))
-               (matched-arxiv-number (match-string 1 link)))
-          (when matched-arxiv-number
-            (message "Going to arXiv: %s" matched-arxiv-number)
-            (arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/research/references.bib" "~/research/paper-pdfs/"))))
-      (setq elfeed-feeds
-            '("https://rss.arxiv.org/rss/cs"))
-      :bind (:map elfeed-show-mode-map
-                  ("a" . my/elfeed-entry-to-arxiv))
-      )
+    ;;(use-package elfeed
+      ;;:config
+      ;;(defun my/elfeed-entry-to-arxiv ()
+        ;;"Fetch an arXiv paper into the local library from the current elfeed entry."
+        ;;(interactive)
+        ;;(let* ((link (elfeed-entry-link elfeed-show-entry))
+               ;;(match-idx (string-match "arxiv.org/abs/\\([0-9.]*\\)" link))
+               ;;(matched-arxiv-number (match-string 1 link)))
+          ;;(when matched-arxiv-number
+            ;;(message "Going to arXiv: %s" matched-arxiv-number)
+            ;;(arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/research/references.bib" "~/research/paper-pdfs/"))))
+      ;;(setq elfeed-feeds
+            ;;'("https://rss.arxiv.org/rss/cs"))
+      ;;:bind (:map elfeed-show-mode-map
+                  ;;("a" . my/elfeed-entry-to-arxiv))
+      ;;)
 
   ;; (use-package elfeed-score
   ;;   :ensure t
@@ -1697,15 +1813,44 @@ Dial the GC threshold back down so that garbage collection happens more frequent
       (general-create-definer ref-keybinds-set
         :keymaps 'bibtex-mode-map
         :prefix "SPC")
+  (use-package elfeed-score
+    :ensure t
+    :after elfeed
+    :config
+    (elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
+    (setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
+    (setq elfeed-search-print-entry-function #'elfeed-score-print-entry)
+    (elfeed-score-enable)
+    (define-key elfeed-search-mode-map "=" elfeed-score-map)
+    )
+
+
+  (use-package org-ref
+    :after org
+    :config
+    (setq bibtex-dialect 'biblatex)
+    (setq bibtex-completion-bibliography '("~/research/references.bib"
+                                           )
+          bibtex-completion-library-path '("~/research/paper-pdfs/")
+          bibtex-completion-notes-path "~/research/notes/"
+          bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
 
       (ref-keybinds-set
         "r"  '(:ignore t :which-key "ref mgmt")
        "rh" 'org-ref-bibtex-hydra/body
       "ri" 'org-ref-insert-link))
 
-      ;; (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
-      ;; (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
-      ;; )
+    (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
+    (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
+
+    (defun research/arxiv-to-my-lib (arxiv-id)
+      "Fetch an arXiv paper into the local library from the given arxive entry identifier."
+      (interactive "sEnter Arxive id: ")
+      (let ((arxiv-bib "~/research/references.bib")
+            (arxiv-pdf-dir (expand-file-name "~/research/paper-pdfs/")))
+      (arxiv-get-pdf-add-bibtex-entry arxiv-id arxiv-bib arxiv-pdf-dir)
+      (message "Paper fetched, bib entry created."))))
+
 
     (use-package ivy-bibtex
       :ensure t)

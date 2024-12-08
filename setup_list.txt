@@ -47,6 +47,8 @@ syncthing
 --cask keepassxc
 pass
 tldr
+graphviz
+--cask microsoft-teams
 
 
 
