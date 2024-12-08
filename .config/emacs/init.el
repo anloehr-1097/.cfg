@@ -633,20 +633,29 @@
 
 (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-config)))
 
-(use-package org-roam
-  :after org
-  :config
-  (setq org-roam-directory (file-truename "~/org-roam"))
-  (org-roam-db-autosync-mode)
-  (global-set-key (kbd "C-c r i") 'org-roam-node-insert)
-  (global-set-key (kbd "C-c r c") 'org-roam-capture)
-  (global-set-key (kbd "C-c r f") 'org-roam-node-find)
-  (setq org-roam-database-connector 'sqlite))
-
-
-(use-package org-roam-ui
-  :after org-roam
+(use-package emacsql
   :ensure t)
+
+(use-package emacsql-sqlite
+  :ensure t)
+
+
+  (use-package org-roam
+    :after org
+    :init
+    (setq org-roam-database-connector 'sqlite-builtin)
+    :config
+    (setq org-roam-directory (file-truename "~/org-roam"))
+    (org-roam-db-autosync-mode)
+    (global-set-key (kbd "C-c r i") 'org-roam-node-insert)
+    (global-set-key (kbd "C-c r c") 'org-roam-capture)
+    (global-set-key (kbd "C-c r f") 'org-roam-node-find)
+    )
+
+
+  (use-package org-roam-ui
+    :after org-roam
+    :ensure t)
 
 (defun efs/lsp-mode-setup ()
     (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
@@ -1278,6 +1287,8 @@
 
 (use-package citar
 :ensure t
+;;:config
+;;(setq citar-notes-paths '("~/research/notes/"))
 :custom
 (citar-bibliography
  '("~/research/references.bib")))

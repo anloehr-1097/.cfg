@@ -893,20 +893,29 @@ This snippet adds a hook to =org-mode= buffers so that =efs/org-babel-tangle-con
 * Org Roam Setup
 
 #+begin_src emacs-lisp
-      (use-package org-roam
-        :after org
-        :config
-        (setq org-roam-directory (file-truename "~/org-roam"))
-        (org-roam-db-autosync-mode)
-        (global-set-key (kbd "C-c r i") 'org-roam-node-insert)
-        (global-set-key (kbd "C-c r c") 'org-roam-capture)
-        (global-set-key (kbd "C-c r f") 'org-roam-node-find)
-        (setq org-roam-database-connector 'sqlite))
+  (use-package emacsql
+    :ensure t)
+
+  (use-package emacsql-sqlite
+    :ensure t)
 
 
-      (use-package org-roam-ui
-        :after org-roam
-        :ensure t)
+    (use-package org-roam
+      :after org
+      :init
+      (setq org-roam-database-connector 'sqlite-builtin)
+      :config
+      (setq org-roam-directory (file-truename "~/org-roam"))
+      (org-roam-db-autosync-mode)
+      (global-set-key (kbd "C-c r i") 'org-roam-node-insert)
+      (global-set-key (kbd "C-c r c") 'org-roam-capture)
+      (global-set-key (kbd "C-c r f") 'org-roam-node-find)
+      )
+
+
+    (use-package org-roam-ui
+      :after org-roam
+      :ensure t)
 #+end_src
 
 * Development
@@ -1909,6 +1918,8 @@ Dial the GC threshold back down so that garbage collection happens more frequent
 #+begin_src emacs-lisp
   (use-package citar
   :ensure t
+  ;;:config
+  ;;(setq citar-notes-paths '("~/research/notes/"))
   :custom
   (citar-bibliography
    '("~/research/references.bib")))
