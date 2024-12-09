@@ -636,8 +636,8 @@
 (use-package emacsql
   :ensure t)
 
-(use-package emacsql-sqlite
-  :ensure t)
+;; (use-package emacsql-sqlite
+;;   :ensure t)
 
 
   (use-package org-roam
@@ -985,7 +985,6 @@
 (setq org-latex-impatient-tex2svg-bin
  ;;location of tex2svg executable
       (concat conda-path "bin/tex2svg")))
-;;"/usr/local/Caskroom/miniconda/base/bin/tex2svg"))
 
 (use-package term
   :commands term
@@ -1201,7 +1200,7 @@
 
     (general-create-definer ref-keybinds-set
       :keymaps 'bibtex-mode-map
-      :prefix "SPC")
+      :prefix "SPC"))
 (use-package elfeed-score
   :ensure t
   :after elfeed
@@ -1222,12 +1221,16 @@
                                          )
         bibtex-completion-library-path '("~/research/paper-pdfs/")
         bibtex-completion-notes-path "~/research/notes/"
-        bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
+        bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n")
+
+    (general-create-definer ref-keybinds-set
+      :keymaps 'bibtex-mode-map
+      :prefix "SPC")
 
     (ref-keybinds-set
       "r"  '(:ignore t :which-key "ref mgmt")
      "rh" 'org-ref-bibtex-hydra/body
-    "ri" 'org-ref-insert-link))
+    "ri" 'org-ref-insert-link)
 
   (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
   (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
