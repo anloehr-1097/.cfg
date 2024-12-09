@@ -1796,7 +1796,7 @@ Dial the GC threshold back down so that garbage collection happens more frequent
       (setq bibtex-dialect 'biblatex)
       (setq bibtex-completion-bibliography '("~/research/references.bib")
             bibtex-completion-library-path '("~/research/paper-pdfs/")
-            bibtex-completion-notes-path "~/bibliography/notes/"
+            bibtex-completion-notes-path "~/research/notes/"
             bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
 
             bibtex-completion-additional-search-fields '(keywords)
@@ -1837,12 +1837,29 @@ Dial the GC threshold back down so that garbage collection happens more frequent
     :after org
     :config
     (setq bibtex-dialect 'biblatex)
-    (setq bibtex-completion-bibliography '("~/research/references.bib"
-                                           )
-          bibtex-completion-library-path '("~/research/paper-pdfs/")
-          bibtex-completion-notes-path "~/research/notes/"
-          bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n")
-          
+    ;; (setq bibtex-completion-bibliography '("~/research/references.bib"
+    ;;                                        )
+    ;;       bibtex-completion-library-path '("~/research/paper-pdfs/")
+    ;;       bibtex-completion-notes-path "~/research/notes/"
+    ;;       bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n")
+
+      (setq bibtex-completion-bibliography '("~/research/references.bib")
+            bibtex-completion-library-path '("~/research/paper-pdfs/")
+            bibtex-completion-notes-path "~/research/notes/"
+            bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
+
+            bibtex-completion-additional-search-fields '(keywords)
+            bibtex-completion-display-formats
+            '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
+              (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
+              (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+              (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+              (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
+            bibtex-completion-pdf-open-function
+            (lambda (fpath)
+              (call-process "open" nil 0 nil fpath)))
+
+
       (general-create-definer ref-keybinds-set
         :keymaps 'bibtex-mode-map
         :prefix "SPC")
