@@ -116,5 +116,12 @@ add-zsh-hook preexec preexec_hook_contour
 source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $HOME/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-# source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
-source ~/powerlevel10k/powerlevel10k.zsh-theme
+
+
+if [[ $MACHTYPE == arm* ]]; then
+    echo "M3 PRO MBP"
+    source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
+elif [[ $MACHTYPE == x86* ]]; then
+    echo "INTEL MBP"
+    source ~/powerlevel10k/powerlevel10k.zsh-theme
+fi
