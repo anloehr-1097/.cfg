@@ -1095,6 +1095,48 @@
     "~/research/references.bib" "~/research/paper-pdfs/")
     (message "Paper downloaded and stored: %s" pdf-url))
 
+;; (use-package elfeed
+;;   :ensure t
+;;   :config
+;;   (setq elfeed-show-entry-switch 'display-buffer)
+;;   (defun my/elfeed-entry-to-arxiv ()
+;;     "Fetch an arXiv paper into the local library from the current elfeed entry."
+;;     (interactive)
+;;     (let* ((link (elfeed-entry-link elfeed-show-entry))
+;;            (match-idx (string-match "arxiv.org/abs/\\([0-9.]*\\)" link))
+;;            (matched-arxiv-number (match-string 1 link)))
+;;       (when matched-arxiv-number
+;;         (message "Going to arXiv: %s" matched-arxiv-number)
+;;         (arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/research/references.bib" "~/research/paper-pdfs/"))))
+;;   :bind (:map elfeed-show-mode-map
+;;               ("a" . my/elfeed-entry-to-arxiv)))
+
+  ;; (setq elfeed-feeds
+  ;;       '("https://rss.arxiv.org/rss/cs.AI"
+  ;;         "https://rss.arxiv.org/rss/stat.ML"
+  ;;         "https://rss.arxiv.org/rss/cs.AR"
+  ;;         "https://rss.arxiv.org/rss/cs.CE"
+  ;;         "https://rss.arxiv.org/rss/cs.CL"
+  ;;         "https://rss.arxiv.org/rss/cs.CV"
+  ;;         "https://rss.arxiv.org/rss/cs.DB"
+  ;;         "https://rss.arxiv.org/rss/cs.DC"
+  ;;         "https://rss.arxiv.org/rss/cs.DS"
+  ;;         "https://rss.arxiv.org/rss/cs.GR"
+  ;;         "https://rss.arxiv.org/rss/cs.GT"
+  ;;         "https://rss.arxiv.org/rss/cs.IR"
+  ;;         "https://rss.arxiv.org/rss/cs.IT"
+  ;;         "https://rss.arxiv.org/rss/cs.LG"
+  ;;         "https://rss.arxiv.org/rss/cs.MA"
+  ;;         "https://rss.arxiv.org/rss/cs.NE"
+  ;;         "https://rss.arxiv.org/rss/cs.NI"
+  ;;         "https://rss.arxiv.org/rss/cs.OH"
+  ;;         "https://rss.arxiv.org/rss/cs.OS"
+  ;;         "https://rss.arxiv.org/rss/cs.PF"
+  ;;         "https://rss.arxiv.org/rss/cs.PL"
+  ;;         "https://rss.arxiv.org/rss/cs.RO"
+  ;;         "https://rss.arxiv.org/rss/cs.SE"
+  ;;         "https://rss.arxiv.org/rss/cs.SY"))
+
 (use-package elfeed
   :config
   (defun my/elfeed-entry-to-arxiv ()
@@ -1107,50 +1149,10 @@
         (message "Going to arXiv: %s" matched-arxiv-number)
         (arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/research/references.bib" "~/research/paper-pdfs/"))))
   (setq elfeed-feeds
-        '("https://rss.arxiv.org/rss/cs.AI"
-          "https://rss.arxiv.org/rss/stat.ML"
-          "https://rss.arxiv.org/rss/cs.AR"
-          "https://rss.arxiv.org/rss/cs.CE"
-          "https://rss.arxiv.org/rss/cs.CL"
-          "https://rss.arxiv.org/rss/cs.CV"
-          "https://rss.arxiv.org/rss/cs.DB"
-          "https://rss.arxiv.org/rss/cs.DC"
-          "https://rss.arxiv.org/rss/cs.DS"
-          "https://rss.arxiv.org/rss/cs.GR"
-          "https://rss.arxiv.org/rss/cs.GT"
-          "https://rss.arxiv.org/rss/cs.IR"
-          "https://rss.arxiv.org/rss/cs.IT"
-          "https://rss.arxiv.org/rss/cs.LG"
-          "https://rss.arxiv.org/rss/cs.MA"
-          "https://rss.arxiv.org/rss/cs.NE"
-          "https://rss.arxiv.org/rss/cs.NI"
-          "https://rss.arxiv.org/rss/cs.OH"
-          "https://rss.arxiv.org/rss/cs.OS"
-          "https://rss.arxiv.org/rss/cs.PF"
-          "https://rss.arxiv.org/rss/cs.PL"
-          "https://rss.arxiv.org/rss/cs.RO"
-          "https://rss.arxiv.org/rss/cs.SE"
-          "https://rss.arxiv.org/rss/cs.SY"))
+        '("https://rss.arxiv.org/rss/cs"))
   :bind (:map elfeed-show-mode-map
               ("a" . my/elfeed-entry-to-arxiv))
   )
-
-;;(use-package elfeed
-    ;;:config
-    ;;(defun my/elfeed-entry-to-arxiv ()
-      ;;"Fetch an arXiv paper into the local library from the current elfeed entry."
-      ;;(interactive)
-      ;;(let* ((link (elfeed-entry-link elfeed-show-entry))
-             ;;(match-idx (string-match "arxiv.org/abs/\\([0-9.]*\\)" link))
-             ;;(matched-arxiv-number (match-string 1 link)))
-        ;;(when matched-arxiv-number
-          ;;(message "Going to arXiv: %s" matched-arxiv-number)
-          ;;(arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/research/references.bib" "~/research/paper-pdfs/"))))
-    ;;(setq elfeed-feeds
-          ;;'("https://rss.arxiv.org/rss/cs"))
-    ;;:bind (:map elfeed-show-mode-map
-                ;;("a" . my/elfeed-entry-to-arxiv))
-    ;;)
 
 ;; (use-package elfeed-score
 ;;   :ensure t
@@ -1159,58 +1161,68 @@
 ;;   (define-key elfeed-search-mode-map "=" elfeed-score-map)
 ;;   (elfeed-score-enable))
 
-  ;;(setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
-  ;; (use-package elfeed-score
-  ;;   :ensure t
-  ;;   :after elfeed
-  ;;   :config
-  ;;   (setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
-  ;;   (elfeed-score-enable)
-  ;;   (define-key elfeed-search-mode-map "=" elfeed-score-map))
+;;(setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
+;; (use-package elfeed-score
+;;   :ensure t
+;;   :after elfeed
+;;   :config
+;;   (setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
+;;   (elfeed-score-enable)
+;;   (define-key elfeed-search-mode-map "=" elfeed-score-map))
 
-    ;;(elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
+;;(elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
 
-  (use-package org-ref
-    :after org
-    :config
-    (setq bibtex-dialect 'biblatex)
-    (setq bibtex-completion-bibliography '("~/research/references.bib")
-          bibtex-completion-library-path '("~/research/paper-pdfs/")
-          bibtex-completion-notes-path "~/research/notes/"
-          bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
+;; (use-package org-ref
+;;   :after org
+;;   :config
+;;   (setq bibtex-dialect 'biblatex)
+;;   (setq bibtex-completion-bibliography '("~/research/references.bib")
+;;         bibtex-completion-library-path '("~/research/paper-pdfs/")
+;;         bibtex-completion-notes-path "~/research/notes/"
+;;         bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
 
-          bibtex-completion-additional-search-fields '(keywords)
-          bibtex-completion-display-formats
-          '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
-            (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
-            (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-            (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-            (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
-          bibtex-completion-pdf-open-function
-          (lambda (fpath)
-            (call-process "open" nil 0 nil fpath)))
-    (setq bibtex-autokey-year-length 4
-          bibtex-autokey-name-year-separator "-"
-          bibtex-autokey-year-title-separator "-"
-          bibtex-autokey-titleword-separator "-"
-          bibtex-autokey-titlewords 4
-          bibtex-autokey-titlewords-stretch 1
-          bibtex-autokey-titleword-length 5)
+;;         bibtex-completion-additional-search-fields '(keywords)
+;;         bibtex-completion-display-formats
+;;         '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
+;;           (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
+;;           (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+;;           (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+;;           (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
+;;         bibtex-completion-pdf-open-function
+;;         (lambda (fpath)
+;;           (call-process "open" nil 0 nil fpath)))
+;;   (setq bibtex-autokey-year-length 4
+;;         bibtex-autokey-name-year-separator "-"
+;;         bibtex-autokey-year-title-separator "-"
+;;         bibtex-autokey-titleword-separator "-"
+;;         bibtex-autokey-titlewords 4
+;;         bibtex-autokey-titlewords-stretch 1
+;;         bibtex-autokey-titleword-length 5)
+;;   (general-create-definer ref-keybinds-set
+;;     :keymaps 'bibtex-mode-map
+;;     :prefix "SPC"))
 
+;; (use-package elfeed-score
+;;   :ensure t
+;;   :after elfeed
+;;   :config
+;;   (elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
+;;   (setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
+;;   (setq elfeed-search-print-entry-function #'elfeed-score-print-entry)
+;;   (elfeed-score-enable)
+;;   (define-key elfeed-search-mode-map "=" elfeed-score-map)
+;;   )
 
-    (general-create-definer ref-keybinds-set
-      :keymaps 'bibtex-mode-map
-      :prefix "SPC"))
-(use-package elfeed-score
-  :ensure t
-  :after elfeed
+(use-package elfeed-org
   :config
-  (elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
-  (setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
-  (setq elfeed-search-print-entry-function #'elfeed-score-print-entry)
-  (elfeed-score-enable)
-  (define-key elfeed-search-mode-map "=" elfeed-score-map)
-  )
+  (setq rmh-elfeed-org-files (list "~/.config/emacs/elfeed.org"))
+  (elfeed-org)
+)
+
+(use-package elfeed-goodies
+  :ensure t
+  :config
+  (elfeed-goodies/setup))
 
 
 (use-package org-ref
@@ -1223,30 +1235,30 @@
   ;;       bibtex-completion-notes-path "~/research/notes/"
   ;;       bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n")
 
-    (setq bibtex-completion-bibliography '("~/research/references.bib")
-          bibtex-completion-library-path '("~/research/paper-pdfs/")
-          bibtex-completion-notes-path "~/research/notes/"
-          bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
+  (setq bibtex-completion-bibliography '("~/research/references.bib")
+        bibtex-completion-library-path '("~/research/paper-pdfs/")
+        bibtex-completion-notes-path "~/research/notes/"
+        bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
 
-          bibtex-completion-additional-search-fields '(keywords)
-          bibtex-completion-display-formats
-          '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
-            (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
-            (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-            (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-            (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
-          bibtex-completion-pdf-open-function
-          (lambda (fpath)
-            (call-process "open" nil 0 nil fpath)))
+        bibtex-completion-additional-search-fields '(keywords)
+        bibtex-completion-display-formats
+        '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
+          (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
+          (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+          (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+          (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
+        bibtex-completion-pdf-open-function
+        (lambda (fpath)
+          (call-process "open" nil 0 nil fpath)))
 
 
-    (general-create-definer ref-keybinds-set
-      :keymaps 'bibtex-mode-map
-      :prefix "SPC")
+  (general-create-definer ref-keybinds-set
+    :keymaps 'bibtex-mode-map
+    :prefix "SPC")
 
-    (ref-keybinds-set
-      "r"  '(:ignore t :which-key "ref mgmt")
-     "rh" 'org-ref-bibtex-hydra/body
+  (ref-keybinds-set
+    "r"  '(:ignore t :which-key "ref mgmt")
+    "rh" 'org-ref-bibtex-hydra/body
     "ri" 'org-ref-insert-link)
 
   (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
@@ -1257,12 +1269,12 @@
     (interactive "sEnter Arxive id: ")
     (let ((arxiv-bib "~/research/references.bib")
           (arxiv-pdf-dir (expand-file-name "~/research/paper-pdfs/")))
-    (arxiv-get-pdf-add-bibtex-entry arxiv-id arxiv-bib arxiv-pdf-dir)
-    (message "Paper fetched, bib entry created."))))
+      (arxiv-get-pdf-add-bibtex-entry arxiv-id arxiv-bib arxiv-pdf-dir)
+      (message "Paper fetched, bib entry created."))))
 
 
-  (use-package ivy-bibtex
-    :ensure t)
+(use-package ivy-bibtex
+  :ensure t)
 
 (use-package marginalia
   :ensure t
