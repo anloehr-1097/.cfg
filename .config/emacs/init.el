@@ -765,9 +765,16 @@
     :ensure t)
 
 
-  (custom-set-variables
-   '(conda-anaconda-home conda-path)
-   )
+  
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(conda-anaconda-home conda-path)
+ '(package-selected-packages
+   '(org-roam-bibtex citar-org-roam citar-embark citar org-ref ivy-bibtex elfeed-goodies elfeed-org elfeed all-the-icons-dired))
+ '(pdf-tools-handle-upgrades t))
 
 (use-package cuda-mode
   :ensure t)
@@ -1074,71 +1081,52 @@
 ;; Make gc pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 2 1000 1000))
 
+(use-package marginalia
+  :ensure t
+  :config
+  (marginalia-mode))
+
+(use-package embark
+  :ensure t
+  :bind
+  (("C-x C-e" . embark-act)         ;; pick some comfortable binding
+   ("C-;" . embark-dwim)        ;; good alternative: M-.
+   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+  :init
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+
+  ;; Show the Embark target at point via Eldoc. You may adjust the
+  ;; Eldoc strategy, if you want to see the documentation from
+  ;; multiple providers. Beware that using this can be a little
+  ;; jarring since the message shown in the minibuffer can be more
+  ;; than one line, causing the modeline to move up and down:
+
+  ;; (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
+  ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
+
+  :config
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+;; Consult users will also want the embark-consult package.
+(use-package embark-consult
+  :ensure t ; only need to install it, embark loads it after consult if found
+  :after embark
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
+
 (use-package async
   :ensure t)
 
-(defun my/ ()
-      "Fetch an arXiv paper into the local library from the current elfeed entry."
-      (interactive)
-      (let* ((link (elfeed-entry-link elfeed-show-entry))
-             (match-idx (string-match "arxiv.org/abs/\\([0-9.]*\\)" link))
-             (matched-arxiv-number (match-string 1 link)))
-        (when matched-arxiv-number
-          (message "Going to arXiv: %s" matched-arxiv-number)
-          (arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/research/references.bib" "~/research/paper-pdfs/"))))
-
-(defun org-ref-arxiv-download-and-store (arxiv-number)
-  "Download and store a paper from arXiv using its ARXIV-NUMBER."
-  (interactive "sEnter arXiv number: ")
-  (let* ((pdf-url (format "https://arxiv.org/pdf/%s.pdf" arxiv-number))))
-    (arxiv-get-pdf-add-bibtex-entry arxiv-number
-    "~/research/references.bib" "~/research/paper-pdfs/")
-    (message "Paper downloaded and stored: %s" pdf-url))
-
-;; (use-package elfeed
-;;   :ensure t
-;;   :config
-;;   (setq elfeed-show-entry-switch 'display-buffer)
-;;   (defun my/elfeed-entry-to-arxiv ()
-;;     "Fetch an arXiv paper into the local library from the current elfeed entry."
-;;     (interactive)
-;;     (let* ((link (elfeed-entry-link elfeed-show-entry))
-;;            (match-idx (string-match "arxiv.org/abs/\\([0-9.]*\\)" link))
-;;            (matched-arxiv-number (match-string 1 link)))
-;;       (when matched-arxiv-number
-;;         (message "Going to arXiv: %s" matched-arxiv-number)
-;;         (arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/research/references.bib" "~/research/paper-pdfs/"))))
-;;   :bind (:map elfeed-show-mode-map
-;;               ("a" . my/elfeed-entry-to-arxiv)))
-
-  ;; (setq elfeed-feeds
-  ;;       '("https://rss.arxiv.org/rss/cs.AI"
-  ;;         "https://rss.arxiv.org/rss/stat.ML"
-  ;;         "https://rss.arxiv.org/rss/cs.AR"
-  ;;         "https://rss.arxiv.org/rss/cs.CE"
-  ;;         "https://rss.arxiv.org/rss/cs.CL"
-  ;;         "https://rss.arxiv.org/rss/cs.CV"
-  ;;         "https://rss.arxiv.org/rss/cs.DB"
-  ;;         "https://rss.arxiv.org/rss/cs.DC"
-  ;;         "https://rss.arxiv.org/rss/cs.DS"
-  ;;         "https://rss.arxiv.org/rss/cs.GR"
-  ;;         "https://rss.arxiv.org/rss/cs.GT"
-  ;;         "https://rss.arxiv.org/rss/cs.IR"
-  ;;         "https://rss.arxiv.org/rss/cs.IT"
-  ;;         "https://rss.arxiv.org/rss/cs.LG"
-  ;;         "https://rss.arxiv.org/rss/cs.MA"
-  ;;         "https://rss.arxiv.org/rss/cs.NE"
-  ;;         "https://rss.arxiv.org/rss/cs.NI"
-  ;;         "https://rss.arxiv.org/rss/cs.OH"
-  ;;         "https://rss.arxiv.org/rss/cs.OS"
-  ;;         "https://rss.arxiv.org/rss/cs.PF"
-  ;;         "https://rss.arxiv.org/rss/cs.PL"
-  ;;         "https://rss.arxiv.org/rss/cs.RO"
-  ;;         "https://rss.arxiv.org/rss/cs.SE"
-  ;;         "https://rss.arxiv.org/rss/cs.SY"))
-
 (use-package elfeed
+  :ensure t
   :config
+  (setq elfeed-db-directory (expand-file-name "elfeed" user-emacs-directory))
+  (setq elfeed-show-entry-switch 'display-buffer)
   (defun my/elfeed-entry-to-arxiv ()
     "Fetch an arXiv paper into the local library from the current elfeed entry."
     (interactive)
@@ -1148,72 +1136,10 @@
       (when matched-arxiv-number
         (message "Going to arXiv: %s" matched-arxiv-number)
         (arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/research/references.bib" "~/research/paper-pdfs/"))))
-  (setq elfeed-feeds
-        '("https://rss.arxiv.org/rss/cs"))
-  :bind (:map elfeed-show-mode-map
-              ("a" . my/elfeed-entry-to-arxiv))
   )
 
-;; (use-package elfeed-score
-;;   :ensure t
-;;   :after elfeed
-;;   :config
-;;   (define-key elfeed-search-mode-map "=" elfeed-score-map)
-;;   (elfeed-score-enable))
-
-;;(setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
-;; (use-package elfeed-score
-;;   :ensure t
-;;   :after elfeed
-;;   :config
-;;   (setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
-;;   (elfeed-score-enable)
-;;   (define-key elfeed-search-mode-map "=" elfeed-score-map))
-
-;;(elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
-
-;; (use-package org-ref
-;;   :after org
-;;   :config
-;;   (setq bibtex-dialect 'biblatex)
-;;   (setq bibtex-completion-bibliography '("~/research/references.bib")
-;;         bibtex-completion-library-path '("~/research/paper-pdfs/")
-;;         bibtex-completion-notes-path "~/research/notes/"
-;;         bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
-
-;;         bibtex-completion-additional-search-fields '(keywords)
-;;         bibtex-completion-display-formats
-;;         '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
-;;           (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
-;;           (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-;;           (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-;;           (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
-;;         bibtex-completion-pdf-open-function
-;;         (lambda (fpath)
-;;           (call-process "open" nil 0 nil fpath)))
-;;   (setq bibtex-autokey-year-length 4
-;;         bibtex-autokey-name-year-separator "-"
-;;         bibtex-autokey-year-title-separator "-"
-;;         bibtex-autokey-titleword-separator "-"
-;;         bibtex-autokey-titlewords 4
-;;         bibtex-autokey-titlewords-stretch 1
-;;         bibtex-autokey-titleword-length 5)
-;;   (general-create-definer ref-keybinds-set
-;;     :keymaps 'bibtex-mode-map
-;;     :prefix "SPC"))
-
-;; (use-package elfeed-score
-;;   :ensure t
-;;   :after elfeed
-;;   :config
-;;   (elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
-;;   (setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
-;;   (setq elfeed-search-print-entry-function #'elfeed-score-print-entry)
-;;   (elfeed-score-enable)
-;;   (define-key elfeed-search-mode-map "=" elfeed-score-map)
-;;   )
-
 (use-package elfeed-org
+  :after elfeed
   :config
   (setq rmh-elfeed-org-files (list "~/.config/emacs/elfeed.org"))
   (elfeed-org)
@@ -1224,17 +1150,10 @@
   :config
   (elfeed-goodies/setup))
 
-
 (use-package org-ref
   :after org
   :config
   (setq bibtex-dialect 'biblatex)
-  ;; (setq bibtex-completion-bibliography '("~/research/references.bib"
-  ;;                                        )
-  ;;       bibtex-completion-library-path '("~/research/paper-pdfs/")
-  ;;       bibtex-completion-notes-path "~/research/notes/"
-  ;;       bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n")
-
   (setq bibtex-completion-bibliography '("~/research/references.bib")
         bibtex-completion-library-path '("~/research/paper-pdfs/")
         bibtex-completion-notes-path "~/research/notes/"
@@ -1255,77 +1174,19 @@
   (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
   (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
 
-  ;; (defun org-ref-arxiv-download-and-store (arxiv-number)
-  ;;   "Download and store a paper from arXiv using its ARXIV-NUMBER."
-  ;;   (interactive "sEnter arXiv number: ")
-  ;;   (let* ((pdf-url (format "https://arxiv.org/pdf/%s.pdf" arxiv-number))))
-  ;;   (arxiv-get-pdf-add-bibtex-entry arxiv-number
-  ;;                                   "~/research/references.bib" "~/research/paper-pdfs/")
-  ;;   (message "Paper downloaded and stored: %s" pdf-url))
-
-  ;; (defun research/arxiv-to-my-lib (arxiv-id)
-  ;;   "Fetch an arXiv paper into the local library from the given arxive entry identifier."
-  ;;   (interactive "sEnter Arxive id: ")
-  ;;   (let ((arxiv-bib "~/research/references.bib")
-  ;;         (arxiv-pdf-dir (expand-file-name "~/research/paper-pdfs/")))
-  ;;     (arxiv-get-pdf-add-bibtex-entry arxiv-id arxiv-bib arxiv-pdf-dir)
-  ;;     (message "Paper fetched, bib entry created.")))
-
   (general-create-definer ref-keybinds-set
     :keymaps '(normal visual emacs bibtex-mode-map)
     :prefix "SPC")
 
   (ref-keybinds-set
-    "r"  '(:ignore t :which-key "ref mgmt")
-    "rh" 'org-ref-bibtex-hydra/body
-    "ri" 'org-ref-insert-link
-    "rd" 'org-ref-arxiv-download-and-store)
+   "r"  '(:ignore t :which-key "ref mgmt")
+   "rh" 'org-ref-bibtex-hydra/body
+   "ri" 'org-ref-insert-link
+   "rd" 'org-ref-arxiv-download-and-store)
   )
-
 
 (use-package ivy-bibtex
   :ensure t)
-
-(use-package marginalia
-  :ensure t
-  :config
-  (marginalia-mode))
-
-(use-package embark
-  :ensure t
-
-  :bind
-  (("C-x C-e" . embark-act)         ;; pick some comfortable binding
-   ("C-;" . embark-dwim)        ;; good alternative: M-.
-   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
-
-  :init
-
-  ;; Optionally replace the key help with a completing-read interface
-  (setq prefix-help-command #'embark-prefix-help-command)
-
-  ;; Show the Embark target at point via Eldoc. You may adjust the
-  ;; Eldoc strategy, if you want to see the documentation from
-  ;; multiple providers. Beware that using this can be a little
-  ;; jarring since the message shown in the minibuffer can be more
-  ;; than one line, causing the modeline to move up and down:
-
-  ;; (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
-  ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
-
-  :config
-
-  ;; Hide the mode line of the Embark live/completions buffers
-  (add-to-list 'display-buffer-alist
-               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                 nil
-                 (window-parameters (mode-line-format . none)))))
-
-;; Consult users will also want the embark-consult package.
-(use-package embark-consult
-  :ensure t ; only need to install it, embark loads it after consult if found
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package citar
 :ensure t
@@ -1342,6 +1203,7 @@
 :no-require
 :config (citar-embark-mode))
 
+
 (use-package citar-org-roam
 :after (citar org-roam)
 :config (citar-org-roam-mode))
@@ -1352,6 +1214,10 @@
 (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
 
 (server-start)
+
+(when (daemonp)
+(message "Home directory: %s" (getenv "HOME"))
+)
 
 (defun setup-theme (frame)
 (with-selected-frame frame
@@ -1370,3 +1236,9 @@
 
 (evil-define-key 'normal 'global (kbd "<leader>cl")
   'load-init-file)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
