@@ -1217,7 +1217,7 @@
   :config
   (setq rmh-elfeed-org-files (list "~/.config/emacs/elfeed.org"))
   (elfeed-org)
-)
+  )
 
 (use-package elfeed-goodies
   :ensure t
@@ -1252,25 +1252,35 @@
           (call-process "open" nil 0 nil fpath)))
 
 
+  (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
+  (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
+
+  ;; (defun org-ref-arxiv-download-and-store (arxiv-number)
+  ;;   "Download and store a paper from arXiv using its ARXIV-NUMBER."
+  ;;   (interactive "sEnter arXiv number: ")
+  ;;   (let* ((pdf-url (format "https://arxiv.org/pdf/%s.pdf" arxiv-number))))
+  ;;   (arxiv-get-pdf-add-bibtex-entry arxiv-number
+  ;;                                   "~/research/references.bib" "~/research/paper-pdfs/")
+  ;;   (message "Paper downloaded and stored: %s" pdf-url))
+
+  ;; (defun research/arxiv-to-my-lib (arxiv-id)
+  ;;   "Fetch an arXiv paper into the local library from the given arxive entry identifier."
+  ;;   (interactive "sEnter Arxive id: ")
+  ;;   (let ((arxiv-bib "~/research/references.bib")
+  ;;         (arxiv-pdf-dir (expand-file-name "~/research/paper-pdfs/")))
+  ;;     (arxiv-get-pdf-add-bibtex-entry arxiv-id arxiv-bib arxiv-pdf-dir)
+  ;;     (message "Paper fetched, bib entry created.")))
+
   (general-create-definer ref-keybinds-set
-    :keymaps 'bibtex-mode-map
+    :keymaps '(normal visual emacs bibtex-mode-map)
     :prefix "SPC")
 
   (ref-keybinds-set
     "r"  '(:ignore t :which-key "ref mgmt")
     "rh" 'org-ref-bibtex-hydra/body
-    "ri" 'org-ref-insert-link)
-
-  (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
-  (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
-
-  (defun research/arxiv-to-my-lib (arxiv-id)
-    "Fetch an arXiv paper into the local library from the given arxive entry identifier."
-    (interactive "sEnter Arxive id: ")
-    (let ((arxiv-bib "~/research/references.bib")
-          (arxiv-pdf-dir (expand-file-name "~/research/paper-pdfs/")))
-      (arxiv-get-pdf-add-bibtex-entry arxiv-id arxiv-bib arxiv-pdf-dir)
-      (message "Paper fetched, bib entry created."))))
+    "ri" 'org-ref-insert-link
+    "rd" 'org-ref-arxiv-download-and-store)
+  )
 
 
 (use-package ivy-bibtex
@@ -1342,10 +1352,6 @@
 (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
 
 (server-start)
-
-(when (daemonp)
-(message "Home directory: %s" (getenv "HOME"))
-)
 
 (defun setup-theme (frame)
 (with-selected-frame frame

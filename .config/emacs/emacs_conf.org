@@ -1758,144 +1758,154 @@ Dial the GC threshold back down so that garbage collection happens more frequent
 
 
 #+begin_src emacs-lisp
-        (use-package elfeed
-          :config
-          (defun my/elfeed-entry-to-arxiv ()
-            "Fetch an arXiv paper into the local library from the current elfeed entry."
-            (interactive)
-            (let* ((link (elfeed-entry-link elfeed-show-entry))
-                   (match-idx (string-match "arxiv.org/abs/\\([0-9.]*\\)" link))
-                   (matched-arxiv-number (match-string 1 link)))
-              (when matched-arxiv-number
-                (message "Going to arXiv: %s" matched-arxiv-number)
-                (arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/research/references.bib" "~/research/paper-pdfs/"))))
-          (setq elfeed-feeds
-                '("https://rss.arxiv.org/rss/cs"))
-          :bind (:map elfeed-show-mode-map
-                      ("a" . my/elfeed-entry-to-arxiv))
-          )
+    (use-package elfeed
+      :config
+      (defun my/elfeed-entry-to-arxiv ()
+        "Fetch an arXiv paper into the local library from the current elfeed entry."
+        (interactive)
+        (let* ((link (elfeed-entry-link elfeed-show-entry))
+               (match-idx (string-match "arxiv.org/abs/\\([0-9.]*\\)" link))
+               (matched-arxiv-number (match-string 1 link)))
+          (when matched-arxiv-number
+            (message "Going to arXiv: %s" matched-arxiv-number)
+            (arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/research/references.bib" "~/research/paper-pdfs/"))))
+      (setq elfeed-feeds
+            '("https://rss.arxiv.org/rss/cs"))
+      :bind (:map elfeed-show-mode-map
+                  ("a" . my/elfeed-entry-to-arxiv))
+      )
 
-        ;; (use-package elfeed-score
-        ;;   :ensure t
-        ;;   :after elfeed
-        ;;   :config
-        ;;   (define-key elfeed-search-mode-map "=" elfeed-score-map)
-        ;;   (elfeed-score-enable))
+    ;; (use-package elfeed-score
+    ;;   :ensure t
+    ;;   :after elfeed
+    ;;   :config
+    ;;   (define-key elfeed-search-mode-map "=" elfeed-score-map)
+    ;;   (elfeed-score-enable))
 
-        ;;(setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
-        ;; (use-package elfeed-score
-        ;;   :ensure t
-        ;;   :after elfeed
-        ;;   :config
-        ;;   (setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
-        ;;   (elfeed-score-enable)
-        ;;   (define-key elfeed-search-mode-map "=" elfeed-score-map))
+    ;;(setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
+    ;; (use-package elfeed-score
+    ;;   :ensure t
+    ;;   :after elfeed
+    ;;   :config
+    ;;   (setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
+    ;;   (elfeed-score-enable)
+    ;;   (define-key elfeed-search-mode-map "=" elfeed-score-map))
 
-        ;;(elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
+    ;;(elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
 
-        ;; (use-package org-ref
-        ;;   :after org
-        ;;   :config
-        ;;   (setq bibtex-dialect 'biblatex)
-        ;;   (setq bibtex-completion-bibliography '("~/research/references.bib")
-        ;;         bibtex-completion-library-path '("~/research/paper-pdfs/")
-        ;;         bibtex-completion-notes-path "~/research/notes/"
-        ;;         bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
+    ;; (use-package org-ref
+    ;;   :after org
+    ;;   :config
+    ;;   (setq bibtex-dialect 'biblatex)
+    ;;   (setq bibtex-completion-bibliography '("~/research/references.bib")
+    ;;         bibtex-completion-library-path '("~/research/paper-pdfs/")
+    ;;         bibtex-completion-notes-path "~/research/notes/"
+    ;;         bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
 
-        ;;         bibtex-completion-additional-search-fields '(keywords)
-        ;;         bibtex-completion-display-formats
-        ;;         '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
-        ;;           (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
-        ;;           (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-        ;;           (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-        ;;           (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
-        ;;         bibtex-completion-pdf-open-function
-        ;;         (lambda (fpath)
-        ;;           (call-process "open" nil 0 nil fpath)))
-        ;;   (setq bibtex-autokey-year-length 4
-        ;;         bibtex-autokey-name-year-separator "-"
-        ;;         bibtex-autokey-year-title-separator "-"
-        ;;         bibtex-autokey-titleword-separator "-"
-        ;;         bibtex-autokey-titlewords 4
-        ;;         bibtex-autokey-titlewords-stretch 1
-        ;;         bibtex-autokey-titleword-length 5)
-        ;;   (general-create-definer ref-keybinds-set
-        ;;     :keymaps 'bibtex-mode-map
-        ;;     :prefix "SPC"))
+    ;;         bibtex-completion-additional-search-fields '(keywords)
+    ;;         bibtex-completion-display-formats
+    ;;         '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
+    ;;           (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
+    ;;           (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+    ;;           (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+    ;;           (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
+    ;;         bibtex-completion-pdf-open-function
+    ;;         (lambda (fpath)
+    ;;           (call-process "open" nil 0 nil fpath)))
+    ;;   (setq bibtex-autokey-year-length 4
+    ;;         bibtex-autokey-name-year-separator "-"
+    ;;         bibtex-autokey-year-title-separator "-"
+    ;;         bibtex-autokey-titleword-separator "-"
+    ;;         bibtex-autokey-titlewords 4
+    ;;         bibtex-autokey-titlewords-stretch 1
+    ;;         bibtex-autokey-titleword-length 5)
+    ;;   (general-create-definer ref-keybinds-set
+    ;;     :keymaps 'bibtex-mode-map
+    ;;     :prefix "SPC"))
 
-        ;; (use-package elfeed-score
-        ;;   :ensure t
-        ;;   :after elfeed
-        ;;   :config
-        ;;   (elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
-        ;;   (setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
-        ;;   (setq elfeed-search-print-entry-function #'elfeed-score-print-entry)
-        ;;   (elfeed-score-enable)
-        ;;   (define-key elfeed-search-mode-map "=" elfeed-score-map)
-        ;;   )
+    ;; (use-package elfeed-score
+    ;;   :ensure t
+    ;;   :after elfeed
+    ;;   :config
+    ;;   (elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
+    ;;   (setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
+    ;;   (setq elfeed-search-print-entry-function #'elfeed-score-print-entry)
+    ;;   (elfeed-score-enable)
+    ;;   (define-key elfeed-search-mode-map "=" elfeed-score-map)
+    ;;   )
 
-        (use-package elfeed-org
-          :config
-          (setq rmh-elfeed-org-files (list "~/.config/emacs/elfeed.org"))
-          (elfeed-org)
-        )
+    (use-package elfeed-org
+      :config
+      (setq rmh-elfeed-org-files (list "~/.config/emacs/elfeed.org"))
+      (elfeed-org)
+      )
 
-        (use-package elfeed-goodies
-          :ensure t
-          :config
-          (elfeed-goodies/setup))
-
-
-        (use-package org-ref
-          :after org
-          :config
-          (setq bibtex-dialect 'biblatex)
-          ;; (setq bibtex-completion-bibliography '("~/research/references.bib"
-          ;;                                        )
-          ;;       bibtex-completion-library-path '("~/research/paper-pdfs/")
-          ;;       bibtex-completion-notes-path "~/research/notes/"
-          ;;       bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n")
-
-          (setq bibtex-completion-bibliography '("~/research/references.bib")
-                bibtex-completion-library-path '("~/research/paper-pdfs/")
-                bibtex-completion-notes-path "~/research/notes/"
-                bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
-
-                bibtex-completion-additional-search-fields '(keywords)
-                bibtex-completion-display-formats
-                '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
-                  (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
-                  (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-                  (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-                  (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
-                bibtex-completion-pdf-open-function
-                (lambda (fpath)
-                  (call-process "open" nil 0 nil fpath)))
+    (use-package elfeed-goodies
+      :ensure t
+      :config
+      (elfeed-goodies/setup))
 
 
-          (general-create-definer ref-keybinds-set
-            :keymaps 'bibtex-mode-map
-            :prefix "SPC")
+    (use-package org-ref
+      :after org
+      :config
+      (setq bibtex-dialect 'biblatex)
+      ;; (setq bibtex-completion-bibliography '("~/research/references.bib"
+      ;;                                        )
+      ;;       bibtex-completion-library-path '("~/research/paper-pdfs/")
+      ;;       bibtex-completion-notes-path "~/research/notes/"
+      ;;       bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n")
 
-          (ref-keybinds-set
-            "r"  '(:ignore t :which-key "ref mgmt")
-            "rh" 'org-ref-bibtex-hydra/body
-            "ri" 'org-ref-insert-link)
+      (setq bibtex-completion-bibliography '("~/research/references.bib")
+            bibtex-completion-library-path '("~/research/paper-pdfs/")
+            bibtex-completion-notes-path "~/research/notes/"
+            bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
 
-          (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
-          (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
+            bibtex-completion-additional-search-fields '(keywords)
+            bibtex-completion-display-formats
+            '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
+              (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
+              (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+              (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+              (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
+            bibtex-completion-pdf-open-function
+            (lambda (fpath)
+              (call-process "open" nil 0 nil fpath)))
 
-          (defun research/arxiv-to-my-lib (arxiv-id)
-            "Fetch an arXiv paper into the local library from the given arxive entry identifier."
-            (interactive "sEnter Arxive id: ")
-            (let ((arxiv-bib "~/research/references.bib")
-                  (arxiv-pdf-dir (expand-file-name "~/research/paper-pdfs/")))
-              (arxiv-get-pdf-add-bibtex-entry arxiv-id arxiv-bib arxiv-pdf-dir)
-              (message "Paper fetched, bib entry created."))))
+
+      (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
+      (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
+
+      ;; (defun org-ref-arxiv-download-and-store (arxiv-number)
+      ;;   "Download and store a paper from arXiv using its ARXIV-NUMBER."
+      ;;   (interactive "sEnter arXiv number: ")
+      ;;   (let* ((pdf-url (format "https://arxiv.org/pdf/%s.pdf" arxiv-number))))
+      ;;   (arxiv-get-pdf-add-bibtex-entry arxiv-number
+      ;;                                   "~/research/references.bib" "~/research/paper-pdfs/")
+      ;;   (message "Paper downloaded and stored: %s" pdf-url))
+
+      ;; (defun research/arxiv-to-my-lib (arxiv-id)
+      ;;   "Fetch an arXiv paper into the local library from the given arxive entry identifier."
+      ;;   (interactive "sEnter Arxive id: ")
+      ;;   (let ((arxiv-bib "~/research/references.bib")
+      ;;         (arxiv-pdf-dir (expand-file-name "~/research/paper-pdfs/")))
+      ;;     (arxiv-get-pdf-add-bibtex-entry arxiv-id arxiv-bib arxiv-pdf-dir)
+      ;;     (message "Paper fetched, bib entry created.")))
+
+      (general-create-definer ref-keybinds-set
+        :keymaps '(normal visual emacs bibtex-mode-map)
+        :prefix "SPC")
+
+      (ref-keybinds-set
+        "r"  '(:ignore t :which-key "ref mgmt")
+        "rh" 'org-ref-bibtex-hydra/body
+        "ri" 'org-ref-insert-link
+        "rd" 'org-ref-arxiv-download-and-store)
+      )
 
 
-        (use-package ivy-bibtex
-          :ensure t)
+    (use-package ivy-bibtex
+      :ensure t)
 #+end_src
 
 ** Embark
