@@ -1735,6 +1735,18 @@ Dial the GC threshold back down so that garbage collection happens more frequent
       :ensure t)
 #+end_src
 
+** Custom functions
+
+
+#+begin_src emacs-lisp
+  (defun org-ref-arxiv-download-and-store (arxiv-number)
+    "Download and store a paper from arXiv using its ARXIV-NUMBER."
+    (interactive "sEnter arXiv number: ")
+    (let* ((pdf-url (format "https://arxiv.org/pdf/%s.pdf" arxiv-number))))
+    (arxiv-get-pdf-add-bibtex-entry arxiv-number
+                                    "~/research/references.bib" "~/research/paper-pdfs/")
+    (message "Paper downloaded and stored: %s" pdf-url))
+#+end_src
 
 ** Elfeed
 #+begin_src emacs-lisp
@@ -1767,6 +1779,21 @@ Dial the GC threshold back down so that garbage collection happens more frequent
     :ensure t
     :config
     (elfeed-goodies/setup))
+#+end_src
+
+#+begin_src emacs-lisp
+
+  (use-package elfeed-score
+    :ensure t
+    :after elfeed
+    :config
+    (elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
+    ;;(setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
+    (setq elfeed-search-print-entry-function #'elfeed-score-print-entry)
+    (elfeed-score-enable)
+    (define-key elfeed-search-mode-map "=" elfeed-score-map)
+    )
+
 #+end_src
 
 ** Org Ref
@@ -1830,9 +1857,9 @@ Dial the GC threshold back down so that garbage collection happens more frequent
   :no-require
   :config (citar-embark-mode))
 
-  
+
   (use-package citar-org-roam
-  :after (citar org-roam)
+    :after (citar org-roam)
   :config (citar-org-roam-mode))
 
 #+end_src

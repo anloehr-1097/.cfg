@@ -765,16 +765,9 @@
     :ensure t)
 
 
-  
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(conda-anaconda-home conda-path)
- '(package-selected-packages
-   '(org-roam-bibtex citar-org-roam citar-embark citar org-ref ivy-bibtex elfeed-goodies elfeed-org elfeed all-the-icons-dired))
- '(pdf-tools-handle-upgrades t))
+  (custom-set-variables
+   '(conda-anaconda-home conda-path)
+   )
 
 (use-package cuda-mode
   :ensure t)
@@ -1122,6 +1115,14 @@
 (use-package async
   :ensure t)
 
+(defun org-ref-arxiv-download-and-store (arxiv-number)
+  "Download and store a paper from arXiv using its ARXIV-NUMBER."
+  (interactive "sEnter arXiv number: ")
+  (let* ((pdf-url (format "https://arxiv.org/pdf/%s.pdf" arxiv-number))))
+  (arxiv-get-pdf-add-bibtex-entry arxiv-number
+                                  "~/research/references.bib" "~/research/paper-pdfs/")
+  (message "Paper downloaded and stored: %s" pdf-url))
+
 (use-package elfeed
   :ensure t
   :config
@@ -1149,6 +1150,17 @@
   :ensure t
   :config
   (elfeed-goodies/setup))
+
+(use-package elfeed-score
+  :ensure t
+  :after elfeed
+  :config
+  (elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
+  ;;(setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
+  (setq elfeed-search-print-entry-function #'elfeed-score-print-entry)
+  (elfeed-score-enable)
+  (define-key elfeed-search-mode-map "=" elfeed-score-map)
+  )
 
 (use-package org-ref
   :after org
@@ -1205,7 +1217,7 @@
 
 
 (use-package citar-org-roam
-:after (citar org-roam)
+  :after (citar org-roam)
 :config (citar-org-roam-mode))
 
 (use-package org-roam-bibtex
@@ -1236,9 +1248,3 @@
 
 (evil-define-key 'normal 'global (kbd "<leader>cl")
   'load-init-file)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
