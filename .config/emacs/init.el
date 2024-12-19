@@ -1137,6 +1137,7 @@
       (when matched-arxiv-number
         (message "Going to arXiv: %s" matched-arxiv-number)
         (arxiv-get-pdf-add-bibtex-entry matched-arxiv-number "~/research/references.bib" "~/research/paper-pdfs/"))))
+  (define-key elfeed-show-mode-map (kbd "C-c d p") 'my/elfeed-entry-to-arxiv)
   )
 
 (use-package elfeed-org
