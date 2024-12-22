@@ -1152,16 +1152,20 @@
   :config
   (elfeed-goodies/setup))
 
+;; (use-package elfeed-score
+  ;;   :ensure t
+  ;;   :after elfeed
+  ;;   :config
+  ;;   (elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
+  ;;   (setq elfeed-search-print-entry-function #'elfeed-score-print-entry)
+  ;;   ;;(setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
+  ;;   (progn
+  ;;     (elfeed-score-enable)
+  ;;     (define-key elfeed-search-mode-map "=" elfeed-score-map)
+  ;;     )
+  ;;   )
 (use-package elfeed-score
-  :ensure t
-  :after elfeed
-  :config
-  (elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
-  ;;(setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
-  (setq elfeed-search-print-entry-function #'elfeed-score-print-entry)
-  (elfeed-score-enable)
-  (define-key elfeed-search-mode-map "=" elfeed-score-map)
-  )
+  :ensure t)
 
 (use-package org-ref
   :after org
