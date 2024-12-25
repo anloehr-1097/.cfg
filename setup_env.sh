@@ -50,6 +50,7 @@ brew install pass
 brew install tldr
 brew install graphviz
 brew install --cask microsoft-teams
+brew install --cask xournal++
 
 # other tools possibly over git 
 # zsh-autosuggestions

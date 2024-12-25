@@ -1,3 +1,10 @@
+if [[ $MACHTYPE == arm* ]]; then
+    echo "M3 PRO MBP"
+    source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
+elif [[ $MACHTYPE == x86* ]]; then
+    echo "INTEL MBP"
+    source ~/powerlevel10k/powerlevel10k.zsh-theme
+fi
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -116,12 +123,3 @@ add-zsh-hook preexec preexec_hook_contour
 source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $HOME/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-
-
-if [[ $MACHTYPE == arm* ]]; then
-    echo "M3 PRO MBP"
-    source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
-elif [[ $MACHTYPE == x86* ]]; then
-    echo "INTEL MBP"
-    source ~/powerlevel10k/powerlevel10k.zsh-theme
-fi
