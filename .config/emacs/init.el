@@ -765,9 +765,16 @@
     :ensure t)
 
 
-  (custom-set-variables
-   '(conda-anaconda-home conda-path)
-   )
+  
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(conda-anaconda-home conda-path)
+ '(package-selected-packages
+   '(latex-pretty-symbols which-key wanderlust vterm visual-fill-column vertico undo-tree tramp-auto-auth svgo sqlite3 speed-type rainbow-delimiters python-mode python-black pipenv org-timeblock org-superstar org-roam-ui org-roam-bibtex org-ref org-noter-pdftools org-modern org-latex-impatient org-bullets orderless nov no-littering marginalia magic-latex-buffer lsp-ui lsp-python-ms lsp-pyright lsp-ivy linum-relative latex-preview-pane ivy-rich ivy-prescient ivy-bibtex helpful helm haskell-mode gruber-darker-theme graphviz-dot-mode git-commit general fzf forge flycheck-mypy flycheck-eglot fit-text-scale evil-surround evil-owl evil-nerd-commenter evil-indent-plus evil-collection eterm-256color eshell-git-prompt embark-consult elfeed-score elfeed-org elfeed-goodies ein editorconfig doom-themes doom-modeline dockerfile-mode docker-compose-mode djvu dired-single dired-open dired-hide-dotfiles default-text-scale dashboard dap-mode cuda-mode counsel-projectile conda company-box company-auctex command-log-mode cmake-mode cmake-ide clippy citar-org-roam citar-embark calfw-org calfw bind-key bibtex-utils auto-package-update auto-complete-auctex anaconda-mode all-the-icons-dired))
+ '(pdf-tools-handle-upgrades t))
 
 (use-package cuda-mode
   :ensure t)
@@ -1164,8 +1171,8 @@
   ;;     (define-key elfeed-search-mode-map "=" elfeed-score-map)
   ;;     )
   ;;   )
-(use-package elfeed-score
-  :ensure t)
+;; (use-package elfeed-score
+;;   :ensure t)
 
 (use-package org-ref
   :after org
@@ -1253,3 +1260,9 @@
 
 (evil-define-key 'normal 'global (kbd "<leader>cl")
   'load-init-file)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
