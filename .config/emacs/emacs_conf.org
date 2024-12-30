@@ -1877,6 +1877,14 @@ Dial the GC threshold back down so that garbage collection happens more frequent
 
 #+end_src
 
+
+
+** Anki
+#+begin_src emacs-lisp
+    (package-vc-install
+     '(anki-editor . (:url "https://github.com/anki-editor/anki-editor")))
+
+#+end_src
 * Start Emacs Server
 #+begin_src emacs-lisp
   (server-start)
