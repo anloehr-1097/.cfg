@@ -3,7 +3,7 @@ if [[ $MACHTYPE == arm* ]]; then
     source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
 elif [[ $MACHTYPE == x86* ]]; then
     echo "INTEL MBP"
-    source ~/powerlevel10k/powerlevel10k.zsh-theme
+    source "~/powerlevel10k/powerlevel10k.zsh-theme"
 fi
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]

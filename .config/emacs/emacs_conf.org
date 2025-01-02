@@ -1842,6 +1842,14 @@ Dial the GC threshold back down so that garbage collection happens more frequent
 #+begin_src emacs-lisp
   (use-package ivy-bibtex
     :ensure t)
+
+    (general-create-definer ivy-ref-keybinds-set
+      :keymaps '(normal visual emacs bibtex-mode-map)
+      :prefix "SPC")
+
+    (ivy-ref-keybinds-set
+     "r"  '(:ignore t :which-key "ref mgmt")
+     "rs" 'ivy-bibtex)
 #+end_src
 
 ** Citar
