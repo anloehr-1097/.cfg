@@ -1238,8 +1238,18 @@
 :config
 (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
 
-(package-vc-install
- '(anki-editor . (:url "https://github.com/anki-editor/anki-editor")))
+;; (setq package-vc-install-prompt nil)
+;; (package-vc-install
+;;  '(anki-editor . (:url "https://github.com/anki-editor/anki-editor")))
+
+(unless (package-installed-p 'vc-use-package)
+  (package-vc-install "https://github.com/slotThe/vc-use-package"))
+(require 'vc-use-package)
+
+(use-package anki-editor
+  :vc (:fetcher github :repo anki-editor/anki-editor)
+  :ensure t
+  )
 
 (server-start)
 
