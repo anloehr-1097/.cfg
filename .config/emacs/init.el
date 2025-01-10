@@ -766,9 +766,16 @@
     :ensure t)
 
 
-  (custom-set-variables
-   '(conda-anaconda-home conda-path)
-   )
+  
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(conda-anaconda-home conda-path)
+ '(org-agenda-files
+   '("/Users/anlhr/research/anki/independent_of_paper.org" "/Users/anlhr/org/Tasks.org" "/Users/anlhr/org/Habits.org" "/Users/anlhr/org/Birthdays.org" "/Users/anlhr/KeepInSync/Life.org" "/Users/anlhr/research/planning.org"))
+ '(pdf-tools-handle-upgrades t))
 
 (use-package cuda-mode
   :ensure t)
@@ -1252,6 +1259,17 @@
   :ensure t
   )
 
+  (general-create-definer anki-keybinds-set
+    :keymaps '(normal visual emacs)
+    :prefix "SPC")
+
+  (ref-keybinds-set
+   "a"  '(:ignore t :which-key "anki")
+   "ai" 'anki-editor-insert-note
+   "ap" '(:ignore t :which "push")
+   "apn" 'anki-editor-push-note-at-point
+   "apa" ' anki-editor-push-new-notes)
+
 (server-start)
 
 (when (daemonp)
@@ -1275,3 +1293,9 @@
 
 (evil-define-key 'normal 'global (kbd "<leader>cl")
   'load-init-file)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

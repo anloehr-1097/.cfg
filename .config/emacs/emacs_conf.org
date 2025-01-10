@@ -1904,6 +1904,16 @@ Dial the GC threshold back down so that garbage collection happens more frequent
     :ensure t
     )
 
+    (general-create-definer anki-keybinds-set
+      :keymaps '(normal visual emacs)
+      :prefix "SPC")
+
+    (ref-keybinds-set
+     "a"  '(:ignore t :which-key "anki")
+     "ai" 'anki-editor-insert-note
+     "ap" '(:ignore t :which "push")
+     "apn" 'anki-editor-push-note-at-point
+     "apa" ' anki-editor-push-new-notes)
 #+end_src
 * Start Emacs Server
 #+begin_src emacs-lisp
