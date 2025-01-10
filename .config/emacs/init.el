@@ -440,7 +440,8 @@
         '("~/org/Tasks.org"
           "~/org/Habits.org"
           "~/org/Birthdays.org"
-          "~/KeepInSync/Life.org")
+          "~/KeepInSync/Life.org"
+          "~/research/planning.org")
   ))
 
   (require 'org-habit)
