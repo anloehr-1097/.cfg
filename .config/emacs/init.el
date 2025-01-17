@@ -766,18 +766,9 @@
     :ensure t)
 
 
-  
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(conda-anaconda-home conda-path)
- '(org-agenda-files
-   '("~/research/reading_list.org" "/Users/anlhr/research/anki/independent_of_paper.org" "/Users/anlhr/org/Tasks.org" "/Users/anlhr/org/Habits.org" "/Users/anlhr/org/Birthdays.org" "/Users/anlhr/KeepInSync/Life.org" "/Users/anlhr/research/planning.org"))
- '(package-selected-packages
-   '(org-ref-ivy which-key vterm visual-fill-column vertico vc-use-package undo-tree speed-type rainbow-delimiters python-mode pipenv org-roam-ui org-roam-bibtex org-ref org-noter-pdftools org-latex-impatient org-bullets nov no-littering marginalia magic-latex-buffer lsp-ui lsp-ivy ivy-prescient ivy-bibtex helpful haskell-mode gruber-darker-theme graphviz-dot-mode general fzf forge flycheck-mypy evil-surround evil-owl evil-nerd-commenter evil-collection eterm-256color eshell-git-prompt embark-consult elfeed-score elfeed-org elfeed-goodies ein editorconfig doom-modeline djvu dired-open dired-hide-dotfiles dashboard dap-mode cuda-mode counsel-projectile conda company-box company-auctex command-log-mode cmake-mode clippy citar-org-roam citar-embark auto-package-update auto-complete-auctex async anki-editor-view anki-editor all-the-icons-dired))
- '(pdf-tools-handle-upgrades t))
+  (custom-set-variables
+   '(conda-anaconda-home conda-path)
+   )
 
 (use-package cuda-mode
   :ensure t)
@@ -1157,25 +1148,52 @@
   (elfeed-org)
   )
 
-(use-package elfeed-goodies
+;; (use-package elfeed-goodies
+;;   :ensure t
+;;   :config
+;;   (setq elfeed-goodies:entry-line-format
+;;         '("%-20{[%s]%}" ;; Date
+;;           "%-65{%t}" ;; Title
+;;           "%5{%s}" ;; Score
+;;           "%7{[%f]%}" ;; Feed
+;;           "%-10{%T%}" ;; Tags
+;;           ))
+;;   (elfeed-goodies/setup))
+
+(use-package elfeed-score
   :ensure t
   :config
-  (elfeed-goodies/setup))
+  (progn
+    (setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
+    (elfeed-score-enable)
+    (define-key elfeed-search-mode-map "=" elfeed-score-map) 
+    ))
 
-;; (use-package elfeed-score
-  ;;   :ensure t
-  ;;   :after elfeed
-  ;;   :config
-  ;;   (elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
-  ;;   (setq elfeed-search-print-entry-function #'elfeed-score-print-entry)
-  ;;   ;;(setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
-  ;;   (progn
-  ;;     (elfeed-score-enable)
-  ;;     (define-key elfeed-search-mode-map "=" elfeed-score-map)
+  (general-create-definer elfeed-keybinds-set
+    :keymaps '(normal visual elfeed-search-mode)
+    :prefix "SPC")
+
+  (elfeed-keybinds-set
+   "x"  '(:ignore t :which-key "elfeed mngmt")
+   "xs" 'elfeed-score-map
+   )
+
+; (setq elfeed-search-print-entry-function #'elfeed-goodies/entry-line-draw)
+
+  ;;   (use-package elfeed-score
+  ;;     :ensure t
+  ;;     :after elfeed
+  ;;     :config
+  ;;     (elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
+  ;;     (setq elfeed-search-print-entry-function #'elfeed-score-print-entry)
+  ;;     ;;(setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
+  ;;     (progn
+  ;;       (elfeed-score-enable)
+  ;;       (define-key elfeed-search-mode-map "=" elfeed-score-map)
+  ;;       )
   ;;     )
-  ;;   )
-;; (use-package elfeed-score
-;;   :ensure t)
+  ;; (use-package elfeed-score
+  ;;   :ensure t)
 
 (use-package org-ref
   :after org
@@ -1297,9 +1315,3 @@
 
 (evil-define-key 'normal 'global (kbd "<leader>cl")
   'load-init-file)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
