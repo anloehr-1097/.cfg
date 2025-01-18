@@ -775,6 +775,9 @@
  '(conda-anaconda-home conda-path)
  '(org-agenda-files
    '("/Users/anlhr/research/anki/independent_of_paper.org" "/Users/anlhr/org/Tasks.org" "/Users/anlhr/org/Habits.org" "/Users/anlhr/org/Birthdays.org" "/Users/anlhr/KeepInSync/Life.org" "/Users/anlhr/research/planning.org"))
+ '(package-selected-packages '(vc-use-package))
+ '(package-vc-selected-packages
+   '((vc-use-package :vc-backend Git :url "https://github.com/slotThe/vc-use-package")))
  '(pdf-tools-handle-upgrades t))
 
 (use-package cuda-mode
