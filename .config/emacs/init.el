@@ -1158,21 +1158,49 @@
   (elfeed-org)
   )
 
-(use-package elfeed-goodies
+;; (use-package elfeed-goodies
+;;   :ensure t
+;;   :config
+;;   (setq elfeed-goodies:entry-line-format
+;;         '("%-20{[%s]%}" ;; Date
+;;           "%-65{%t}" ;; Title
+;;           "%5{%s}" ;; Score
+;;           "%7{[%f]%}" ;; Feed
+;;           "%-10{%T%}" ;; Tags
+;;           ))
+;;   (elfeed-goodies/setup))
+
+(use-package elfeed-score
   :ensure t
   :config
-  (elfeed-goodies/setup))
+  (progn
+    (setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
+    (elfeed-score-enable)
+    (define-key elfeed-search-mode-map "=" elfeed-score-map) 
+    ))
 
-;; (use-package elfeed-score
-  ;;   :ensure t
-  ;;   :after elfeed
-  ;;   :config
-  ;;   (elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
-  ;;   (setq elfeed-search-print-entry-function #'elfeed-score-print-entry)
-  ;;   ;;(setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
-  ;;   (progn
-  ;;     (elfeed-score-enable)
-  ;;     (define-key elfeed-search-mode-map "=" elfeed-score-map)
+  (general-create-definer elfeed-keybinds-set
+    :keymaps '(normal visual elfeed-search-mode)
+    :prefix "SPC")
+
+  (elfeed-keybinds-set
+   "x"  '(:ignore t :which-key "elfeed mngmt")
+   "xs" 'elfeed-score-map
+   )
+
+; (setq elfeed-search-print-entry-function #'elfeed-goodies/entry-line-draw)
+
+  ;;   (use-package elfeed-score
+  ;;     :ensure t
+  ;;     :after elfeed
+  ;;     :config
+  ;;     (elfeed-score-load-score-file "~/.config/emacs/elfeed.score") 
+  ;;     (setq elfeed-search-print-entry-function #'elfeed-score-print-entry)
+  ;;     ;;(setq elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
+  ;;     (progn
+  ;;       (elfeed-score-enable)
+  ;;       (define-key elfeed-search-mode-map "=" elfeed-score-map)
+  ;;       )
   ;;     )
   ;;   )
 ;; (use-package elfeed-score
@@ -1199,6 +1227,8 @@
           (call-process "open" nil 0 nil fpath)))
 
 
+
+  (require 'org-ref-ivy)
   (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
   (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
 
