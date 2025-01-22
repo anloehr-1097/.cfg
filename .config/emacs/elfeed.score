@@ -1,0 +1,45 @@
+;;; Elfeed score file for machine learning and GPU programming
+
+(("version" 10)
+ ("title"
+  (:text "representation learning" :value 400 :type w)
+  (:text "machine learning" :value 100 :type w)
+  (:text "deep learning" :value 100 :type w)
+  (:text "neural network" :value 80 :type w)
+  (:text "AI" :value 60 :type w)
+  (:text "artificial intelligence" :value 60 :type w)
+  (:text "data science" :value 50 :type w)
+  (:text "GPU" :value 200 :type w)
+  (:text "CUDA" :value 200 :type w)
+  (:text "parallel computing" :value 60 :type w))
+ ("content"
+  (:text "tensorflow" :value 40 :type w)
+  (:text "pytorch" :value 40 :type w)
+  (:text "scikit-learn" :value 30 :type w)
+  (:text "keras" :value 30 :type w)
+  (:text "OpenCL" :value 40 :type w)
+  (:text "NVIDIA" :value 50 :type w)
+  (:text "AMD" :value 40 :type w)
+  (:text "representation learning" :value 200 :type w)
+  (:text "embedding" :value 200 :type w))
+ ("title-or-content"
+  (:text "reinforcement learning" :title-value 70 :content-value 50 :type w)
+  (:text "natural language processing" :title-value 70 :content-value 50 :type w)
+  (:text "computer vision" :title-value 70 :content-value 50 :type w)
+  (:text "GPU optimization" :title-value 80 :content-value 60 :type w))
+ ("feed"
+  (:text "arXiv.org" :value 20 :type S :attr t)
+  (:text "Google AI Blog" :value 30 :type S :attr t)
+  (:text "OpenAI" :value 30 :type S :attr t)
+  (:text "NVIDIA Developer Blog" :value 40 :type S :attr t)
+  (:text "AMD Developer Central" :value 30 :type S :attr t))
+ ("authors"
+  (:text "Yann LeCun" :value 50 :type S)
+  (:text "Geoffrey Hinton" :value 50 :type S)
+  (:text "Andrew Ng" :value 50 :type S)
+  (:text "Ian Goodfellow" :value 40 :type S))
+ ("link"
+  (:text "google.com" :value 25 :type S)
+  (:text "openai.com" :value 25 :type S)
+  (:text "nvidia.com" :value 25 :type S)
+  (:text "amd.com" :value 20 :type S)))
