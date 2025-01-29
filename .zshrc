@@ -1,8 +1,8 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-if [[ $MACHTYPE == arm* ]]; then
+if [[ $(uname -m) == arm* ]]; then
     echo "M3 PRO MBP"
     source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
-elif [[ $MACHTYPE == x86* ]]; then
+elif [[ $(uname -m) == x86* ]]; then
     echo "INTEL MBP"
     source "/Users/Andy/powerlevel10k/powerlevel10k.zsh-theme"
 fi
