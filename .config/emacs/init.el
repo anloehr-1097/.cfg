@@ -774,7 +774,7 @@
  ;; If there is more than one, they won't work right.
  '(conda-anaconda-home conda-path)
  '(org-agenda-files
-   '("/Users/anlhr/research/anki/independent_of_paper.org" "/Users/anlhr/org/Tasks.org" "/Users/anlhr/org/Habits.org" "/Users/anlhr/org/Birthdays.org" "/Users/anlhr/KeepInSync/Life.org" "/Users/anlhr/research/planning.org"))
+   '("~/research/anki/graves15_neural_turin_machin.org" "/Users/Andy/research/planning.org"))
  '(package-selected-packages '(vc-use-package))
  '(package-vc-selected-packages
    '((vc-use-package :vc-backend Git :url "https://github.com/slotThe/vc-use-package")))
