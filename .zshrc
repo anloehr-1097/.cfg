@@ -1,9 +1,7 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-if [[ $MACHTYPE == arm* ]]; then
-    echo "M3 PRO MBP"
+if [[ $(uname -m) == arm* ]]; then
     source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
-elif [[ $MACHTYPE == x86* ]]; then
-    echo "INTEL MBP"
+elif [[ $(uname -m) == x86* ]]; then
     source "/Users/Andy/powerlevel10k/powerlevel10k.zsh-theme"
 fi
 # Initialization code that may require console input (password prompts, [y/n]
@@ -129,4 +127,5 @@ add-zsh-hook preexec preexec_hook_contour
 source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $HOME/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+set -o vi
 # eval "$(starship init zsh)"
