@@ -19,11 +19,17 @@ if [[ $OSTYPE == darwin* ]]; then
     export PATH="/Users/Andy/.config/emacs/bin:$PATH"
     export PATH="/Users/Andy/Library/Python/3.9/bin:$PATH"
     export PATH="/Users/Andy/lldb/lldb-mi/src:$PATH"
+
+    if [[ $MACHTYPE == x86* ]]; then
     # alias emacs="open -a ~/Applications/Emacs.app"
     # alias em="~/Applications/Emacs.app/Contents/MacOs/bin/emacsclient -cn"
     #alias emst='emacs --bg-daemon'
     alias code='open -a /Applications/Visual\ Studio\ Code.app'
     alias emst='emacs --daemon &'
+
+    elif [[ $MACHTYPE == arm* ]]; then
+        echo "Apple silicon."
+    fi
 
 elif [[ $OSTYPE == linux* ]]; then
     setxkbmap us
@@ -43,7 +49,7 @@ alias fzfp="fzf --preview='cat {}'"
 
 
 export PATH="/usr/local/Cellar/gdb/13.1/bin:$PATH"
-alias emc="emacsclient -nc"
+alias emc="emacsclient -nc &"
 alias emct="emacsclient -t"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -60,14 +66,14 @@ export PATH="/usr/local/Cellar/gdb/13.2/bin:$PATH"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/homebrew/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/usr/local/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
-        . "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh"
+    if [ -f "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
+        . "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh"
     else
-        export PATH="/opt/homebrew/Caskroom/miniconda/base/bin:$PATH"
+        export PATH="/usr/local/Caskroom/miniconda/base/bin:$PATH"
     fi
 fi
 unset __conda_setup
