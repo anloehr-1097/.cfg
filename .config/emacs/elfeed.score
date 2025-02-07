@@ -20,6 +20,9 @@
   (:text "representation learning" :value 200 :type w)
   (:text "embedding" :value 200 :type w)
   (:text "GPU" :value 200 :type w)
+  (:text "efficient" :value 200 :type w)
+  (:text "quantization" :value 200 :type w)
+  (:text "parallelism" :value 200 :type w)
   (:text "reinforcement learning" :value 200 :type w))
  ("title-or-content"
   (:text "reinforcement learning" :title-value 70 :content-value 50 :type w)

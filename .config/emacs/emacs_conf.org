@@ -815,28 +815,66 @@ We use [[https://github.com/joostkremers/visual-fill-column][visual-fill-column]
 
 To execute or export code in =org-mode= code blocks, you'll need to set up =org-babel-load-languages= for each language you'd like to use.  [[https://orgmode.org/worg/org-contrib/babel/languages.html][This page]] documents all of the languages that you can use with =org-babel=.
 
+
 #+begin_src emacs-lisp
 
-    ;;(defun org-babel-execute:dot2tex (body params)
-      ;;"Exec block of dot code with dot2tex."
-    ;;(let((out-file (cdr (assq :file params))))
-      ;;(with-temp-file out-file
-        ;;(call-process-region body nil "dot2tex" nil t nil "-ftikz"))))
+    (defvar org-babel-export-directory "~/org/babel-exports"
+      "Directory to save org-babel generated files.")
+
+  (setq org-image-actual-width nil)
+#+end_src
 
 
-  (defun org-babel-execute:dot2tex (body params)
-    "Execute a block of Dot code with dot2tex."
-    (let* ((out-file (or (cdr (assq :file params))
-                         (error "You need to specify a :file parameter")))
-           (cmdline (or (cdr (assq :cmdline params)) ""))
-           (cmd (format "dot2tex -o %s %s" (org-babel-process-file-name out-file) cmdline)))
-      (org-babel-eval cmd body)
-      nil))
+#+begin_src emacs-lisp
+(defun org-babel-execute:dot2tex (body params)
+  "Execute a DOT block, convert to LaTeX with dot2tex, then convert to PNG with pdflatex and Ghostscript."
+  (let* ((out-file (or (cdr (assoc :file params))
+                       (error "You need to specify a :file parameter")))
+         (export-dir (file-name-as-directory org-babel-export-directory))
+         (out-file-full (expand-file-name out-file export-dir))
+         (temp-dot (make-temp-file "graph" nil ".dot" export-dir))
+         (temp-tex (make-temp-file "graph" nil ".tex" export-dir))
+         (temp-pdf (make-temp-file "graph" nil ".pdf" export-dir))
+         (background-color (or (cdr (assoc :bg-color params)) "white"))) ;; Set background color
+    (unless (file-exists-p export-dir)
+      (make-directory export-dir t))
+
+    ;; Write DOT code to temp file
+    (with-temp-file temp-dot
+      (insert body))
+
+    ;; LaTeX preamble for background color
+    (let ((latex-preamble (format "\\usepackage{tikz}\\definecolor{background}{rgb}{1,1,1}\\pagecolor{background}")))
+      
+      ;; Run dot2tex with the preamble to generate the .tex file
+      (org-babel-eval
+       (format "dot2tex -tmath --margin 0pt --figpreamble='%s' %s > %s"
+               latex-preamble temp-dot temp-tex) "")
+
+      ;; Run pdflatex to convert .tex to .pdf
+      (org-babel-eval
+       (format "pdflatex -output-directory=%s -jobname=%s %s"
+               (file-name-directory temp-pdf)
+               (file-name-base temp-pdf)
+               temp-tex) "")
+
+      ;; Convert the PDF to PNG with Ghostscript, ensuring no transparency
+      (org-babel-eval
+       (format "gs -dBATCH -dNOPAUSE -dSAFER -sDEVICE=pngalpha -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -r300 -sOutputFile=%s %s"
+               out-file-full temp-pdf) "")
+
+      ;; Clean up temporary files
+      (delete-file temp-dot)
+      (delete-file temp-tex)
+      (delete-file temp-pdf)
+      (delete-file (concat (file-name-sans-extension temp-pdf) ".aux"))
+      (delete-file (concat (file-name-sans-extension temp-pdf) ".log"))
+      nil)))
+#+end_src
 
 
-    (defalias 'org-babel-execute:dot2tex 'org-babel-execute:dot)
+#+begin_src emacs-lisp
 
-    (add-to-list 'org-src-lang-modes '("dot2tex" . graphviz-dot))
 
     (with-eval-after-load 'org
       (org-babel-do-load-languages

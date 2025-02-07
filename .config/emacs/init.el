@@ -579,42 +579,71 @@
   ;:ensure t
   ;:hook (org-mode . org-modern-mode))
 
-;;(defun org-babel-execute:dot2tex (body params)
-    ;;"Exec block of dot code with dot2tex."
-  ;;(let((out-file (cdr (assq :file params))))
-    ;;(with-temp-file out-file
-      ;;(call-process-region body nil "dot2tex" nil t nil "-ftikz"))))
+(defvar org-babel-export-directory "~/org/babel-exports"
+    "Directory to save org-babel generated files.")
 
+(setq org-image-actual-width nil)
 
 (defun org-babel-execute:dot2tex (body params)
-  "Execute a block of Dot code with dot2tex."
-  (let* ((out-file (or (cdr (assq :file params))
+  "Execute a DOT block, convert to LaTeX with dot2tex, then convert to PNG with pdflatex and Ghostscript."
+  (let* ((out-file (or (cdr (assoc :file params))
                        (error "You need to specify a :file parameter")))
-         (cmdline (or (cdr (assq :cmdline params)) ""))
-         (cmd (format "dot2tex -o %s %s" (org-babel-process-file-name out-file) cmdline)))
-    (org-babel-eval cmd body)
-    nil))
+         (export-dir (file-name-as-directory org-babel-export-directory))
+         (out-file-full (expand-file-name out-file export-dir))
+         (temp-dot (make-temp-file "graph" nil ".dot" export-dir))
+         (temp-tex (make-temp-file "graph" nil ".tex" export-dir))
+         (temp-pdf (make-temp-file "graph" nil ".pdf" export-dir))
+         (background-color (or (cdr (assoc :bg-color params)) "white"))) ;; Set background color
+    (unless (file-exists-p export-dir)
+      (make-directory export-dir t))
 
+    ;; Write DOT code to temp file
+    (with-temp-file temp-dot
+      (insert body))
 
-  (defalias 'org-babel-execute:dot2tex 'org-babel-execute:dot)
+    ;; LaTeX preamble for background color
+    (let ((latex-preamble (format "\\usepackage{tikz}\\definecolor{background}{rgb}{1,1,1}\\pagecolor{background}")))
+      
+      ;; Run dot2tex with the preamble to generate the .tex file
+      (org-babel-eval
+       (format "dot2tex -tmath --margin 0pt --figpreamble='%s' %s > %s"
+               latex-preamble temp-dot temp-tex) "")
 
-  (add-to-list 'org-src-lang-modes '("dot2tex" . graphviz-dot))
+      ;; Run pdflatex to convert .tex to .pdf
+      (org-babel-eval
+       (format "pdflatex -output-directory=%s -jobname=%s %s"
+               (file-name-directory temp-pdf)
+               (file-name-base temp-pdf)
+               temp-tex) "")
 
-  (with-eval-after-load 'org
-    (org-babel-do-load-languages
-        'org-babel-load-languages
-        '((emacs-lisp . t)
-        (python . t)
-        (dot . t)
-        (dot2tex . t)
-        (latex . t)
-        )
-  )
+      ;; Convert the PDF to PNG with Ghostscript, ensuring no transparency
+      (org-babel-eval
+       (format "gs -dBATCH -dNOPAUSE -dSAFER -sDEVICE=pngalpha -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -r300 -sOutputFile=%s %s"
+               out-file-full temp-pdf) "")
 
-    ; (push '("conf-unix" . conf-unix) org-src-lang-modes)
-    ; (push '("dot" . graphviz-dot) org-src-lang-modes)
+      ;; Clean up temporary files
+      (delete-file temp-dot)
+      (delete-file temp-tex)
+      (delete-file temp-pdf)
+      (delete-file (concat (file-name-sans-extension temp-pdf) ".aux"))
+      (delete-file (concat (file-name-sans-extension temp-pdf) ".log"))
+      nil)))
 
-   )
+(with-eval-after-load 'org
+  (org-babel-do-load-languages
+      'org-babel-load-languages
+      '((emacs-lisp . t)
+      (python . t)
+      (dot . t)
+      (dot2tex . t)
+      (latex . t)
+      )
+)
+
+  ; (push '("conf-unix" . conf-unix) org-src-lang-modes)
+  ; (push '("dot" . graphviz-dot) org-src-lang-modes)
+
+ )
 
 (with-eval-after-load 'org
   ;; This is needed as of Org 9.2
@@ -766,19 +795,9 @@
     :ensure t)
 
 
-  
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(conda-anaconda-home conda-path)
- '(org-agenda-files
-   '("/Users/anlhr/research/anki/independent_of_paper.org" "/Users/anlhr/org/Tasks.org" "/Users/anlhr/org/Habits.org" "/Users/anlhr/org/Birthdays.org" "/Users/anlhr/KeepInSync/Life.org" "/Users/anlhr/research/planning.org"))
- '(package-selected-packages '(vc-use-package))
- '(package-vc-selected-packages
-   '((vc-use-package :vc-backend Git :url "https://github.com/slotThe/vc-use-package")))
- '(pdf-tools-handle-upgrades t))
+  (custom-set-variables
+   '(conda-anaconda-home conda-path)
+   )
 
 (use-package cuda-mode
   :ensure t)
@@ -1202,9 +1221,8 @@
   ;;       (define-key elfeed-search-mode-map "=" elfeed-score-map)
   ;;       )
   ;;     )
-  ;;   )
-;; (use-package elfeed-score
-;;   :ensure t)
+  ;; (use-package elfeed-score
+  ;;   :ensure t)
 
 (use-package org-ref
   :after org
@@ -1326,9 +1344,3 @@
 
 (evil-define-key 'normal 'global (kbd "<leader>cl")
   'load-init-file)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
