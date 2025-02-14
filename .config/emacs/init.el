@@ -239,17 +239,25 @@
 (use-package command-log-mode
   :commands command-log-mode)
 
-;;(use-package doom-themes
-  ;;:init (load-theme 'doom-palenight t))
+(defun black-bg ()
+  (set-background-color "black")
+  )
 
-(use-package gruber-darker-theme
+(use-package doom-themes
   :ensure t
-  :config
-  (load-theme 'gruber-darker t)
-  (set-background-color "black"))
+  :init (load-theme 'doom-tokyo-night t)
+  :hook ('black-bg))
 
-; (load-theme 'gruber-darker t)
-;(set-background-color "black")
+
+
+  ;; (use-package gruber-darker-theme
+  ;;   :ensure t
+  ;;   :config
+  ;;   (load-theme 'gruber-darker t)
+  ;;   (set-background-color "black"))
+
+                                        ; (load-theme 'gruber-darker t)
+                                        ;(set-background-color "black")
 
 (use-package all-the-icons)
 
@@ -1321,26 +1329,40 @@
    "apn" 'anki-editor-push-note-at-point
    "apa" ' anki-editor-push-new-notes)
 
-(server-start)
+(defun my-daemon-frame-setup (frame)
+  ;; Custom setup function run on emacsclient frames
+  (message "New emc frame created.")
+  (select-frame frame)
+  (set-background-color "black")
+  (set-frame-font "Iosevka Nerd Font-22")
+  )
 
-(when (daemonp)
-(message "Home directory: %s" (getenv "HOME"))
-)
-
-(defun setup-theme (frame)
-(with-selected-frame frame
-  (load-theme 'gruber-darker t)
-  (set-background-color "black")))
-
-(if (daemonp)
-    (add-hook 'after-make-frame-functions #'setup-theme)
-  (setup-theme (selected-frame)))
-
-(defun load-init-file ()
-  "Load a init file."
-  (interactive)
-  (load-file "~/.config/emacs/init.el"))
+(add-hook 'server-after-make-frame-hook 'my-daemon-frame-setup)
 
 
-(evil-define-key 'normal 'global (kbd "<leader>cl")
-  'load-init-file)
+;; (when (daemonp)
+;;   (message "Home directory: %s" (getenv "HOME"))
+
+;;   )
+
+;; (defun setup-theme (frame)
+;; (with-selected-frame frame
+;;   (load-theme 'gruber-darker t)
+;;   (set-background-color "black")))
+
+;; (if (daemonp)
+;;     (add-hook 'after-make-frame-functions #'setup-theme)
+;;   (setup-theme (selected-frame)))
+
+;; (defun load-init-file ()
+;;   "Load a init file."
+;;   (interactive)
+;;   (load-file "~/.config/emacs/init.el"))
+
+
+;; (evil-define-key 'normal 'global (kbd "<leader>cl")
+;;   'load-init-file)
+
+(require 'server)
+(unless (server-running-p)
+  (server-start))
