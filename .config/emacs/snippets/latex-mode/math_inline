@@ -2,4 +2,4 @@
 # name: math inline
 # key: math
 # --
-$$1$$0
+$ $1 $$0

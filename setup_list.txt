@@ -50,6 +50,7 @@ tldr
 graphviz
 --cask microsoft-teams
 --cask xournal++
+pandoc
 
 
 

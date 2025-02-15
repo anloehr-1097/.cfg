@@ -120,6 +120,9 @@
   :config
   (global-undo-tree-mode))
 
+(use-package smart-comment
+  :ensure t)
+
 ;; Make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
@@ -158,44 +161,40 @@
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump nil)
+  (setq evil-want-C-i-jump t)
   :config
   (evil-mode 1)
-  ;;(evil-set-leader nil (kbd "SPC"))
+  (evil-set-leader nil (kbd "SPC"))
                                         ;   window movement
   ;; (evil-define-key 'normal 'global (kbd "<leader>o")  'other-window)
-  (evil-define-key 'normal 'global (kbd "<leader>wh") 'windmove-left)
-  (evil-define-key 'normal 'global (kbd "<leader>wj") 'windmove-down)
-  (evil-define-key 'normal 'global (kbd "<leader>wk") 'windmove-up)
-  (evil-define-key 'normal 'global (kbd "<leader>wl") 'windmove-right)
-  (evil-define-key 'normal 'global (kbd "<leader>sv") 'split-window-horizontally)
-  (evil-define-key 'normal 'global (kbd "<leader>sh") 'split-window-vertically)
+  ;; (evil-define-key 'normal 'global (kbd "<leader>wh") 'windmove-left)
+  ;; (evil-define-key 'normal 'global (kbd "<leader>wj") 'windmove-down)
+  ;; (evil-define-key 'normal 'global (kbd "<leader>wk") 'windmove-up)
+  ;; (evil-define-key 'normal 'global (kbd "<leader>wl") 'windmove-right)
+  ;; (evil-define-key 'normal 'global (kbd "<leader>sv") 'split-window-horizontally)
+  ;; (evil-define-key 'normal 'global (kbd "<leader>sh") 'split-window-vertically)
   ; buffer select, buffer list, find file, delete window
   (evil-define-key 'normal 'global (kbd "<leader>b") 'counsel-switch-buffer)
   (evil-define-key 'normal 'global (kbd "<leader>B") 'list-buffers)
   (evil-define-key 'normal 'global (kbd "<leader>ff") 'find-file)
   (evil-define-key 'normal 'global (kbd "<leader>fs") 'rgrep)
-
-  (evil-define-key 'normal 'global (kbd "<leader>0") 'delete-window)
+  ; (evil-define-key 'normal 'global (kbd "<leader>0") 'delete-window) ;
   ; definition jumping (gd already goes to definition)
   (evil-define-key 'normal 'global (kbd "gD") 'xref-pop-marker-stack)
   ; allow replacement only in selection for visual block mode
-  (evil-define-key 'visual 'global (kbd "<leader>vbr")
-    'evil-visual-replace-replace-regexp)
+  ;; (evil-define-key 'visual 'global (kbd "<leader>vbr")
+  ;;   'evil-visual-replace-replace-regexp)
+  ;;
   ; commenting
   (evil-define-key '(normal visual) 'global (kbd "gc") 'smart-comment)
   ; indentation
-  (evil-define-key '(normal visual) 'global (kbd "gi") 'indent-region)
-
-
+  ; (evil-define-key '(normal visual) 'global (kbd "gi") 'indent-region)
   ;; tabbing
-  (evil-define-key '(normal visual) 'global (kbd "<leader>to") 'tab-new)
-  (evil-define-key '(normal visual) 'global (kbd "<leader>tn") 'tab-next)
+  (evil-define-key '(normal visual) 'global (kbd "<leader>tn") 'tab-new)
+  (evil-define-key '(normal visual) 'global (kbd "<leader>to") 'tab-next)
   (evil-define-key '(normal visual) 'global (kbd "<leader>tp") 'tab-previous)
   (evil-define-key '(normal visual) 'global (kbd "<leader>tx") 'tab-close)
   (evil-define-key '(normal) 'global (kbd "S-RET") 'org-insert-item)
-
-
 
   ; statusline commands (available as ":<command>")
   (evil-ex-define-cmd "done" 'save-buffers-kill-emacs)
@@ -378,7 +377,7 @@
   ("f" nil "finished" :exit t))
 
 (efs/leader-keys
-  "ts" '(hydra-text-scale/body :which-key "scale text"))
+  "st" '(hydra-text-scale/body :which-key "scale text"))
 
 (use-package djvu
   :ensure t)
@@ -432,7 +431,7 @@
 
 (defun efs/org-mode-setup ()
   (org-indent-mode)
-  (variable-pitch-mode 1)
+  (variable-pitch-mode 0)
   (visual-line-mode 1))
 
 (use-package org
@@ -1273,7 +1272,8 @@
   :ensure t)
 
   (general-create-definer ivy-ref-keybinds-set
-    :keymaps '(normal visual emacs bibtex-mode-map)
+    ;; :keymaps '(normal visual emacs bibtex-mode-map)
+    :keymaps '(normal visual emacs)
     :prefix "SPC")
 
   (ivy-ref-keybinds-set

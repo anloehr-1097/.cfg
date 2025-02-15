@@ -1,4 +1,4 @@
 # key: eq
 # name: mathmode
 # --
-\[$1\]$0
+\[ $1 \]$0
