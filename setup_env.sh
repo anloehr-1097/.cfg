@@ -51,6 +51,7 @@ brew install tldr
 brew install graphviz
 brew install --cask microsoft-teams
 brew install --cask xournal++
+brew install universal-ctags
 brew install pandoc
 
 # other tools possibly over git 

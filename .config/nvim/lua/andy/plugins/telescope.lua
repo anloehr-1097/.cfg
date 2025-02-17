@@ -21,10 +21,19 @@ return {
             local word = vim.fn.expand("<cWORD>")
             builtin.grep_string({ search = word })
         end)
-        vim.keymap.set('n', '<leader>fs', function()
-            builtin.grep_string({ search = vim.fn.input("Grep > ") })
-        end)
+        -- vim.keymap.set('n', '<leader>fs', function()
+        --     builtin.grep_string({ search = vim.fn.input("Grep > ") })
+        -- end)
+        vim.keymap.set('n', '<leader>fs', builtin.live_grep, {desc = "Live Grep Telescope"})
+        vim.keymap.set('n', '<leader>fb', builtin.buffers, {desc = "Buffers Telescope"})
+        vim.keymap.set('n', '<leader>ft', builtin.tags, {desc = "Tags Telescope"})
+        vim.keymap.set('n', '<leader>fm', builtin.man_pages, {desc = "Man Pages Telescope"})
+        vim.keymap.set('n', '<leader>fq', builtin.quickfix, {desc = "Quickfix List Telescope"})
+
+
+
         vim.keymap.set('n', '<leader>vh', builtin.help_tags, {})
+
     end
 }
 
