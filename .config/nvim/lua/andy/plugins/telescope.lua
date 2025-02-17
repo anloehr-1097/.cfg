@@ -31,9 +31,19 @@ return {
         vim.keymap.set('n', '<leader>fq', builtin.quickfix, {desc = "Quickfix List Telescope"})
 
 
+        local search_site_packages = function ()
 
+          local site_packages = vim.fn.system("python -c 'import site; print(site.getsitepackages()[0])'"):gsub("\n", "")
+          builtin.live_grep({
+            prompt_title = "Search Site Packages",
+            cwd = site_packages,
+          })
+        end;
+
+        vim.api.nvim_create_user_command('SearchSitePackages', search_site_packages, {})
+        vim.keymap.set('n', '<leader>fd', search_site_packages, {desc = "Find in dependencies"})
         vim.keymap.set('n', '<leader>vh', builtin.help_tags, {})
 
-    end
+    end;
 }
 
