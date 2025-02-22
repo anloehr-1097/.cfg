@@ -52,8 +52,8 @@ brew install graphviz
 brew install --cask microsoft-teams
 brew install --cask xournal++
 brew install universal-ctags
-brew install pandoc
-
+brew install pandoc  # pdf 
+brew install sdl2  # low level access keyboard, audio, graphics
 # other tools possibly over git 
 # zsh-autosuggestions
 #
