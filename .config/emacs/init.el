@@ -1373,9 +1373,15 @@
 (require 'server)
 (unless (server-running-p)
   (server-start))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
+(use-package google-translate
+  :ensure t)
+
+(setq google-translate-default-source-language "auto")
+
+
+; keybinds for translate
+(general-define-key
+  :keymaps '(normal insert visual emacs)
+  :prefix "SPC"
+  "l" 'google-translate-at-point)

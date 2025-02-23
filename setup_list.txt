@@ -52,6 +52,7 @@ graphviz
 --cask xournal++
 pandoc
 universal-ctags
+sdl2-config
 
 
 

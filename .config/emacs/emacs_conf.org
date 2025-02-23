@@ -2050,3 +2050,21 @@ Dial the GC threshold back down so that garbage collection happens more frequent
   (unless (server-running-p)
     (server-start))
 #+end_src
+* Translation
+#+begin_src emacs-lisp
+
+  (use-package google-translate
+    :ensure t)
+
+  (setq google-translate-default-source-language "auto")
+
+
+  ; keybinds for translate
+  (general-define-key
+    :keymaps '(normal insert visual emacs)
+    :prefix "SPC"
+    "l" 'google-translate-at-point)
+
+#+end_src
+
+
