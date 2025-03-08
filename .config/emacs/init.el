@@ -1043,11 +1043,6 @@
 (general-define-key
  :keymaps '(normal visual insert)
  :prefix "C-c"
- "f" '(dap-hydra t :wk "debugger")))
-
-(general-define-key
- :keymaps '(normal visual insert)
- :prefix "C-c"
  "f" 'trim-dollar-spaces)
 
 (use-package term
