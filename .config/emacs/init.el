@@ -1032,6 +1032,24 @@
  ;;location of tex2svg executable
       (concat conda-path "bin/tex2svg")))
 
+(defun trim-dollar-spaces ()
+  "Replace ' $' and '$ ' with '$' in the current buffer."
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward " \\$\\|\\$ " nil t)
+      (replace-match "$" nil t))))
+
+(general-define-key
+ :keymaps '(normal visual insert)
+ :prefix "C-c"
+ "f" '(dap-hydra t :wk "debugger")))
+
+(general-define-key
+ :keymaps '(normal visual insert)
+ :prefix "C-c"
+ "f" 'trim-dollar-spaces)
+
 (use-package term
   :commands term
   :config

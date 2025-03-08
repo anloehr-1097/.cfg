@@ -1450,6 +1450,8 @@ A simple IPython client for emacs porting jupyter notebooks / their functionalit
 #+end_src
 
 * Latex
+** General config for latex
+
 #+begin_src emacs-lisp
 
   (use-package tex
@@ -1486,6 +1488,37 @@ A simple IPython client for emacs porting jupyter notebooks / their functionalit
 
 #+end_src
 
+** trimming whitespace in latex eq
+
+*** trimming function
+#+begin_src emacs-lisp
+(defun trim-dollar-spaces ()
+  "Replace ' $' and '$ ' with '$' in the current buffer."
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward " \\$\\|\\$ " nil t)
+      (replace-match "$" nil t))))
+
+
+#+end_src
+
+
+
+*** keybinding
+#+begin_src emacs-lisp
+  (general-define-key
+   :keymaps '(normal visual insert)
+   :prefix "C-c"
+   "f" '(dap-hydra t :wk "debugger")))
+#+end_src
+
+#+begin_src emacs-lisp
+  (general-define-key
+   :keymaps '(normal visual insert)
+   :prefix "C-c"
+   "f" 'trim-dollar-spaces)
+#+end_src
 * Terminals
 ** term-mode
 
