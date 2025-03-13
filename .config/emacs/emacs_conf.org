@@ -469,8 +469,12 @@ Only activate this in specific types of buffers.
     :ensure t
     :config
     (vertico-mode 1)
-    :bind (("C-s" . swiper))
     )
+  
+    (general-define-key
+     :keymaps '(normal visual emacs)
+     :prefix "SPC"
+     "fb" 'swiper)
 
   (use-package counsel
     :bind (("C-x b" . 'counsel-switch-buffer)
@@ -1510,13 +1514,6 @@ A simple IPython client for emacs porting jupyter notebooks / their functionalit
   (general-define-key
    :keymaps '(normal visual insert)
    :prefix "C-c"
-   "f" '(dap-hydra t :wk "debugger")))
-#+end_src
-
-#+begin_src emacs-lisp
-  (general-define-key
-   :keymaps '(normal visual insert)
-   :prefix "C-c"
    "f" 'trim-dollar-spaces)
 #+end_src
 * Terminals
@@ -2094,10 +2091,11 @@ Dial the GC threshold back down so that garbage collection happens more frequent
 
   ; keybinds for translate
   (general-define-key
-    :keymaps '(normal insert visual emacs)
+    :keymaps '(normal visual emacs)
     :prefix "SPC"
     "l" 'google-translate-at-point)
 
 #+end_src
 
 
+     
