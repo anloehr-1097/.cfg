@@ -50,3 +50,7 @@ opt.undofile = true
 opt.laststatus = 3 -- always show status line
 
 
+
+-- fold
+opt.foldmethod = "expr"
+opt.foldexpr = "nvim_treesitter#foldexpr()"

@@ -65,3 +65,17 @@ keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 keymap.set("n", "<leader>vpp", "<cmd>e ~/.config/nvim/lua/andy<CR>");
 keymap.set("n", "<leader>ca", "<cmd>CellularAutomaton make_it_rain<CR>");
 
+
+
+
+
+
+
+
+-- Cmake
+keymap.set("n", "<leader>cg", ":CMakeGenerate<CR>", { desc = "Generate CMake." })
+keymap.set("n", "<leader>cb", ":CMakeBuild<CR>", { desc = "Build Cmake." })
+keymap.set("n", "<leader>cq", ":CMakeClose<CR>", { desc = "CMake Close." })
+keymap.set("n", "<leader>cd", ":CMakeClean<CR>", { desc = "CMake Clean." })
+--
+-- ;
