@@ -53,7 +53,7 @@ graphviz
 pandoc
 universal-ctags
 sdl2-config
-
+gh  # github cli
 
 
 # other tools possibly over git 
