@@ -12,9 +12,19 @@ return {
     "williamboman/mason-lspconfig.nvim",
     config = function()
       require("mason-lspconfig").setup({
-        ensure_installed = { "lua_ls", "pyright", "pylsp", "clangd", "bashls" },
+        -- ensure_installed = { "lua_ls", "pylsp", "clangd", "bashls", "pyright" },
+        ensure_installed = { "lua_ls", "pylsp", "clangd", "bashls"},
         automatic_installation = true,
-      })
+        handlers = {
+                    function(server_name)
+                        require("lspconfig")[server_name].setup({
+                            before_init = function(params)
+                                params.rootPath = vim.fn.getcwd() -- Force local root
+                            end
+                        })
+                    end,
+                }
+            })
     end
   },
 
@@ -31,12 +41,8 @@ return {
         "L3MON4D3/LuaSnip",
     },
     config = function()
-
-
-
       -- basic completion setup
             local cmp = require('cmp')
-
             cmp.setup({
                 snippet = {
                     expand = function(args)
@@ -68,11 +74,14 @@ return {
                 capabilities
             )
 
-      -- Detect virtual environment
+
       local venv_path = os.getenv('VIRTUAL_ENV')
+      local conda_path = os.getenv('CONDA_PREFIX')
       local py_path = nil
       if venv_path ~= nil then
           py_path = venv_path .. "/bin/python3"
+      elseif conda_path ~= nil then
+          py_path = conda_path .. "/bin/python3"
       else
           py_path = vim.g.python3_host_prog or "/usr/bin/python3"
       end
@@ -82,7 +91,7 @@ return {
         function (server_name)
           lspconfig[server_name].setup {
             capabilities = lspconfig_default_caps
-                        --capabilities,
+            --capabilities,
           }
         end,
 
@@ -108,27 +117,32 @@ return {
                             require("lsp_compl").attach(client, buffer)
                 end,
                 settings = {
-                    pylsp = {
-                        plugins = {
-                            pycodestyle = {
-                                ignore = {'E501', 'E252', 'E701'},
-                                maxLineLength = 79,
-                            },
-                            pylsp_mypy = { enabled = true, live = true,
-                                    config_sub_paths = {'.'},
-                                    overrides = {"--python-executable", py_path, true} ,
+                            pylsp = {
+                                plugins = {
+                                    pycodestyle = {
+                                        ignore = {'E501', 'E252', 'E701'},
+                                        maxLineLength = 79,
                                     },
-                        -- Add more pylsp-specific settings here
-                            jedi_completion = {
-                                enabled = true,
-                                fuzzy = true,
-                                include_params = true,
-                            },
+                                    pylsp_mypy = { enabled = true, live = true,
+                                        config_sub_paths = {'.'},
+                                        overrides = {"--python-executable", py_path, true} ,
+                                    },
+                                    -- Add more pylsp-specific settings here
+                                    jedi_completion = {
+                                        enabled = true,
+                                        fuzzy = true,
+                                        include_params = true,
+                                    },
+                                    jedi = {
+                                        environment = py_path
+
+                                    }
+                                }
+                            }
                         }
                     }
-                }
-            }
         end,
+               
         -- Add more custom handlers for other servers as needed
       })
 
