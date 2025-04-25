@@ -235,6 +235,9 @@
       fzf/position-bottom t
       fzf/window-height 15))
 
+(use-package wgrep
+  :ensure t)
+
 (use-package command-log-mode
   :commands command-log-mode)
 
@@ -848,6 +851,15 @@
 (use-package counsel-projectile
   :after projectile
   :config (counsel-projectile-mode))
+
+
+(general-create-definer projectile-bindings
+  :bind "SPC")
+
+(projectile-bindings
+ :states '(normal visual emacs)
+ "fp" 'projectile-find-file
+ )
 
 (use-package magit
   :commands magit-status

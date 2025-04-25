@@ -304,7 +304,9 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
     (evil-collection-init))
 #+end_src
 
-* FZF
+* Text Manipulation
+
+** Fuzzy finder
 
 #+begin_src emacs-lisp
 
@@ -321,7 +323,16 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
         fzf/position-bottom t
         fzf/window-height 15))
 
+
+
 #+end_src
+
+** wgrep
+#+begin_src emacs-lisp
+    (use-package wgrep
+      :ensure t)
+#+end_src
+
 * UI Configuration
 ** Command Log Mode
 
@@ -1230,22 +1241,30 @@ We also use [[https://github.com/sebastiencs/company-box][company-box]] to furth
 
 #+begin_src emacs-lisp
 
-  (use-package projectile
-    :diminish projectile-mode
-    :config (projectile-mode)
-    :custom ((projectile-completion-system 'ivy))
-    :bind-keymap
-    ("C-c p" . projectile-command-map)
-    :init
-    ;; NOTE: Set this to the folder where you keep your Git repos!
-    (when (file-directory-p "~/Code")
-      (setq projectile-project-search-path '("~/Code")))
-    (setq projectile-switch-project-action #'projectile-dired))
+    (use-package projectile
+      :diminish projectile-mode
+      :config (projectile-mode)
+      :custom ((projectile-completion-system 'ivy))
+      :bind-keymap
+      ("C-c p" . projectile-command-map)
+      :init
+      ;; NOTE: Set this to the folder where you keep your Git repos!
+      (when (file-directory-p "~/Code")
+        (setq projectile-project-search-path '("~/Code")))
+      (setq projectile-switch-project-action #'projectile-dired))
 
-  (use-package counsel-projectile
-    :after projectile
-    :config (counsel-projectile-mode))
+    (use-package counsel-projectile
+      :after projectile
+      :config (counsel-projectile-mode))
 
+
+    (general-create-definer projectile-bindings
+      :bind "SPC")
+
+    (projectile-bindings
+     :states '(normal visual emacs)
+     "fp" 'projectile-find-file
+     )
 #+end_src
 
 ** Magit
