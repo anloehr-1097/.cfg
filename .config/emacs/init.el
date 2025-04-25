@@ -139,6 +139,7 @@
   "f" '(:ignore t :which-key "find")
   "ff" 'counsel-find-file
   "fs" 'rgrep
+  "fb" 'swiper
   "e" '(:ignore t :which-key "emacs-specific")
   "ee" 'eval-region
   "eb" 'eval-buffer
@@ -812,9 +813,17 @@
     :ensure t)
 
 
-  (custom-set-variables
-   '(conda-anaconda-home conda-path)
-   )
+  
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(conda-anaconda-home conda-path)
+ '(custom-safe-themes
+   '("4594d6b9753691142f02e67b8eb0fda7d12f6cc9f1299a49b819312d6addad1d"
+     default))
+ '(pdf-tools-handle-upgrades t))
 
 (use-package cuda-mode
   :ensure t)
@@ -844,8 +853,14 @@
   ("C-c p" . projectile-command-map)
   :init
   ;; NOTE: Set this to the folder where you keep your Git repos!
-  (when (file-directory-p "~/Code")
-    (setq projectile-project-search-path '("~/Code")))
+  (setq projectile-project-search-path
+        (list (cons (expand-file-name "~/Projects") 2)
+              (cons (expand-file-name "~/research") 1)
+              (cons (expand-file-name "~/org-roam") 1)
+              (cons (expand-file-name "~/org") 1)
+                      ))
+  ;; (when (file-directory-p "~/Code")
+  ;;   (setq projectile-project-search-path '("~/Code")))
   (setq projectile-switch-project-action #'projectile-dired))
 
 (use-package counsel-projectile
@@ -854,12 +869,14 @@
 
 
 (general-create-definer projectile-bindings
-  :bind "SPC")
+  :prefix "SPC")
 
 (projectile-bindings
- :states '(normal visual emacs)
- "fp" 'projectile-find-file
- )
+  :states '(normal visual emacs)
+  "fp" 'projectile-find-file
+  )
+
+(expand-file-name "~")
 
 (use-package magit
   :commands magit-status
@@ -1364,12 +1381,12 @@
 (defun my-daemon-frame-setup (frame)
   ;; Custom setup function run on emacsclient frames
   (message "New emc frame created.")
-  (select-frame frame)
+  (select-frame (selected-frame))
   (set-background-color "black")
   (set-frame-font "Iosevka Nerd Font-22")
   )
 
-(add-hook 'server-after-make-frame-hook 'my-daemon-frame-setup)
+;; (add-hook 'server-after-make-frame-hook #'my-daemon-frame-setup)
 
 
 ;; (when (daemonp)
@@ -1410,3 +1427,9 @@
   :keymaps '(normal visual emacs)
   :prefix "SPC"
   "l" 'google-translate-at-point)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

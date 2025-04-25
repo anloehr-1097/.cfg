@@ -220,6 +220,7 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
     "f" '(:ignore t :which-key "find")
     "ff" 'counsel-find-file
     "fs" 'rgrep
+    "fb" 'swiper
     "e" '(:ignore t :which-key "emacs-specific")
     "ee" 'eval-region
     "eb" 'eval-buffer
@@ -1241,31 +1242,45 @@ We also use [[https://github.com/sebastiencs/company-box][company-box]] to furth
 
 #+begin_src emacs-lisp
 
-    (use-package projectile
-      :diminish projectile-mode
-      :config (projectile-mode)
-      :custom ((projectile-completion-system 'ivy))
-      :bind-keymap
-      ("C-c p" . projectile-command-map)
-      :init
-      ;; NOTE: Set this to the folder where you keep your Git repos!
-      (when (file-directory-p "~/Code")
-        (setq projectile-project-search-path '("~/Code")))
-      (setq projectile-switch-project-action #'projectile-dired))
+  (use-package projectile
+    :diminish projectile-mode
+    :config (projectile-mode)
+    :custom ((projectile-completion-system 'ivy))
+    :bind-keymap
+    ("C-c p" . projectile-command-map)
+    :init
+    ;; NOTE: Set this to the folder where you keep your Git repos!
+    (setq projectile-project-search-path
+          (list (cons (expand-file-name "~/Projects") 2)
+                (cons (expand-file-name "~/research") 1)
+                (cons (expand-file-name "~/org-roam") 1)
+                (cons (expand-file-name "~/org") 1)
+                        ))
+    ;; (when (file-directory-p "~/Code")
+    ;;   (setq projectile-project-search-path '("~/Code")))
+    (setq projectile-switch-project-action #'projectile-dired))
 
-    (use-package counsel-projectile
-      :after projectile
-      :config (counsel-projectile-mode))
+  (use-package counsel-projectile
+    :after projectile
+    :config (counsel-projectile-mode))
 
 
-    (general-create-definer projectile-bindings
-      :bind "SPC")
+  (general-create-definer projectile-bindings
+    :prefix "SPC")
 
-    (projectile-bindings
-     :states '(normal visual emacs)
-     "fp" 'projectile-find-file
-     )
+  (projectile-bindings
+    :states '(normal visual emacs)
+    "fp" 'projectile-find-file
+    )
 #+end_src
+
+#+begin_src emacs-lisp
+  (expand-file-name "~")
+
+#+end_src
+
+#+RESULTS:
+: /Users/anlhr
 
 ** Magit
 
@@ -2054,12 +2069,12 @@ Dial the GC threshold back down so that garbage collection happens more frequent
   (defun my-daemon-frame-setup (frame)
     ;; Custom setup function run on emacsclient frames
     (message "New emc frame created.")
-    (select-frame frame)
+    (select-frame (selected-frame))
     (set-background-color "black")
     (set-frame-font "Iosevka Nerd Font-22")
     )
 
-  (add-hook 'server-after-make-frame-hook 'my-daemon-frame-setup)
+  ;; (add-hook 'server-after-make-frame-hook #'my-daemon-frame-setup)
 
 
   ;; (when (daemonp)
