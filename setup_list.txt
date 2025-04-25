@@ -54,7 +54,7 @@ pandoc
 universal-ctags
 sdl2-config
 gh  # github cli
-
+cppcheck # static code analysis
 
 # other tools possibly over git 
 # zsh-autosuggestions
