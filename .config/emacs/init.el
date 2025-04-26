@@ -823,6 +823,11 @@
  '(custom-safe-themes
    '("4594d6b9753691142f02e67b8eb0fda7d12f6cc9f1299a49b819312d6addad1d"
      default))
+ '(org-agenda-files
+   '("~/research/reading_list.org" "/Users/anlhr/org/Tasks.org"
+     "/Users/anlhr/org/Habits.org" "/Users/anlhr/org/Birthdays.org"
+     "/Users/anlhr/KeepInSync/Life.org"
+     "/Users/anlhr/research/planning.org"))
  '(pdf-tools-handle-upgrades t))
 
 (use-package cuda-mode
