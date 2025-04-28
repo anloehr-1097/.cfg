@@ -2,7 +2,7 @@
 if [[ $(uname -m) == arm* ]]; then
     source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
 elif [[ $(uname -m) == x86* ]]; then
-    source "/Users/Andy/powerlevel10k/powerlevel10k.zsh-theme"
+    source "$HOME/powerlevel10k/powerlevel10k.zsh-theme"
 fi
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
