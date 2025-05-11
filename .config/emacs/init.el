@@ -166,14 +166,6 @@
   :config
   (evil-mode 1)
   (evil-set-leader nil (kbd "SPC"))
-                                        ;   window movement
-  ;; (evil-define-key 'normal 'global (kbd "<leader>o")  'other-window)
-  ;; (evil-define-key 'normal 'global (kbd "<leader>wh") 'windmove-left)
-  ;; (evil-define-key 'normal 'global (kbd "<leader>wj") 'windmove-down)
-  ;; (evil-define-key 'normal 'global (kbd "<leader>wk") 'windmove-up)
-  ;; (evil-define-key 'normal 'global (kbd "<leader>wl") 'windmove-right)
-  ;; (evil-define-key 'normal 'global (kbd "<leader>sv") 'split-window-horizontally)
-  ;; (evil-define-key 'normal 'global (kbd "<leader>sh") 'split-window-vertically)
   ; buffer select, buffer list, find file, delete window
   (evil-define-key 'normal 'global (kbd "<leader>b") 'counsel-switch-buffer)
   (evil-define-key 'normal 'global (kbd "<leader>B") 'list-buffers)
@@ -820,9 +812,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(conda-anaconda-home conda-path)
- '(custom-safe-themes
-   '("4594d6b9753691142f02e67b8eb0fda7d12f6cc9f1299a49b819312d6addad1d"
-     default))
+ '(org-agenda-files
+   '("~/research/reading_list.org" "/Users/Andy/org/Tasks.org" "/Users/Andy/org/Habits.org" "/Users/Andy/org/Birthdays.org" "/Users/Andy/KeepInSync/Life.org" "/Users/Andy/research/planning.org"))
  '(pdf-tools-handle-upgrades t))
 
 (use-package cuda-mode
