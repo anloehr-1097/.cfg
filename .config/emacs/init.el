@@ -144,7 +144,8 @@
   "ee" 'eval-region
   "eb" 'eval-buffer
   "b" 'counsel-switch-buffer
-  "k" 'kill-buffer)
+  "k" 'kill-buffer
+  "s" 'avy-goto-char)
 
   (general-create-definer efs/leader-keys
     :keymaps '(normal insert visual emacs)
@@ -1358,6 +1359,15 @@
 :after org-roam
 :config
 (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
+
+(general-create-definer citar-keybindings
+  ;; :keymaps '(normal visual emacs bibtex-mode-map)
+  :keymaps '(normal visual emacs)
+  :prefix "SPC")
+
+(citar-keybindings
+ "r"  '(:ignore t :which-key "ref mgmt")
+ "rc" 'citar-open)
 
 ;; (setq package-vc-install-prompt nil)
 ;; (package-vc-install
