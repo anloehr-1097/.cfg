@@ -248,14 +248,6 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
     :config
     (evil-mode 1)
     (evil-set-leader nil (kbd "SPC"))
-                                          ;   window movement
-    ;; (evil-define-key 'normal 'global (kbd "<leader>o")  'other-window)
-    ;; (evil-define-key 'normal 'global (kbd "<leader>wh") 'windmove-left)
-    ;; (evil-define-key 'normal 'global (kbd "<leader>wj") 'windmove-down)
-    ;; (evil-define-key 'normal 'global (kbd "<leader>wk") 'windmove-up)
-    ;; (evil-define-key 'normal 'global (kbd "<leader>wl") 'windmove-right)
-    ;; (evil-define-key 'normal 'global (kbd "<leader>sv") 'split-window-horizontally)
-    ;; (evil-define-key 'normal 'global (kbd "<leader>sh") 'split-window-vertically)
     ; buffer select, buffer list, find file, delete window
     (evil-define-key 'normal 'global (kbd "<leader>b") 'counsel-switch-buffer)
     (evil-define-key 'normal 'global (kbd "<leader>B") 'list-buffers)
