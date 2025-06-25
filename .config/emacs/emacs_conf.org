@@ -265,8 +265,8 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
     ; indentation
     ; (evil-define-key '(normal visual) 'global (kbd "gi") 'indent-region)
     ;; tabbing
-    (evil-define-key '(normal visual) 'global (kbd "<leader>tn") 'tab-new)
-    (evil-define-key '(normal visual) 'global (kbd "<leader>to") 'tab-next)
+    (evil-define-key '(normal visual) 'global (kbd "<leader>to") 'tab-new)
+    (evil-define-key '(normal visual) 'global (kbd "<leader>tn") 'tab-next)
     (evil-define-key '(normal visual) 'global (kbd "<leader>tp") 'tab-previous)
     (evil-define-key '(normal visual) 'global (kbd "<leader>tx") 'tab-close)
     (evil-define-key '(normal) 'global (kbd "S-RET") 'org-insert-item)
