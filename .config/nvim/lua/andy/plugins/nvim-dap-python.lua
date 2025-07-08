@@ -11,8 +11,6 @@ local function load_dap_configs()
 end
 -- Create a command to call the function from command mode in nvim
 vim.api.nvim_create_user_command("LoadDapConfig", load_dap_configs, {})
-<<<<<<< HEAD
-=======
 
 --- Create a DAP Python unittest configuration for a given test string
 --- @param opts string: The test (module, class, or method) to run, e.g. 'tests.test_module.TestClass.test_method'
@@ -44,7 +42,6 @@ end, {
 	nargs = 1, -- Require exactly one argument (the test string)
 	desc = "Create and print a DAP unittest configuration",
 })
->>>>>>> faf252e (current_state_windows)
 
 return {
 	{
@@ -56,7 +53,6 @@ return {
 		},
 		config = function(_, opts)
 			local venv_path = os.getenv("VIRTUAL_ENV")
-<<<<<<< HEAD
 			local conda_prefix = os.getenv("CONDA_PREFIX")
 
 			local venv_py
@@ -73,14 +69,14 @@ return {
 			if venv_py then
 				require("dap-python").setup(venv_py)
 			end
-=======
-			local venv_py
-			local dap_config
-			if venv_path then
-				venv_py = venv_path .. "/bin/python"
-			else
-				venv_py = "/usr/bin/python3"
-			end
+
+			-- local venv_py
+			-- local dap_config
+			-- if venv_path then
+			-- 	venv_py = venv_path .. "/bin/python"
+			-- else
+			-- 	venv_py = "/usr/bin/python3"
+			-- end
 
 			-- local cwd = vim.fn.getcwd()
 			-- local dap_config_file = cwd .. '/.nvim/dap.lua'
@@ -90,8 +86,7 @@ return {
 			--     Module_name = dap_config.module
 			--     Args = dap_config.args
 			-- end
-			require("dap-python").setup(venv_py)
->>>>>>> faf252e (current_state_windows)
+			-- require("dap-python").setup(venv_py)
 
 			local keymap = vim.keymap
 			local dap_py = require("dap-python")
