@@ -450,7 +450,8 @@
           "~/org/Birthdays.org"
           "~/KeepInSync/Life.org"
           "~/research/planning.org")
-  ))
+  )
+  :bind ("C-c l" . org-store-link))
 
   (require 'org-habit)
   (add-to-list 'org-modules 'org-habit)
@@ -806,9 +807,42 @@
     :ensure t)
 
 
-  (custom-set-variables
-   '(conda-anaconda-home conda-path)
-   )
+  
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(conda-anaconda-home conda-path)
+ '(org-agenda-files
+   '("/Users/anlhr/research/rl_overview.org" "/Users/anlhr/org/Tasks.org"
+     "/Users/anlhr/org/Habits.org" "/Users/anlhr/org/Birthdays.org"
+     "/Users/anlhr/KeepInSync/Life.org"
+     "/Users/anlhr/research/planning.org"))
+ '(package-selected-packages
+   '(all-the-icons-dired anki-editor anki-editor-view async
+			 auto-complete-auctex auto-package-update
+			 citar-embark citar-org-roam clippy cmake-mode
+			 command-log-mode company-auctex company-box
+			 conda counsel-projectile cuda-mode dap-mode
+			 dashboard dired-hide-dotfiles dired-open djvu
+			 doom-modeline doom-themes editorconfig ein
+			 elfeed-goodies elfeed-org elfeed-score
+			 embark-consult eshell-git-prompt
+			 eterm-256color evil-collection
+			 evil-nerd-commenter evil-owl evil-surround
+			 evil-visual-replace flycheck-mypy forge fzf
+			 general google-translate graphviz-dot-mode
+			 gruber-darker-theme haskell-mode helpful
+			 ivy-bibtex ivy-prescient kv lsp-ivy lsp-ui
+			 magic-latex-buffer marginalia no-littering
+			 nov org-bullets org-latex-impatient
+			 org-noter-pdftools org-ref org-roam-bibtex
+			 org-roam-ui pipenv python-mode
+			 rainbow-delimiters smart-comment speed-type
+			 undo-tree vc-use-package vertico
+			 visual-fill-column vterm wgrep which-key))
+ '(pdf-tools-handle-upgrades t))
 
 (use-package cuda-mode
   :ensure t)
@@ -1269,6 +1303,7 @@
   :after org
   :config
   (setq bibtex-dialect 'biblatex)
+  ;;(setq bibtex-completion-pdf-field "file")
   (setq bibtex-completion-bibliography '("~/research/references.bib")
         bibtex-completion-library-path '("~/research/paper-pdfs/")
         bibtex-completion-notes-path "~/research/notes/"
@@ -1283,7 +1318,9 @@
           (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
         bibtex-completion-pdf-open-function
         (lambda (fpath)
-          (call-process "open" nil 0 nil fpath)))
+          (call-process "open" nil 0 nil fpath))
+	  )
+
 
 
 
@@ -1421,3 +1458,9 @@
   :keymaps '(normal visual emacs)
   :prefix "SPC"
   "l" 'google-translate-at-point)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
