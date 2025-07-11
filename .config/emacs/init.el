@@ -30,8 +30,8 @@
 
 (add-hook 'emacs-startup-hook #'efs/display-startup-time)
 
-(defvar efs/default-font-size 200)
-(defvar efs/default-variable-font-size 200)
+(defvar efs/default-font-size 100)
+(defvar efs/default-variable-font-size 100)
 ;; uncomment this when working on smalelr screen
 ;;(defvar efs/default-font-size 160)
 ;;(defvar efs/default-variable-font-size 160)
@@ -40,8 +40,8 @@
 
 (setq default-frame-alist
       '((font . "Iosevka Nerd Font-22")
-        (width . 160)
-        (height . 160)))
+        (width . 50)
+        (height . 50)))
 (setq visible-bell nil)
 (setq ring-bell-function 'ignore)
 
