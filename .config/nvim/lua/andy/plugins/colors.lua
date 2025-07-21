@@ -84,11 +84,63 @@ end
 -- 		ColorMyPencils()
 -- 	end,
 -- }
+--
+-- return {
+-- 	"RostislavArts/naysayer.nvim",
+-- 	priority = 1000,
+-- 	lazy = false,
+-- 	config = function()
+-- 		vim.cmd.colorscheme("naysayer")
+-- 	end,
+-- }
+
+-- return {
+-- 	"maxmx03/solarized.nvim",
+-- 	lazy = false,
+-- 	priority = 1000,
+-- 	---@type solarized.config
+-- 	opts = {},
+-- 	config = function(_, opts)
+-- 		vim.o.termguicolors = true
+-- 		vim.o.background = "dark"
+-- 		require("solarized").setup(opts)
+-- 		vim.cmd.colorscheme("solarized")
+-- 	end,
+-- }
+
+-- return {
+-- 	"scottmckendry/cyberdream.nvim",
+-- 	lazy = false,
+-- 	priority = 1000,
+-- 	config = function()
+-- 		require("cyberdream").setup({
+-- 			transparent = false, -- Enable transparent background
+-- 			styles = {
+-- 				comments = { italic = false }, -- Disable italic for comments
+-- 				keywords = { italic = false }, -- Disable italic for keywords
+-- 			},
+-- 			-- Add any other configuration options here
+-- 		})
+-- 		vim.cmd("colorscheme cyberdream")
+-- 	end,
+-- }
+
+-- Neosolarized
 return {
 	"Tsuzat/Neosolarized.nvim",
 	lazy = false,
 	priority = 1000,
+
 	config = function()
+		require("NeoSolarized").setup({
+			transparent = false, -- Enable transparent background
+
+			styles = {
+				comments = { italic = false }, -- Disable italic for comments
+				keywords = { italic = false }, -- Disable italic for keywords
+			},
+			-- Add any other configuration options here
+		})
 		vim.cmd("colorscheme NeoSolarized")
 	end,
 }
