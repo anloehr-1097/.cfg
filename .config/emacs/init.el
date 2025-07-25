@@ -107,7 +107,7 @@
 ;;                 pdf-view-mode-hook))
 ;;   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-(set-face-attribute 'default nil :font "Iosevka Nerd Font-16" :height efs/default-font-size)
+(set-face-attribute 'default nil :font "Iosevka Nerd Font-18" :height efs/default-font-size)
 
 ;; Set the fixed pitch face
 (set-face-attribute 'fixed-pitch nil :font "Iosevka Nerd Font-18" :height efs/default-font-size)
@@ -416,17 +416,17 @@
       (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
 
     ;; Ensure that anything that should be fixed-pitch in Org files appears that way
-    (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-table nil    :inherit 'fixed-pitch)
-    (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
-    (set-face-attribute 'org-code nil     :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch :height 2.0)
+    (set-face-attribute 'org-table nil    :inherit 'fixed-pitch :height 2.0)
+    (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch :height 2.0)
+    (set-face-attribute 'org-code nil     :inherit '(shadow fixed-pitch) :height 2.0)
     (set-face-attribute 'org-table nil    :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-    (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-    (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch)
-    (set-face-attribute 'line-number nil :inherit 'fixed-pitch)
-    (set-face-attribute 'line-number-current-line nil :inherit 'fixed-pitch))
+    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch) :height 2.0)
+    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch) :height 2.0)
+    (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch) :height 2.0)
+    (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch :height 2.0)
+    (set-face-attribute 'line-number nil :inherit 'fixed-pitch :height 2.0)
+    (set-face-attribute 'line-number-current-line nil :inherit 'fixed-pitch :height 2.0))
 ;; set org directory
 (setq org-directory "~/org/")
 
@@ -807,44 +807,9 @@
     :ensure t)
 
 
-  
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(conda-anaconda-home conda-path)
- '(org-agenda-files
-   '("/Users/anlhr/org-roam/20250326103217-temporaldifferencelearning.org"
-     "/Users/anlhr/research/rl_overview.org"
-     "/Users/anlhr/org/Tasks.org" "/Users/anlhr/org/Habits.org"
-     "/Users/anlhr/org/Birthdays.org"
-     "/Users/anlhr/KeepInSync/Life.org"
-     "/Users/anlhr/research/planning.org"))
- '(package-selected-packages
-   '(all-the-icons-dired anki-editor anki-editor-view async
-			 auto-complete-auctex auto-package-update
-			 citar-embark citar-org-roam clippy cmake-mode
-			 command-log-mode company-auctex company-box
-			 conda counsel-projectile cuda-mode dap-mode
-			 dashboard dired-hide-dotfiles dired-open djvu
-			 doom-modeline doom-themes editorconfig ein
-			 elfeed-goodies elfeed-org elfeed-score
-			 embark-consult eshell-git-prompt
-			 eterm-256color evil-collection
-			 evil-nerd-commenter evil-owl evil-surround
-			 evil-visual-replace flycheck-mypy forge fzf
-			 general google-translate graphviz-dot-mode
-			 gruber-darker-theme haskell-mode helpful
-			 ivy-bibtex ivy-prescient kv lsp-ivy lsp-ui
-			 magic-latex-buffer marginalia no-littering
-			 nov org-bullets org-latex-impatient
-			 org-noter-pdftools org-ref org-roam-bibtex
-			 org-roam-ui pipenv python-mode
-			 rainbow-delimiters smart-comment speed-type
-			 undo-tree vc-use-package vertico
-			 visual-fill-column vterm wgrep which-key))
- '(pdf-tools-handle-upgrades t))
+  (custom-set-variables
+   '(conda-anaconda-home conda-path)
+   )
 
 (use-package cuda-mode
   :ensure t)
@@ -1460,9 +1425,3 @@
   :keymaps '(normal visual emacs)
   :prefix "SPC"
   "l" 'google-translate-at-point)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
