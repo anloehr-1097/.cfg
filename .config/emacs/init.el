@@ -465,8 +465,9 @@
       '(("~/org/Archive.org" :maxlevel . 1)
       ("~/org/Tasks.org" :maxlevel . 1)
       ("~/research/reading_list.org" :maxlevel . 3)
-      ("~/KeepInSync/refile.org" :maxlevel . 3)))
-
+      ("~/KeepInSync/refile.org" :maxlevel . 3)
+      ("~/research/backlog.org" :maxlevel . 3)
+	("~/research/paperlist.org" :maxlevel . 3)))
 
   ;; Save Org buffers after refiling!
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
