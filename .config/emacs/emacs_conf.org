@@ -682,6 +682,7 @@ This section contains the basic configuration for =org-mode= plus the configurat
           ("~/research/reading_list.org" :maxlevel . 3)
           ("~/KeepInSync/refile.org" :maxlevel . 3)
           ("~/research/backlog.org" :maxlevel . 3)
+          ("~/research/planning.org" :maxlevel . 3)
   	("~/research/paperlist.org" :maxlevel . 3)))
 
       ;; Save Org buffers after refiling!

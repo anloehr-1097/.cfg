@@ -55,6 +55,7 @@ universal-ctags
 sdl2-config
 gh  # github cli
 cppcheck # static code analysis
+uv
 
 # other tools possibly over git 
 # zsh-autosuggestions

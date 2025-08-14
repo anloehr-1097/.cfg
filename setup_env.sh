@@ -56,6 +56,7 @@ brew install pandoc  # pdf
 brew install sdl2  # low level access keyboard, audio, graphics
 brew install gh  # github cli
 brew install cppcheck
+brew install uv
 # other tools possibly over git 
 # zsh-autosuggestions
 #
