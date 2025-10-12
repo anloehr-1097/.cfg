@@ -127,6 +127,12 @@ add-zsh-hook preexec preexec_hook_contour
 source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $HOME/.zsh/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+
+# make ripgrep alternative for grep if it exists
+if command -v rg >/dev/null 2>&1; then
+    alias grep='rg'
+fi
+
 set -o vi
 export EDITOR=nvim
 # eval "$(starship init zsh)"

@@ -817,8 +817,14 @@
  ;; If there is more than one, they won't work right.
  '(conda-anaconda-home conda-path)
  '(org-agenda-files
-   '("/Users/anlhr/research/planning.org" "/Users/anlhr/org/Tasks.org"
-     "/Users/anlhr/org/Habits.org" "/Users/anlhr/org/Birthdays.org"
+   '("~/research/meetings/ResearchGroupMeetingRL.org"
+     "/Users/anlhr/research/planning.org"
+     "/Users/anlhr/org-roam/ishfaq25_langev_soft_actor_critic.org"
+     "/Users/anlhr/research/paperlist.org"
+     "/Users/anlhr/org-roam/schulman15_trust_region_polic_optim.org"
+     "/Users/anlhr/org-roam/dabney18_implic_quant_networ_distr_reinf_learn.org"
+     "/Users/anlhr/org/Tasks.org" "/Users/anlhr/org/Habits.org"
+     "/Users/anlhr/org/Birthdays.org"
      "/Users/anlhr/KeepInSync/Life.org"))
  '(pdf-tools-handle-upgrades t))
 

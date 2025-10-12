@@ -57,6 +57,10 @@ brew install sdl2  # low level access keyboard, audio, graphics
 brew install gh  # github cli
 brew install cppcheck
 brew install uv
+brew install black
+brew install watchman
+brew install shellcheck
+brew install bash-language-server
 # other tools possibly over git 
 # zsh-autosuggestions
 #

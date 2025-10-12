@@ -8,9 +8,10 @@ fi
 
 source ${HOME}/.api-keys
 # Avoid rate limit errors for unprompted survey questions.
-USER_CONTENT="$1"
+# USER_CONTENT="$1"
 USER_CONTENT="Explain shortly in plain text. $1"
 MODEL_NAME="deepseek/deepseek-r1-0528:free"
+
 # Generate JSON payload safely (use jq if available)
 if command -v jq &> /dev/null; then
   PAYLOAD=$(jq -n \
