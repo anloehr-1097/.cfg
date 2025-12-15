@@ -118,26 +118,26 @@ return {
 				root_markers = { "pyproject.toml", ".git", "*.lock" },
 				settings = {
 					pylsp = {
-                        plugins = {
-                            black = { enabled = true },
-                            jedi_completion = {
-                                enabled = true,
-                                fuzzy = true,
-                                include_params = true,
-                            },
-                            pylsp_mypy = {
-                                enabled = true,
-                                live = true,
-                                config_sub_paths = { "." },
-                                overrides = { "--python-executable", py_path, true },
-                                print("Using python executable for mypy: " .. py_path),
-                            },
-                            jedi = {
-                                environment = py_path,
-                            },
-                        }
-                    }
-                }
+						plugins = {
+							black = { enabled = true },
+							jedi_completion = {
+								enabled = true,
+								fuzzy = true,
+								include_params = true,
+							},
+							pylsp_mypy = {
+								enabled = true,
+								live = true,
+								config_sub_paths = { "." },
+								overrides = { "--python-executable", py_path, true },
+								print("Using python executable for mypy: " .. py_path),
+							},
+							-- jedi = {
+							--     environment = py_path,
+							-- },
+						},
+					},
+				},
 			})
 			vim.lsp.enable("pylsp")
 
