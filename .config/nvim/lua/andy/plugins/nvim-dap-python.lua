@@ -13,23 +13,36 @@ end
 vim.api.nvim_create_user_command("LoadDapConfig", load_dap_configs, {})
 
 --- Create a DAP Python unittest configuration for a given test string
---- @param opts string: The test (module, class, or method) to run, e.g. 'tests.test_module.TestClass.test_method'
+--- @param cwd string: Working directory for the debug session
+--- @param test_dir string: Python module/package where tests live (e.g. "tests")
+--- @param test_name string: Test (module, class, or method), e.g. "tests.test_module.TestClass.test_method"
 --- @return table: DAP configuration
-local function create_unittest_dap_config(str)
+local function create_unittest_dap_config(cwd, test_dir, test_name)
 	return {
 		type = "python",
 		request = "launch",
-		name = "Debug unittest: " .. str,
-		cwd = "./src",
+		name = "Debug unittest: " .. test_name,
+		cwd = cwd,
 		module = "unittest",
-		args = { "-v", str },
+		args = { "-v", test_dir .. "." .. test_name },
 		justMyCode = true,
 		console = "integratedTerminal",
 	}
 end
+
 -- Define the user command to call your function
 vim.api.nvim_create_user_command("LoadCustomUnittest", function(opts)
-	local config = create_unittest_dap_config(opts.args)
+	local args = opts.fargs
+	local cwd = args[1]
+	local test_dir = args[2]
+	local test_name = args[3]
+
+	if not test_name or not cwd or not test_dir then
+		print("Usage: LoadCustomUnittest <cwd> <test_dir> <test_name>")
+		return
+	end
+
+	local config = create_unittest_dap_config(cwd, test_dir, test_name)
 	local dap = require("dap")
 	dap.configurations = dap.configurations or {}
 	dap.configurations.python = dap.configurations.python or {}
@@ -39,8 +52,8 @@ vim.api.nvim_create_user_command("LoadCustomUnittest", function(opts)
 	table.insert(dap.configurations.python, config)
 	print("Added config" .. vim.inspect(config)) -- or do something else with the config
 end, {
-	nargs = 1, -- Require exactly one argument (the test string)
-	desc = "Create and print a DAP unittest configuration",
+	nargs = "+", -- Require exactly one argument (the test string)
+	desc = "Create and add a DAP unittest configuration",
 })
 
 return {

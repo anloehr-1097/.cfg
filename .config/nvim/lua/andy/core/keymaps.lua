@@ -71,4 +71,10 @@ keymap.set("n", "<leader>cb", ":CMakeBuild<CR>", { desc = "Build Cmake." })
 keymap.set("n", "<leader>cq", ":CMakeClose<CR>", { desc = "CMake Close." })
 keymap.set("n", "<leader>cd", ":CMakeClean<CR>", { desc = "CMake Clean." })
 --
--- ;
+-- Debugging
+keymap.set("n", "<C-c>db", ":DapToggleBreakpoint<CR>", { desc = "Set debugging breakpoint" })
+keymap.set("n", "<C-c>ds", ":DapContinue<CR>", { desc = "Continue debugging" })
+keymap.set("n", "<C-c>do", ":DapStepOver<CR>", { desc = "Step over" })
+keymap.set("n", "<C-c>di", ":DapStepInto<CR>", { desc = "Step into" })
+keymap.set("n", "<C-c>da", ":DapStepOut<CR>", { desc = "Step out" })
+keymap.set("n", "<C-c>dr", ":DapToggleRepl", { desc = "Toggle REPL" })
