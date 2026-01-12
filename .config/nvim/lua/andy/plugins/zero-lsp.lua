@@ -6,38 +6,34 @@ return {
 			require("mason").setup()
 		end,
 	},
-
-	{
-		"williamboman/mason-lspconfig.nvim",
-		config = function()
-			require("mason-lspconfig").setup({
-				-- ensure_installed = { "lua_ls", "pylsp", "clangd", "bashls", "pyright" },
-				ensure_installed = { "lua_ls", "pylsp", "clangd", "bashls" },
-				automatic_installation = true,
-				handlers = {
-					function(server_name)
-						require("lspconfig")[server_name].setup({
-							before_init = function(params)
-								params.rootPath = vim.fn.getcwd() -- Force local root
-							end,
-						})
-					end,
-				},
-			})
-		end,
-	},
-
+	-- {
+	-- 	"williamboman/mason-lspconfig.nvim",
+	-- 	opts = { ensure_installed = { "lua_ls", "clangd", "bashls", "pylsp" } },
+	-- 	dependencies = { { "williamboman/mason.nvim", opts = {} }, "neovim/nvim-lspconfig" },
+	-- 	config = function()
+	-- 		require("mason-lspconfig").setup({
+	-- 			-- ensure_installed = { "lua_ls", "pylsp", "clangd", "bashls", "pyright" },
+	-- 			automatic_installation = true,
+	-- 			-- handlers = {
+	-- 			-- 	function(server_name)
+	-- 			-- 		require("lspconfig")[server_name].setup({
+	-- 			-- 			before_init = function(params)
+	-- 			-- 				params.rootPath = vim.fn.getcwd() -- Force local root
+	-- 			-- 			end,
+	-- 			-- 		})
+	-- 			-- 	end,
+	-- 			-- },
+	-- 		})
+	-- 	end,
+	-- },
 	{
 		"neovim/nvim-lspconfig",
-
 		dependencies = {
 			"hrsh7th/nvim-cmp",
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
-			"williamboman/mason.nvim",
-			"williamboman/mason-lspconfig.nvim",
-			"L3MON4D3/LuaSnip",
+			"hrsh7th/cmp-cmdline",
 		},
 		config = function()
 			-- basic completion setup
@@ -61,14 +57,12 @@ return {
 				},
 			})
 			vim.opt.completeopt = { "menu", "menuone", "noselect" }
-
-			local lspconfig = require("lspconfig")
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			local lspconfig_default_caps = lspconfig.util.default_config
-			lspconfig_default_caps.capabilities =
-				vim.tbl_deep_extend("force", lspconfig_default_caps.capabilities, capabilities)
-
+			-- local lspconfig_default_caps = lspconfig.util.default_config
+			-- lspconfig_default_caps.capabilities =
+			-- 	vim.tbl_deep_extend("force", lspconfig_default_caps.capabilities, capabilities)
+			--
 			local venv_path = os.getenv("VIRTUAL_ENV")
 			local conda_path = os.getenv("CONDA_PREFIX")
 			local py_path = nil
@@ -80,65 +74,82 @@ return {
 				py_path = vim.g.python3_host_prog or "/usr/bin/python3"
 			end
 
-			require("mason-lspconfig").setup_handlers({
-				-- Default handler
-				function(server_name)
-					lspconfig[server_name].setup({
-						capabilities = lspconfig_default_caps,
-						--capabilities,
-					})
-				end,
-
-				-- Custom handler for lua_ls
-				["lua_ls"] = function()
-					lspconfig.lua_ls.setup({
-						capabilities = lspconfig_default_caps,
-						--capabilities,
-						settings = {
-							Lua = {
-								diagnostics = {
-									globals = { "vim" },
-								},
-							},
+			-- Global lsp settings
+			vim.lsp.config("*", {
+				capabilities = {
+					textDocument = {
+						semanticTokens = {
+							multilineTokenSupport = true,
 						},
-					})
-				end,
-
-				["pylsp"] = function()
-					require("lspconfig").pylsp.setup({
-						on_attach = function(client, buffer)
-							require("lsp_compl").attach(client, buffer)
-						end,
-						settings = {
-							pylsp = {
-								plugins = {
-									pycodestyle = {
-										ignore = { "E501", "E252", "E701" },
-										maxLineLength = 79,
-									},
-									pylsp_mypy = {
-										enabled = true,
-										live = true,
-										config_sub_paths = { "." },
-										overrides = { "--python-executable", py_path, true },
-									},
-									-- Add more pylsp-specific settings here
-									jedi_completion = {
-										enabled = true,
-										fuzzy = true,
-										include_params = true,
-									},
-									jedi = {
-										environment = py_path,
-									},
-								},
-							},
-						},
-					})
-				end,
-
-				-- Add more custom handlers for other servers as needed
+					},
+				},
+				root_markers = { ".git" },
 			})
+			vim.lsp.config["lua-ls"] = {
+				cmd = { "lua-language-server" },
+				capabilities = capabilities,
+				filetypes = { "lua" },
+				settings = {
+					Lua = {
+						diagnostics = {
+							globals = { "vim" },
+						},
+					},
+				},
+				root_markers = { { ".luarc.json", ".luarc.jsonc" }, ".git" },
+			}
+			vim.lsp.enable("lua-ls")
+
+			vim.lsp.config["clangd"] = {
+				cmd = { "clangd", "--background-index" },
+				capabilities = capabilities,
+				filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
+				root_markers = { "compile_commands.json", "compile_flags.txt", ".git/", ".clangd", ".clang-format" },
+			}
+			vim.lsp.enable("clangd")
+
+			vim.lsp.config("pylsp", {
+				name = "pylsp",
+				-- cmd_cwd = py_path,
+				cmd = { "pylsp" },
+				filetypes = { "python" },
+				capabilities = capabilities,
+				root_dir = vim.fs.root(0, { ".git", "pyproject.toml", "setup.py" }),
+				root_markers = { "pyproject.toml", ".git", "*.lock" },
+				settings = {
+					pylsp = {
+						plugins = {
+							black = { enabled = true },
+							jedi_completion = {
+								enabled = true,
+								fuzzy = true,
+								include_params = true,
+							},
+							pylsp_mypy = {
+								enabled = true,
+								live = true,
+								config_sub_paths = { "." },
+								overrides = { "--python-executable", py_path, true },
+								print("Using python executable for mypy: " .. py_path),
+							},
+							-- jedi = {
+							--     environment = py_path,
+							-- },
+						},
+					},
+				},
+			})
+			vim.lsp.enable("pylsp")
+
+			vim.lsp.config("ruff", {
+				name = "ruff",
+				cmd = { "ruff", "server" },
+				filetypes = { "python" },
+				root_dir = vim.fs.root(0, { ".git", "pyproject.toml", "setup.py" }),
+				root_markers = { "pyproject.toml", ".git" },
+				settings = {},
+			})
+			vim.lsp.enable("ruff")
 
 			-- note: diagnostics are not exclusive to lsp servers
 			-- so these can be global keybindings
@@ -173,25 +184,18 @@ return {
 					vim.keymap.set({ "n", "v" }, "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
 				end,
 			})
-
-			-- Key mappings
-			vim.keymap.set("n", "<space>e", vim.diagnostic.open_float)
-			vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
-			vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
-			vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist)
 		end,
 	},
-
-	{
-		-- other tools which can be installed with mason like formatters
-		"WhoIsSethDaniel/mason-tool-installer.nvim",
-		config = function()
-			require("mason-tool-installer").setup({
-				ensure_installed = { "stylua", "black", "jq", "dockerls", "cpplint", "ruff" },
-				auto_update = true,
-				run_on_start = true,
-				run_on_end = true,
-			})
-		end,
-	},
+	-- {
+	-- 	-- other tools which can be installed with mason like formatters
+	-- 	"WhoIsSethDaniel/mason-tool-installer.nvim",
+	-- 	config = function()
+	-- 		require("mason-tool-installer").setup({
+	-- 			ensure_installed = { "stylua", "black", "jq", "dockerls", "cpplint" },
+	-- 			auto_update = true,
+	-- 			run_on_start = true,
+	-- 			run_on_end = true,
+	-- 		})
+	-- 	end,
+	-- },
 }

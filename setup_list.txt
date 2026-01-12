@@ -57,6 +57,9 @@ gh  # github cli
 cppcheck # static code analysis
 uv
 watchman
+black
+bash-language-server
+shellcheck
 
 # other tools possibly over git 
 # zsh-autosuggestions

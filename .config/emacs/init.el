@@ -813,9 +813,38 @@
  ;; If there is more than one, they won't work right.
  '(conda-anaconda-home conda-path)
  '(org-agenda-files
-   '("/Users/anlhr/research/planning.org" "/Users/anlhr/org/Tasks.org"
-     "/Users/anlhr/org/Habits.org" "/Users/anlhr/org/Birthdays.org"
+   '("/Users/anlhr/research/planning.org"
+     "/Users/anlhr/research/paperlist.org"
+     "/Users/anlhr/research/meetings/ResearchGroupMeetingRL.org"
+     "/Users/anlhr/org-roam/ishfaq25_langev_soft_actor_critic.org"
+     "/Users/anlhr/org-roam/schulman15_trust_region_polic_optim.org"
+     "/Users/anlhr/org-roam/dabney18_implic_quant_networ_distr_reinf_learn.org"
+     "/Users/anlhr/org/Tasks.org" "/Users/anlhr/org/Habits.org"
+     "/Users/anlhr/org/Birthdays.org"
      "/Users/anlhr/KeepInSync/Life.org"))
+ '(package-selected-packages
+   '(all-the-icons-dired anki-editor anki-editor-view async
+			 auto-complete-auctex auto-package-update
+			 citar-embark citar-org-roam clippy cmake-mode
+			 command-log-mode company-auctex company-box
+			 conda counsel-projectile cuda-mode dap-mode
+			 dashboard dired-hide-dotfiles dired-open djvu
+			 doom-modeline doom-themes editorconfig ein
+			 elfeed-goodies elfeed-org elfeed-score
+			 embark-consult eshell-git-prompt
+			 eterm-256color evil-collection
+			 evil-nerd-commenter evil-owl evil-surround
+			 evil-visual-replace flycheck-mypy forge fzf
+			 general google-translate graphviz-dot-mode
+			 gruber-darker-theme haskell-mode helpful
+			 ivy-bibtex ivy-prescient kv lsp-ivy lsp-ui
+			 magic-latex-buffer marginalia no-littering
+			 nov org-bullets org-latex-impatient
+			 org-noter-pdftools org-ref org-roam-bibtex
+			 org-roam-ui pipenv python-mode
+			 rainbow-delimiters smart-comment speed-type
+			 undo-tree vc-use-package vertico
+			 visual-fill-column vterm wgrep which-key))
  '(pdf-tools-handle-upgrades t))
 
 (use-package cuda-mode
