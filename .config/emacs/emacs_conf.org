@@ -212,11 +212,13 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
     :config
     ;; SPC leader key
     (general-create-definer space-leader
+    :states '(normal visual emacs)
+    :keymaps 'override
     :prefix "SPC")
 
   (space-leader
-    :states '(normal visual emacs)
-    :keymaps 'override
+    ;;:states '(normal visual emacs)
+    ;;:keymaps 'override
     "f" '(:ignore t :which-key "find")
     "ff" 'counsel-find-file
     "fs" 'rgrep
@@ -232,6 +234,7 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
       :keymaps '(normal insert visual emacs)
       :prefix "SPC"
       :global-prefix "C-SPC")
+
     (efs/leader-keys
       "t"  '(:ignore t :which-key "toggles")
       "tl" '(counsel-load-theme :which-key "choose theme")
@@ -1395,12 +1398,7 @@ Install pdf-tools to view pdf documents.
     (custom-set-variables
      '(pdf-tools-handle-upgrades t))
 
-    (general-create-definer space-leader
-    :prefix "SPC")
-
   (space-leader
-    :states '(normal visual emacs)
-    :keymaps 'override
     "p" '(:ignore t :which-key "find")
     "ph" 'pdf-annot-add-highlight-markup-annotation
     "pt" 'pdf-annot-add-text-annotation)
@@ -1534,11 +1532,11 @@ A simple IPython client for emacs porting jupyter notebooks / their functionalit
 *** trimming function
 #+begin_src emacs-lisp
 (defun trim-dollar-spaces ()
-  "Replace ' $' and '$ ' with '$' in the current buffer."
+  "Replace '$' and '$' with '$' in the current buffer."
   (interactive)
   (save-excursion
     (goto-char (point-min))
-    (while (re-search-forward " \\$\\|\\$ " nil t)
+    (while (re-search-forward " \\$\\|\\$" nil t)
       (replace-match "$" nil t))))
 
 
@@ -1838,9 +1836,19 @@ Dial the GC threshold back down so that garbage collection happens more frequent
                    (window-parameters (mode-line-format . none)))))
 
   ;; Consult users will also want the embark-consult package.
+  (use-package consult
+    :ensure t
+    )
+
+
+  (space-leader
+    "f r" 'consult-find)
+   
+
+
   (use-package embark-consult
     :ensure t ; only need to install it, embark loads it after consult if found
-    :after embark
+    :after (embark consult)
     :hook
     (embark-collect-mode . consult-preview-at-point-mode))
 
@@ -1955,15 +1963,15 @@ Dial the GC threshold back down so that garbage collection happens more frequent
       (setq bibtex-completion-bibliography '("~/research/references.bib")
             bibtex-completion-library-path '("~/research/paper-pdfs/")
             bibtex-completion-notes-path "~/research/notes/"
-            bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
+            bibtex-completion-notes-template-multiple-files "*${author-or-editor},${title},${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
 
             bibtex-completion-additional-search-fields '(keywords)
             bibtex-completion-display-formats
-            '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
-              (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
-              (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-              (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-              (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
+            '((article       . "${=has-pdf=:1}${=has-note=:1}${year:4}${author:36}${title:*}${journal:40}")
+              (inbook        . "${=has-pdf=:1}${=has-note=:1}${year:4}${author:36}${title:*} Chapter${chapter:32}")
+              (incollection  . "${=has-pdf=:1}${=has-note=:1}${year:4}${author:36}${title:*}${booktitle:40}")
+              (inproceedings . "${=has-pdf=:1}${=has-note=:1}${year:4}${author:36}${title:*}${booktitle:40}")
+              (t             . "${=has-pdf=:1}${=has-note=:1}${year:4}${author:36}${title:*}"))
             bibtex-completion-pdf-open-function
             (lambda (fpath)
               (call-process "open" nil 0 nil fpath))
