@@ -60,6 +60,7 @@ brew install uv
 brew install black
 brew install watchman
 brew install shellcheck
+brew install wakeonlan
 brew install bash-language-server
 # other tools possibly over git 
 # zsh-autosuggestions
