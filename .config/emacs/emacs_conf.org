@@ -682,7 +682,7 @@ This section contains the basic configuration for =org-mode= plus the configurat
           ("~/KeepInSync/refile.org" :maxlevel . 3)
           ("~/research/backlog.org" :maxlevel . 3)
           ("~/research/planning.org" :maxlevel . 3)
-  	("~/research/paperlist.org" :maxlevel . 3)))
+    ("~/research/paperlist.org" :maxlevel . 3)))
 
       ;; Save Org buffers after refiling!
       (advice-add 'org-refile :after 'org-save-all-org-buffers)
@@ -749,6 +749,8 @@ This section contains the basic configuration for =org-mode= plus the configurat
                 ((org-agenda-overriding-header "Cancelled Projects")
                  (org-agenda-files org-agenda-files)))))))
 
+
+  
       (setq org-capture-templates
         `(("t" "Tasks / Projects")
           ("tt" "Task" entry (file+olp "~/org/Tasks.org" "Inbox")
@@ -773,7 +775,14 @@ This section contains the basic configuration for =org-mode= plus the configurat
 
           ("m" "Metrics Capture")
           ("mw" "Weight" table-line (file+headline "~/org/Metrics.org" "Weight")
-           "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)))
+           "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)
+
+          ("a" "Anki")
+          ("aa" "Anki Add Basic And Reverse Card" entry (file+olp "~/org/anki/russian.org" "Captured") "** %^{Card Name} \n*** Front \n %^{English} \n*** Back \n%?"
+    	   )
+        ))
+
+
 
       (define-key global-map (kbd "C-c j")
         (lambda () (interactive) (org-capture nil "jj")))

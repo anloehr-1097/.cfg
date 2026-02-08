@@ -28,15 +28,11 @@
                     (time-subtract after-init-time before-init-time)))
            gcs-done))
 
-(add-hook 'emacs-startup-hook #'efs/display-startup-time)
-
-(defvar efs/default-font-size 100)
-(defvar efs/default-variable-font-size 100)
-;; uncomment this when working on smalelr screen
-;;(defvar efs/default-font-size 160)
-;;(defvar efs/default-variable-font-size 160)
-;; (setq insert-directory-program "gls" dired-use-ls-dired t)
-(setq dired-listing-switches "-al --group-directories-first")
+  (add-hook 'emacs-startup-hook #'efs/display-startup-time)
+  (defvar efs/default-font-size 100)
+  (defvar efs/default-variable-font-size 100)
+ ;; (setq insert-directory-program "gls" dired-use-ls-dired t)
+  (setq dired-listing-switches "-al --group-directories-first")
 
 (setq default-frame-alist
       '((font . "Iosevka Nerd Font-22")
@@ -471,7 +467,7 @@
       ("~/KeepInSync/refile.org" :maxlevel . 3)
       ("~/research/backlog.org" :maxlevel . 3)
       ("~/research/planning.org" :maxlevel . 3)
-	("~/research/paperlist.org" :maxlevel . 3)))
+("~/research/paperlist.org" :maxlevel . 3)))
 
   ;; Save Org buffers after refiling!
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
@@ -538,6 +534,8 @@
             ((org-agenda-overriding-header "Cancelled Projects")
              (org-agenda-files org-agenda-files)))))))
 
+
+
   (setq org-capture-templates
     `(("t" "Tasks / Projects")
       ("tt" "Task" entry (file+olp "~/org/Tasks.org" "Inbox")
@@ -562,7 +560,14 @@
 
       ("m" "Metrics Capture")
       ("mw" "Weight" table-line (file+headline "~/org/Metrics.org" "Weight")
-       "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)))
+       "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)
+
+      ("a" "Anki")
+      ("aa" "Anki Add Basic And Reverse Card" entry (file+olp "~/org/anki/russian.org" "Captured") "** %^{Card Name} \n*** Front \n %^{English} \n*** Back \n%?"
+	   )
+    ))
+
+
 
   (define-key global-map (kbd "C-c j")
     (lambda () (interactive) (org-capture nil "jj")))
