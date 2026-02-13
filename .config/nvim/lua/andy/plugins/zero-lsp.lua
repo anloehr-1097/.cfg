@@ -1,11 +1,11 @@
 return {
-	{
-		-- Mason install
-		"williamboman/mason.nvim",
-		config = function()
-			require("mason").setup()
-		end,
-	},
+	-- {
+	-- 	-- Mason install
+	-- 	"williamboman/mason.nvim",
+	-- 	config = function()
+	-- 		require("mason").setup()
+	-- 	end,
+	-- },
 	-- {
 	-- 	"williamboman/mason-lspconfig.nvim",
 	-- 	opts = { ensure_installed = { "lua_ls", "clangd", "bashls", "pylsp" } },
