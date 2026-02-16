@@ -62,6 +62,7 @@ brew install watchman
 brew install shellcheck
 brew install wakeonlan
 brew install bash-language-server
+brew install espanso
 # other tools possibly over git 
 # zsh-autosuggestions
 #

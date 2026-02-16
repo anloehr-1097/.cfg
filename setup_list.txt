@@ -60,6 +60,7 @@ watchman
 black
 bash-language-server
 shellcheck
+espanso
 
 # other tools possibly over git 
 # zsh-autosuggestions
