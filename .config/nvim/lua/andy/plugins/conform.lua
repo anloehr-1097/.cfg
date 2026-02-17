@@ -6,7 +6,7 @@ return {
 			formatters_by_ft = {
 				lua = { "stylua" },
 				json = { "jq" },
-				python = { "black" },
+				python = { "ruff" },
 				cpp = { "clang-format", "cpplint" },
 			},
 		})

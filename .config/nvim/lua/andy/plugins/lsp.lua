@@ -1,39 +1,13 @@
 return {
-	-- {
-	-- 	-- Mason install
-	-- 	"williamboman/mason.nvim",
-	-- 	config = function()
-	-- 		require("mason").setup()
-	-- 	end,
-	-- },
-	-- {
-	-- 	"williamboman/mason-lspconfig.nvim",
-	-- 	opts = { ensure_installed = { "lua_ls", "clangd", "bashls", "pylsp" } },
-	-- 	dependencies = { { "williamboman/mason.nvim", opts = {} }, "neovim/nvim-lspconfig" },
-	-- 	config = function()
-	-- 		require("mason-lspconfig").setup({
-	-- 			-- ensure_installed = { "lua_ls", "pylsp", "clangd", "bashls", "pyright" },
-	-- 			automatic_installation = true,
-	-- 			-- handlers = {
-	-- 			-- 	function(server_name)
-	-- 			-- 		require("lspconfig")[server_name].setup({
-	-- 			-- 			before_init = function(params)
-	-- 			-- 				params.rootPath = vim.fn.getcwd() -- Force local root
-	-- 			-- 			end,
-	-- 			-- 		})
-	-- 			-- 	end,
-	-- 			-- },
-	-- 		})
-	-- 	end,
-	-- },
-	{
 		"neovim/nvim-lspconfig",
+        event = {"BufReadPre", "BufNewFile"},
 		dependencies = {
 			"hrsh7th/nvim-cmp",
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
 			"hrsh7th/cmp-cmdline",
+            {"antosha417/nvim-lsp-file-operations", config = true}
 		},
 		config = function()
 			-- basic completion setup
@@ -119,7 +93,7 @@ return {
 				settings = {
 					pylsp = {
 						plugins = {
-							black = { enabled = true },
+							black = { enabled = false },
 							jedi_completion = {
 								enabled = true,
 								fuzzy = true,
@@ -132,14 +106,27 @@ return {
 								overrides = { "--python-executable", py_path, true },
 								print("Using python executable for mypy: " .. py_path),
 							},
-							-- jedi = {
-							--     environment = py_path,
-							-- },
 						},
 					},
 				},
 			})
 			vim.lsp.enable("pylsp")
+
+            vim.lsp.config("pyright",  {
+                settings = {
+                    pyright = {
+                        -- Using Ruff's import organizer
+                        disableOrganizeImports = true,
+                    },
+                    python = {
+                        analysis = {
+                            -- Ignore all files for analysis to exclusively use Ruff for linting
+                            ignore = { '*' },
+                        },
+                    },
+                },
+            })
+            vim.lsp.enable("pyright")
 
 			vim.lsp.config("ruff", {
 				name = "ruff",
@@ -154,6 +141,7 @@ return {
 			-- note: diagnostics are not exclusive to lsp servers
 			-- so these can be global keybindings
 			-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+            vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
 			vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<cr>")
 			vim.keymap.set("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<cr>")
 			vim.keymap.set("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<cr>")
@@ -173,6 +161,8 @@ return {
 					-- because they only work if you have an active language server
 					-- See `:help vim.lsp.*` for documentation on any of the below functions
 					vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", opts)
+                    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+                    vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
 					vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
 					vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", opts)
 					vim.keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", opts)
@@ -182,20 +172,25 @@ return {
 					vim.keymap.set("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
 					vim.keymap.set({ "n", "x" }, "<space>bf", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", opts)
 					vim.keymap.set({ "n", "v" }, "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
+                    vim.keymap.set('n', '<space>bf', function()
+                        vim.lsp.buf.format { async = true }
+                    end, opts)
 				end,
 			})
 		end,
-	},
-	-- {
-	-- 	-- other tools which can be installed with mason like formatters
-	-- 	"WhoIsSethDaniel/mason-tool-installer.nvim",
-	-- 	config = function()
-	-- 		require("mason-tool-installer").setup({
-	-- 			ensure_installed = { "stylua", "black", "jq", "dockerls", "cpplint" },
-	-- 			auto_update = true,
-	-- 			run_on_start = true,
-	-- 			run_on_end = true,
-	-- 		})
-	-- 	end,
-	-- },
-}
+
+    opts = {
+        servers = {
+            clangd = {
+                cmd = {"clangd",
+                    "--background-index",
+                    "--clang-tidy",
+                    "--header-insertion=iwyu",
+                    "--completion-style=detailed",
+                    "--function-arg-placeholders",
+                    "--fallback-style=llvm",},
+            }
+
+        }
+    };
+	}
