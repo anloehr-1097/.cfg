@@ -32,6 +32,12 @@ return {
 			})
 			vim.opt.completeopt = { "menu", "menuone", "noselect" }
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+           
+            capabilities = vim.tbl_deep_extend('force', capabilities, {
+                general = {
+                    positionEncodings = { 'utf-16' },  -- Enforce utf-16 for consistency
+                },
+            })
 
 			-- local lspconfig_default_caps = lspconfig.util.default_config
 			-- lspconfig_default_caps.capabilities =
@@ -56,6 +62,9 @@ return {
 							multilineTokenSupport = true,
 						},
 					},
+                general = {
+                    positionEncodings = { 'utf-16' },  -- Enforce utf-16 for consistency
+                },
 				},
 				root_markers = { ".git" },
 			})
@@ -83,6 +92,7 @@ return {
 			vim.lsp.enable("clangd")
 
 			vim.lsp.config("pylsp", {
+                enabled = false,
 				name = "pylsp",
 				-- cmd_cwd = py_path,
 				cmd = { "pylsp" },
@@ -110,7 +120,7 @@ return {
 					},
 				},
 			})
-			vim.lsp.enable("pylsp")
+			-- vim.lsp.enable("pylsp")
 
             vim.lsp.config("pyright",  {
                 settings = {
@@ -123,6 +133,8 @@ return {
                             -- Ignore all files for analysis to exclusively use Ruff for linting
                             ignore = { '*' },
                         },
+                    venv_path = ".",
+                    venv = ".venv"
                     },
                 },
             })
@@ -137,6 +149,24 @@ return {
 				settings = {},
 			})
 			vim.lsp.enable("ruff")
+
+            vim.lsp.config('ruff_lsp', {
+              init_options = {
+                settings = {
+                  -- Any extra CLI arguments for `ruff` go here.
+                  args = {},
+                }
+              }
+            })
+            vim.lsp.enable('ruff_lsp')
+
+
+             vim.lsp.config("bashls", {
+            cmd = {'bash-language-server', 'start'},
+            filetypes = {'bash', 'sh', 'zsh'},
+        }
+        )
+        vim.lsp.enable("bashls")
 
 			-- note: diagnostics are not exclusive to lsp servers
 			-- so these can be global keybindings
