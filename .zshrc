@@ -144,3 +144,7 @@ if [ -f '/Users/anlhr/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/anlhr/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/anlhr/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+alias gconf='/usr/bin/git --git-dir=$HOME/.cfg.git/ --work-tree=$HOME'
+source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
+source ~/powerlevel10k/powerlevel10k.zsh-theme
