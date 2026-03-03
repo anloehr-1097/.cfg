@@ -31,7 +31,9 @@ if [[ $OSTYPE == darwin* ]]; then
         echo "Apple silicon."
     fi
 
-elif [[ $OSTYPE == linux* ]]; then
+elif [[ "$OSTYPE" =~ "linux" && ! "$XDG_SESSION_TYPE" =~ "wayland" ]]; then
+    # only set xkbmap if we're on linux and not using wayland, since wayland compositors handle this differently
+    echo "Running on Linux with X11, setting xkbmap to us."
     setxkbmap us
     echo "OS: Linux"
 fi
