@@ -3,6 +3,9 @@
 (("version" 10)
  ("title"
   (:text "actor aritic" :value 200 :type w)
+  (:text "offline" :value 200 :type w)
+  (:text "offline RL" :value 200 :type w)
+  (:text "distribution" :value 200 :type w)
   (:text "reinforcement learning" :value 50 :type w)
   (:text "machine learning" :value 10 :type w)
   (:text "deep learning" :value 10 :type w)

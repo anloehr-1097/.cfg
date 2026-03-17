@@ -129,10 +129,6 @@ return {
                         disableOrganizeImports = true,
                     },
                     python = {
-                        analysis = {
-                            -- Ignore all files for analysis to exclusively use Ruff for linting
-                            ignore = { '*' },
-                        },
                     venv_path = ".",
                     venv = ".venv"
                     },
@@ -149,16 +145,6 @@ return {
 				settings = {},
 			})
 			vim.lsp.enable("ruff")
-
-            vim.lsp.config('ruff_lsp', {
-              init_options = {
-                settings = {
-                  -- Any extra CLI arguments for `ruff` go here.
-                  args = {},
-                }
-              }
-            })
-            vim.lsp.enable('ruff_lsp')
 
 
              vim.lsp.config("bashls", {

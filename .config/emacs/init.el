@@ -825,7 +825,11 @@
  ;; If there is more than one, they won't work right.
  '(conda-anaconda-home conda-path)
  '(org-agenda-files
-   '("~/research/paperlist.org" "/Users/anlhr/org/Tasks.org"
+   '("~/org-roam/li26_q_learn_with_adjoin_match.org"
+     "/Users/anlhr/research/meetings/ResearchGroupMeetingRL.org"
+     "/Users/anlhr/org/Tasks.org"
+     "/Users/anlhr/org-roam/kostrikov21_offlin_reinf_learn_with_implic_q_learn.org"
+     "/Users/anlhr/research/paperlist.org"
      "/Users/anlhr/org/Habits.org" "/Users/anlhr/org/Birthdays.org"
      "/Users/anlhr/KeepInSync/Life.org"
      "/Users/anlhr/research/planning.org"))
