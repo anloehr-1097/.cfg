@@ -27,7 +27,7 @@
     "spacing": 10
   },
   "clock": {
-    "timezone": "America/Denver",
+    "timezone": "Europe/Berlin",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
     "format": "{:%d - %H:%M}"
   },
