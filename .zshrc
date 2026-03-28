@@ -25,7 +25,7 @@ if [[ $OSTYPE == darwin* ]]; then
     # alias em="~/Applications/Emacs.app/Contents/MacOs/bin/emacsclient -cn"
     #alias emst='emacs --bg-daemon'
     alias code='open -a /Applications/Visual\ Studio\ Code.app'
-    alias emst='emacs --daemon &'
+    alias emst='emacs --daemon'
 
     elif [[ $MACHTYPE == arm* ]]; then
         echo "Apple silicon."
