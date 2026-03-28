@@ -90,7 +90,12 @@ return {
 				"compile_commands.json",
 				".git",
 			},
-			cmd = function(dispatchers, config)
+
+			cmd = { "clangd", "--background-index", 
+					"--clang-tidy",
+					"--header-insertion=iwyu",
+					"--query-driver=**/*gcc*,**/*g++*" }, -- Base command, will be modified
+			on_new_config = function(new_config, new_root_dir)
 				-- Standard clangd args. The --query-driver flag is critical for cross-compilers
 				-- (like ESP-IDF xtensa): it allows clangd to extract standard library paths (like <string>) 
 				local cmd_list = {
@@ -102,11 +107,10 @@ return {
 				}
 
 				local is_esp = false
-				local root_dir = config.root_dir
-				if root_dir then
-					is_esp = vim.fn.filereadable(root_dir .. "/sdkconfig") == 1 or
-							 vim.fn.filereadable(root_dir .. "/.esp-idf") == 1 or
-							 vim.fn.glob(root_dir .. "/**/idf_component.yml", 0, 1) ~= ""
+				if new_root_dir then
+					is_esp = vim.fn.filereadable(new_root_dir .. "/sdkconfig") == 1 or
+							 vim.fn.filereadable(new_root_dir .. "/.esp-idf") == 1 or
+							 vim.fn.glob(new_root_dir .. "/**/idf_component.yml", 0, 1) ~= ""
 				end
 
 				if is_esp then
@@ -119,7 +123,7 @@ return {
 					end
 				end
 
-				return vim.lsp.rpc.start(cmd_list, dispatchers, { cwd = config.root_dir })
+				new_config.cmd = cmd_list
 			end,
 		})
 		vim.lsp.enable("clangd")
