@@ -449,130 +449,126 @@
           "~/org/Birthdays.org"
           "~/KeepInSync/Life.org"
           "~/research/planning.org")
-  )
+	)
   :bind ("C-c l" . org-store-link))
 
-  (require 'org-habit)
-  (add-to-list 'org-modules 'org-habit)
-  (setq org-habit-graph-column 60)
+(require 'org-habit)
+(add-to-list 'org-modules 'org-habit)
+(setq org-habit-graph-column 60)
 
-  (setq org-todo-keywords
-    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
-      (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+	(sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
 
-  (setq org-refile-targets
+(setq org-refile-targets
       '(("~/org/Archive.org" :maxlevel . 1)
-      ("~/org/Tasks.org" :maxlevel . 1)
-      ("~/research/reading_list.org" :maxlevel . 3)
-      ("~/KeepInSync/refile.org" :maxlevel . 3)
-      ("~/research/backlog.org" :maxlevel . 3)
-      ("~/research/planning.org" :maxlevel . 3)
-("~/research/paperlist.org" :maxlevel . 3)))
+	("~/org/Tasks.org" :maxlevel . 1)
+	("~/KeepInSync/refile.org" :maxlevel . 3)
+	("~/research/backlog.org" :maxlevel . 3)
+	("~/research/planning.org" :maxlevel . 3)
+	("~/research/paperlist.org" :maxlevel . 3)))
 
-  ;; Save Org buffers after refiling!
-  (advice-add 'org-refile :after 'org-save-all-org-buffers)
+;; Save Org buffers after refiling!
+(advice-add 'org-refile :after 'org-save-all-org-buffers)
 
-  (setq org-tag-alist
-    '((:startgroup)
-       ; Put mutually exclusive tags here
-       (:endgroup)
-       ("@errand" . ?E)
-       ("@home" . ?H)
-       ("@work" . ?W)
-       ("agenda" . ?a)
-       ("planning" . ?p)
-       ("publish" . ?P)
-       ("batch" . ?b)
-       ("note" . ?n)
-       ("idea" . ?i)))
+(setq org-tag-alist
+      '(("Diffusion" . ?d)
+	("DistributionalRL" . ?D)
+	("Quantization" . ?Q)
+	("CriticLearning" . ?c)
+	("planning" . ?p)
+	("publish" . ?P)
+	("note" . ?n)
+	("idea" . ?i)
+	))
 
-  ;; Configure custom agenda views
-  (setq org-agenda-custom-commands
-   '(("d" "Dashboard"
-     ((agenda "" ((org-deadline-warning-days 7)))
-      (todo "NEXT"
-        ((org-agenda-overriding-header "Next Tasks")))
-      (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
+;; Configure custom agenda views
+(setq org-agenda-custom-commands
+      '(("d" "Dashboard"
+	 ((agenda "" ((org-deadline-warning-days 7)))
+	  (todo "NEXT"
+		((org-agenda-overriding-header "Next Tasks")))
+	  (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
 
-    ("n" "Next Tasks"
-     ((todo "NEXT"
-        ((org-agenda-overriding-header "Next Tasks")))))
+	("n" "Next Tasks"
+	 ((todo "NEXT"
+		((org-agenda-overriding-header "Next Tasks")))))
 
-    ("W" "Work Tasks" tags-todo "+work-email")
+	("W" "Work Tasks" tags-todo "+work-email")
 
-    ;; Low-effort next actions
-    ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
-     ((org-agenda-overriding-header "Low Effort Tasks")
-      (org-agenda-max-todos 20)
-      (org-agenda-files org-agenda-files)))
+	;; Low-effort next actions
+	("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
+	 ((org-agenda-overriding-header "Low Effort Tasks")
+	  (org-agenda-max-todos 20)
+	  (org-agenda-files org-agenda-files)))
 
-    ("w" "Workflow Status"
-     ((todo "WAIT"
-            ((org-agenda-overriding-header "Waiting on External")
-             (org-agenda-files org-agenda-files)))
-      (todo "REVIEW"
-            ((org-agenda-overriding-header "In Review")
-             (org-agenda-files org-agenda-files)))
-      (todo "PLAN"
-            ((org-agenda-overriding-header "In Planning")
-             (org-agenda-todo-list-sublevels nil)
-             (org-agenda-files org-agenda-files)))
-      (todo "BACKLOG"
-            ((org-agenda-overriding-header "Project Backlog")
-             (org-agenda-todo-list-sublevels nil)
-             (org-agenda-files org-agenda-files)))
-      (todo "READY"
-            ((org-agenda-overriding-header "Ready for Work")
-             (org-agenda-files org-agenda-files)))
-      (todo "ACTIVE"
-            ((org-agenda-overriding-header "Active Projects")
-             (org-agenda-files org-agenda-files)))
-      (todo "COMPLETED"
-            ((org-agenda-overriding-header "Completed Projects")
-             (org-agenda-files org-agenda-files)))
-      (todo "CANC"
-            ((org-agenda-overriding-header "Cancelled Projects")
-             (org-agenda-files org-agenda-files)))))))
+	("w" "Workflow Status"
+	 ((todo "WAIT"
+		((org-agenda-overriding-header "Waiting on External")
+		 (org-agenda-files org-agenda-files)))
+	  (todo "REVIEW"
+		((org-agenda-overriding-header "In Review")
+		 (org-agenda-files org-agenda-files)))
+	  (todo "PLAN"
+		((org-agenda-overriding-header "In Planning")
+		 (org-agenda-todo-list-sublevels nil)
+		 (org-agenda-files org-agenda-files)))
+	  (todo "BACKLOG"
+		((org-agenda-overriding-header "Project Backlog")
+		 (org-agenda-todo-list-sublevels nil)
+		 (org-agenda-files org-agenda-files)))
+	  (todo "READY"
+		((org-agenda-overriding-header "Ready for Work")
+		 (org-agenda-files org-agenda-files)))
+	  (todo "ACTIVE"
+		((org-agenda-overriding-header "Active Projects")
+		 (org-agenda-files org-agenda-files)))
+	  (todo "COMPLETED"
+		((org-agenda-overriding-header "Completed Projects")
+		 (org-agenda-files org-agenda-files)))
+	  (todo "CANC"
+		((org-agenda-overriding-header "Cancelled Projects")
+		 (org-agenda-files org-agenda-files)))))))
 
 
 
-  (setq org-capture-templates
-    `(("t" "Tasks / Projects")
-      ("tt" "Task" entry (file+olp "~/org/Tasks.org" "Inbox")
-           "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
+(setq org-capture-templates
+      `(("t" "Tasks / Projects")
+	("tt" "Task" entry (file+olp "~/org/Tasks.org" "Inbox")
+         "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
 
-      ("j" "Journal Entries")
-      ("jj" "Journal" entry
-           (file+olp+datetree "~/org/Journal.org")
-           "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
-           ;; ,(dw/read-file-as-string "~/Notes/Templates/Daily.org")
-           :clock-in :clock-resume
-           :empty-lines 1)
-      ("jm" "Meeting" entry
-           (file+olp+datetree "~/org/Journal.org")
-           "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
-           :clock-in :clock-resume
-           :empty-lines 1)
+	("j" "Journal Entries")
+	("jj" "Journal" entry
+         (file+olp+datetree "~/org/Journal.org")
+         "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
+         ;; ,(dw/read-file-as-string "~/Notes/Templates/Daily.org")
+         :clock-in :clock-resume
+         :empty-lines 1)
+	("jm" "Meeting" entry
+         (file+olp+datetree "~/org/Journal.org")
+         "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
+         :clock-in :clock-resume
+         :empty-lines 1)
 
-      ("w" "Workflows")
-      ("we" "Checking Email" entry (file+olp+datetree "~/org/Journal.org")
-           "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
+	("w" "Workflows")
+	("we" "Checking Email" entry (file+olp+datetree "~/org/Journal.org")
+         "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
 
-      ("m" "Metrics Capture")
-      ("mw" "Weight" table-line (file+headline "~/org/Metrics.org" "Weight")
-       "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)
+	("m" "Metrics Capture")
+	("mw" "Weight" table-line (file+headline "~/org/Metrics.org" "Weight")
+	 "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)
 
-      ("a" "Anki")
-      ("aa" "Anki Add Basic And Reverse Card" entry (file+olp "~/org/anki/russian.org" "Captured") "** %^{Card Name} \n*** Front \n %^{English} \n*** Back \n%?"
-	   )
-    ))
+	("a" "Anki")
+	("aa" "Anki Add Basic And Reverse Card" entry (file+olp "~/org/anki/russian.org" "Captured") "** %^{Card Name} \n*** Front \n %^{English} \n*** Back \n%?"
+	 )
+	))
 
 
 
-  (define-key global-map (kbd "C-c j")
-    (lambda () (interactive) (org-capture nil "jj")))
+(define-key global-map (kbd "C-c j")
+	    (lambda () (interactive) (org-capture nil "jj")))
 
-  (efs/org-font-setup)
+(efs/org-font-setup)
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
 (global-set-key (kbd "C-c c") 'org-agenda)
@@ -659,6 +655,7 @@
       (dot . t)
       (dot2tex . t)
       (latex . t)
+      (plantuml . t)
       )
 )
 
@@ -684,6 +681,16 @@
       (org-babel-tangle))))
 
 (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-config)))
+
+(use-package plantuml-mode
+    :ensure t
+    :config
+    (setq plantuml-default-exec-mode 'jar)
+    (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+    (setq plantuml-jar-path "/opt/homebrew/Cellar/plantuml/1.2026.2/libexec/plantuml.jar")
+(setq org-plantuml-jar-path (expand-file-name "/opt/homebrew/Cellar/plantuml/1.2026.2/libexec/plantuml.jar"))
+
+   )
 
 (use-package emacsql
   :ensure t)
@@ -825,12 +832,8 @@
  ;; If there is more than one, they won't work right.
  '(conda-anaconda-home conda-path)
  '(org-agenda-files
-   '("~/org-roam/li26_q_learn_with_adjoin_match.org"
-     "/Users/anlhr/research/meetings/ResearchGroupMeetingRL.org"
-     "/Users/anlhr/org/Tasks.org"
-     "/Users/anlhr/org-roam/kostrikov21_offlin_reinf_learn_with_implic_q_learn.org"
-     "/Users/anlhr/research/paperlist.org"
-     "/Users/anlhr/org/Habits.org" "/Users/anlhr/org/Birthdays.org"
+   '("/Users/anlhr/org/Tasks.org" "/Users/anlhr/org/Habits.org"
+     "/Users/anlhr/org/Birthdays.org"
      "/Users/anlhr/KeepInSync/Life.org"
      "/Users/anlhr/research/planning.org"))
  '(pdf-tools-handle-upgrades t))
@@ -1021,13 +1024,18 @@
   :ensure t)
 
 (add-to-list 'load-path "~/.config/emacs/copilot.el")
+
 (use-package copilot
   :load-path "~/.config/emacs/copilot.el"
-  :defer t
-  :config
-  (add-hook 'prog-mode-hook 'copilot-mode)
-  (define-key copilot-completion-map (kbd "C-a") 'copilot-accept-completion)
-  )
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . copilot-accept-completion)
+              ("TAB" . copilot-accept-completion)
+              ("C-<tab>" . copilot-accept-completion-by-word)
+              ("C-TAB" . copilot-accept-completion-by-word)
+              ("C-c an" . copilot-next-completion)
+              ("C-c ap" . copilot-previous-completion))
+)
 
 (use-package graphviz-dot-mode
   :ensure t)
