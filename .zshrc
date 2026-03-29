@@ -1,14 +1,14 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-if [[ $(uname -m) == arm* ]]; then
-    source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
-elif [[ $(uname -m) == x86* ]]; then
-    source "$HOME/powerlevel10k/powerlevel10k.zsh-theme"
-fi
+# if [[ $(uname -m) == arm* ]]; then
+#     source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
+# elif [[ $(uname -m) == x86* ]]; then
+#     source "$HOME/powerlevel10k/powerlevel10k.zsh-theme"
+# fi
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+# fi
 
 if [[ $OSTYPE == darwin* ]]; then
     echo "OS: MacOs"
@@ -145,14 +145,16 @@ if [ -f '/Users/anlhr/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/anlhr/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/anlhr/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
 
-alias gconf='/usr/bin/git --git-dir=$HOME/.cfg.git/ --work-tree=$HOME'
-source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
-source ~/powerlevel10k/powerlevel10k.zsh-theme
+# alias gconf='/usr/bin/git --git-dir=$HOME/.cfg.git/ --work-tree=$HOME'
+# source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
+# source ~/powerlevel10k/powerlevel10k.zsh-theme
 
 
 # if tmux sessionizer exists, alias to ts
 #
 
+
 if [ -d "$HOME/tmux-sessionizer" ]; then
     alias ts="$HOME/tmux-sessionizer/tmux-sessionizer"
 fi
+eval "$(starship init zsh)"

@@ -63,6 +63,7 @@ brew install shellcheck
 brew install wakeonlan
 brew install bash-language-server
 brew install espanso
+brew install starship
 # other tools possibly over git 
 # zsh-autosuggestions
 #
