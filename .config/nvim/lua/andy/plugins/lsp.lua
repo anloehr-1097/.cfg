@@ -204,6 +204,12 @@ return {
         })
         vim.lsp.enable("bashls")
 
+        vim.lsp.config("tsserver", {
+            cmd = {'typescript-language-server', '--stdio'},
+            filetypes = {'javascript', 'javascriptreact', 'typescript', 'typescriptreact'},
+        })
+        vim.lsp.enable("tsserver")
+
 		-- Global diagnostics keybindings (from arch)
 		vim.keymap.set("n", "<space>e", vim.diagnostic.open_float)
 		vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<cr>")

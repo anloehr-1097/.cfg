@@ -578,7 +578,7 @@
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode)
   :custom
-  (org-bullets-bullet-list '("♔" "♕" "♜" "♝" "♞" "♟" "♻")))
+  (org-bullets-bullet-list '("*" "**" "***" "****" "*****" "******" "*******")))
 
 ;;(use-package org-superstar
     ;;:ensure t
@@ -775,8 +775,8 @@
 (setq dap-auto-configure-mode t)
 (setq dap-auto-configure-features '(sessions locals controls tooltip))
 
-(require 'dap-cpptools)
-(dap-cpptools-setup)
+;; (require 'dap-cpptools)
+;; (dap-cpptools-setup)
 
 
 (use-package cmake-mode
@@ -835,7 +835,8 @@
    '("/Users/anlhr/org/Tasks.org" "/Users/anlhr/org/Habits.org"
      "/Users/anlhr/org/Birthdays.org"
      "/Users/anlhr/KeepInSync/Life.org"
-     "/Users/anlhr/research/planning.org"))
+     "/Users/anlhr/research/planning.org"
+     "~/logbooks/Todos.org"))
  '(pdf-tools-handle-upgrades t))
 
 (use-package cuda-mode
@@ -1462,6 +1463,16 @@
   :keymaps '(normal visual emacs)
   :prefix "SPC"
   "l" 'google-translate-at-point)
+
+(use-package plantuml-mode
+  :ensure t
+  :config 
+  ;; Sample executable configuration
+  (setq plantuml-executable-path "/usr/bin/plantuml")
+  (setq plantuml-default-exec-mode 'executable)
+  (setq org-plantuml-exec-mode 'executable)
+  (setq org-plantuml-executable-path "/usr/bin/plantuml")
+  (setq org-plantuml-jar-path "/home/anloehr/.local/bin/plantuml.jar"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

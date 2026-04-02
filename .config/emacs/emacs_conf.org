@@ -812,7 +812,7 @@ This section contains the basic configuration for =org-mode= plus the configurat
   (use-package org-bullets
     :hook (org-mode . org-bullets-mode)
     :custom
-    (org-bullets-bullet-list '("♔" "♕" "♜" "♝" "♞" "♟" "♻")))
+    (org-bullets-bullet-list '("*" "**" "***" "****" "*****" "******" "*******")))
 
   ;;(use-package org-superstar
       ;;:ensure t
@@ -1124,12 +1124,12 @@ Try these commands with =M-x=:
 
 *** C
 #+begin_src emacs-lisp
-    (require 'dap-cpptools)
-    (dap-cpptools-setup)
+  ;; (require 'dap-cpptools)
+  ;; (dap-cpptools-setup)
 
 
-    (use-package cmake-mode
-      :ensure t)
+  (use-package cmake-mode
+    :ensure t)
 #+end_src
 
 *** Python
@@ -2183,3 +2183,19 @@ Dial the GC threshold back down so that garbage collection happens more frequent
 
 
      
+
+
+
+* Plantum
+#+begin_src emacs-lisp
+  (use-package plantuml-mode
+    :ensure t
+    :config 
+    ;; Sample executable configuration
+    (setq plantuml-executable-path "/usr/bin/plantuml")
+    (setq plantuml-default-exec-mode 'executable)
+    (setq org-plantuml-exec-mode 'executable)
+    (setq org-plantuml-executable-path "/usr/bin/plantuml")
+    (setq org-plantuml-jar-path "/home/anloehr/.local/bin/plantuml.jar"))
+
+#+end_src
