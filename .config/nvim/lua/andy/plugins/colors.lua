@@ -199,6 +199,7 @@ return {
 				colors.fg_float = fg
 				colors.fg_gutter = fg_gutter
 				colors.fg_sidebar = fg_dark
+                colors.VertSplit = border
 			end,
 		})
 
