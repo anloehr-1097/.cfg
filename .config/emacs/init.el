@@ -1476,9 +1476,8 @@
   (setq org-plantuml-exec-mode 'executable)
   (setq org-plantuml-executable-path "/usr/bin/plantuml")
   (setq org-plantuml-jar-path "/home/anloehr/.local/bin/plantuml.jar"))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
+(with-eval-after-load 'bibtex-completion
+  (setq bibtex-completion-pdf-open-function
+        (lambda (fpath)
+          (start-process "sioyek" nil "sioyek" fpath))))

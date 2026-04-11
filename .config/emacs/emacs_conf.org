@@ -1995,9 +1995,9 @@ Dial the GC threshold back down so that garbage collection happens more frequent
             (incollection  . "${=has-pdf=:1}${=has-note=:1}${year:4}${author:36}${title:*}${booktitle:40}")
             (inproceedings . "${=has-pdf=:1}${=has-note=:1}${year:4}${author:36}${title:*}${booktitle:40}")
             (t             . "${=has-pdf=:1}${=has-note=:1}${year:4}${author:36}${title:*}"))
-          bibtex-completion-pdf-open-function
-          (lambda (fpath)
-            (call-process "open" nil 0 nil fpath))
+    ;;       bibtex-completion-pdf-open-function
+    ;;       (lambda (fpath)
+    ;;         (call-process "open" nil 0 nil fpath))
   	  )
 
 
@@ -2202,3 +2202,15 @@ Dial the GC threshold back down so that garbage collection happens more frequent
     (setq org-plantuml-jar-path "/home/anloehr/.local/bin/plantuml.jar"))
 
 #+end_src
+* PDF viewer
+
+#+begin_src emacs-lisp
+
+  (with-eval-after-load 'bibtex-completion
+    (setq bibtex-completion-pdf-open-function
+          (lambda (fpath)
+            (start-process "sioyek" nil "sioyek" fpath))))
+#+end_src
+
+
+
