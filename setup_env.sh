@@ -45,12 +45,12 @@ brew install emacs-plus  # on mac
 brew install --cask visual-studio-code
 brew install --cask miniconda
 brew install --cask eloston-chromium
-brew install --cask keepassxc
+brew install --cask keepassxc  # optional
 brew install pass
 brew install tldr
 brew install graphviz
-brew install --cask microsoft-teams
-brew install --cask xournal++
+brew install --cask microsoft-teams  # optional
+brew install --cask xournal++  # optional
 brew install universal-ctags
 brew install pandoc  # pdf 
 brew install sdl2  # low level access keyboard, audio, graphics

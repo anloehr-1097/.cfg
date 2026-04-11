@@ -776,8 +776,8 @@
 (setq dap-auto-configure-mode t)
 (setq dap-auto-configure-features '(sessions locals controls tooltip))
 
-(require 'dap-cpptools)
-(dap-cpptools-setup)
+;; (require 'dap-cpptools)
+;; (dap-cpptools-setup)
 
 
 (use-package cmake-mode
@@ -825,9 +825,20 @@
     :ensure t)
 
 
-  (custom-set-variables
-   '(conda-anaconda-home conda-path)
-   )
+  
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(conda-anaconda-home conda-path)
+ '(org-agenda-files
+   '("/Users/anlhr/org/Tasks.org" "/Users/anlhr/org/Habits.org"
+     "/Users/anlhr/org/Birthdays.org"
+     "/Users/anlhr/KeepInSync/Life.org"
+     "/Users/anlhr/research/planning.org"
+     "~/logbooks/Todos.org"))
+ '(pdf-tools-handle-upgrades t))
 
 (use-package cuda-mode
   :ensure t)
@@ -1455,3 +1466,19 @@
   :keymaps '(normal visual emacs)
   :prefix "SPC"
   "l" 'google-translate-at-point)
+
+(use-package plantuml-mode
+  :ensure t
+  :config 
+  ;; Sample executable configuration
+  (setq plantuml-executable-path "/usr/bin/plantuml")
+  (setq plantuml-default-exec-mode 'executable)
+  (setq org-plantuml-exec-mode 'executable)
+  (setq org-plantuml-executable-path "/usr/bin/plantuml")
+  (setq org-plantuml-jar-path "/home/anloehr/.local/bin/plantuml.jar"))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
