@@ -690,6 +690,7 @@ This section contains the basic configuration for =org-mode= plus the configurat
         '(("Diffusion" . ?d)
   	("DistributionalRL" . ?D)
   	("Quantization" . ?Q)
+  	("Compression" . ?C)
   	("CriticLearning" . ?c)
   	("planning" . ?p)
   	("publish" . ?P)
@@ -1977,45 +1978,47 @@ Dial the GC threshold back down so that garbage collection happens more frequent
 
 ** Org Ref
 #+begin_src emacs-lisp
-    (use-package org-ref
-      :after org
-      :config
-      (setq bibtex-dialect 'biblatex)
-      ;;(setq bibtex-completion-pdf-field "file")
-      (setq bibtex-completion-bibliography '("~/research/references.bib")
-            bibtex-completion-library-path '("~/research/paper-pdfs/")
-            bibtex-completion-notes-path "~/research/notes/"
-            bibtex-completion-notes-template-multiple-files "*${author-or-editor},${title},${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
+  (use-package org-ref
+    :after org
+    :config
+    (setq bibtex-dialect 'biblatex)
+    ;;(setq bibtex-completion-pdf-field "file")
+    (setq bibtex-completion-bibliography '("~/research/references.bib")
+          bibtex-completion-library-path '("~/research/paper-pdfs/")
+          bibtex-completion-notes-path "~/research/notes/"
+          bibtex-completion-notes-template-multiple-files "*${author-or-editor},${title},${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
 
-            bibtex-completion-additional-search-fields '(keywords)
-            bibtex-completion-display-formats
-            '((article       . "${=has-pdf=:1}${=has-note=:1}${year:4}${author:36}${title:*}${journal:40}")
-              (inbook        . "${=has-pdf=:1}${=has-note=:1}${year:4}${author:36}${title:*} Chapter${chapter:32}")
-              (incollection  . "${=has-pdf=:1}${=has-note=:1}${year:4}${author:36}${title:*}${booktitle:40}")
-              (inproceedings . "${=has-pdf=:1}${=has-note=:1}${year:4}${author:36}${title:*}${booktitle:40}")
-              (t             . "${=has-pdf=:1}${=has-note=:1}${year:4}${author:36}${title:*}"))
-            bibtex-completion-pdf-open-function
-            (lambda (fpath)
-              (call-process "open" nil 0 nil fpath))
+          bibtex-completion-additional-search-fields '(keywords)
+          bibtex-completion-display-formats
+          '((article       . "${=has-pdf=:1}${=has-note=:1}${year:4}${author:36}${title:*}${journal:40}")
+            (inbook        . "${=has-pdf=:1}${=has-note=:1}${year:4}${author:36}${title:*} Chapter${chapter:32}")
+            (incollection  . "${=has-pdf=:1}${=has-note=:1}${year:4}${author:36}${title:*}${booktitle:40}")
+            (inproceedings . "${=has-pdf=:1}${=has-note=:1}${year:4}${author:36}${title:*}${booktitle:40}")
+            (t             . "${=has-pdf=:1}${=has-note=:1}${year:4}${author:36}${title:*}"))
+          bibtex-completion-pdf-open-function
+          (lambda (fpath)
+            (call-process "open" nil 0 nil fpath))
   	  )
 
 
 
 
-      (require 'org-ref-ivy)
-      (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
-      (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
+    (require 'org-ref-ivy)
+    (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
+    (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
+    (require 'openalex)
 
-      (general-create-definer ref-keybinds-set
-        :keymaps '(normal visual emacs bibtex-mode-map)
-        :prefix "SPC")
+    (setq oa-api-key (getenv "OPEN_ALEX_API_KEY"))
+    (general-create-definer ref-keybinds-set
+      :keymaps '(normal visual emacs bibtex-mode-map)
+      :prefix "SPC")
 
-      (ref-keybinds-set
-       "r"  '(:ignore t :which-key "ref mgmt")
-       "rh" 'org-ref-bibtex-hydra/body
-       "ri" 'org-ref-insert-link
-       "rd" 'org-ref-arxiv-download-and-store)
-      )
+    (ref-keybinds-set
+     "r"  '(:ignore t :which-key "ref mgmt")
+     "rh" 'org-ref-bibtex-hydra/body
+     "ri" 'org-ref-insert-link
+     "rd" 'org-ref-arxiv-download-and-store)
+    )
 #+end_src
 
 #+begin_src emacs-lisp

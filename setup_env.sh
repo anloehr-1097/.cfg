@@ -39,9 +39,9 @@ brew install --cask anki
 brew install --cask font-cantarell
 brew install --cask font-iosevka-nerd-font
 brew install node
-brwe install powerlevel10k
-brew tap d12frosted/emacs-plus
-brew install emacs-plus
+# brew install powerlevel10k  
+brew tap d12frosted/emacs-plus  # on mac 
+brew install emacs-plus  # on mac
 brew install --cask visual-studio-code
 brew install --cask miniconda
 brew install --cask eloston-chromium
@@ -57,7 +57,7 @@ brew install sdl2  # low level access keyboard, audio, graphics
 brew install gh  # github cli
 brew install cppcheck
 brew install uv
-brew install black
+# brew install black
 brew install watchman
 brew install shellcheck
 brew install wakeonlan

@@ -475,6 +475,7 @@
       '(("Diffusion" . ?d)
 	("DistributionalRL" . ?D)
 	("Quantization" . ?Q)
+	("Compression" . ?C)
 	("CriticLearning" . ?c)
 	("planning" . ?p)
 	("publish" . ?P)
@@ -824,19 +825,9 @@
     :ensure t)
 
 
-  
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(conda-anaconda-home conda-path)
- '(org-agenda-files
-   '("/Users/anlhr/org/Tasks.org" "/Users/anlhr/org/Habits.org"
-     "/Users/anlhr/org/Birthdays.org"
-     "/Users/anlhr/KeepInSync/Life.org"
-     "/Users/anlhr/research/planning.org"))
- '(pdf-tools-handle-upgrades t))
+  (custom-set-variables
+   '(conda-anaconda-home conda-path)
+   )
 
 (use-package cuda-mode
   :ensure t)
@@ -1331,7 +1322,9 @@
   (require 'org-ref-ivy)
   (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
   (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
+  (require 'openalex)
 
+  (setq oa-api-key (getenv "OPEN_ALEX_API_KEY"))
   (general-create-definer ref-keybinds-set
     :keymaps '(normal visual emacs bibtex-mode-map)
     :prefix "SPC")
@@ -1462,9 +1455,3 @@
   :keymaps '(normal visual emacs)
   :prefix "SPC"
   "l" 'google-translate-at-point)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
