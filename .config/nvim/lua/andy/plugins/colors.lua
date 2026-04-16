@@ -203,7 +203,48 @@ return {
 			end,
 		})
 
-		vim.cmd.colorscheme("gruber-darker")
+		-- setup ColorScheme autocommand for Diff highlights
+				local function apply_diff_highlights(name)
+					local hl = vim.api.nvim_set_hl
+					name = name or vim.g.colors_name or ""
+					if name == "gruber-darker" then
+						hl(0, "DiffAdd", { bg = bg_highlight, fg = fg })
+						hl(0, "DiffChange", { bg = bg_search, fg = fg })
+						hl(0, "DiffDelete", { bg = "#3b2a2a", fg = fg })
+						hl(0, "DiffText", { bg = bg_visual, fg = fg, bold = true })
+						hl(0, "DiffTextAdd", { link = "DiffText" })
+					elseif name:match("catppuccin") or name == "catppuccin" then
+						hl(0, "DiffAdd", { bg = "#26332a", fg = "#A6E3A1" })
+						hl(0, "DiffChange", { bg = "#263244", fg = "#89B4FA" })
+						hl(0, "DiffDelete", { bg = "#3b2026", fg = "#F38BA8" })
+						hl(0, "DiffText", { bg = "#4b2c38", fg = "#F5D0A9", bold = true })
+						hl(0, "DiffTextAdd", { link = "DiffText" })
+					elseif name:match("tokyonight") or name == "tokyonight" then
+						hl(0, "DiffAdd", { bg = "#12333b", fg = "#B8D9F2" })
+						hl(0, "DiffChange", { bg = "#26303a", fg = "#A6B8F5" })
+						hl(0, "DiffDelete", { bg = "#3b1520", fg = "#F38BA8" })
+						hl(0, "DiffText", { bg = "#264a5a", fg = "#CFE6FF", bold = true })
+						hl(0, "DiffTextAdd", { link = "DiffText" })
+					else
+						-- sensible defaults and links
+						hl(0, "DiffAdd", { bg = "#203225", fg = "#BCEBC5" })
+						hl(0, "DiffChange", { bg = "#2a2a36", fg = "#C0C8F5" })
+						hl(0, "DiffDelete", { bg = "#40262a", fg = "#F2B8C6" })
+						hl(0, "DiffText", { bg = "#334b4c", fg = "#EAF6FF", bold = true })
+						hl(0, "DiffTextAdd", { link = "DiffText" })
+					end
+				end
+				-- create autocommand so it updates when colorscheme changes
+				vim.api.nvim_create_autocmd("ColorScheme", {
+					callback = function()
+						apply_diff_highlights(vim.g.colors_name)
+					end,
+				})
+				-- apply for current scheme immediately
+				apply_diff_highlights(vim.g.colors_name)
+		
+				vim.cmd.colorscheme("gruber-darker")
+
 	end,
 }
 -- return {
