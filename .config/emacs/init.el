@@ -825,16 +825,9 @@
     :ensure t)
 
 
-  
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(conda-anaconda-home conda-path)
- '(org-agenda-files
-   '("~/logbooks/Notebook04022026.org" "/home/anloehr/logbooks/Todos.org"))
- '(pdf-tools-handle-upgrades t))
+  (custom-set-variables
+   '(conda-anaconda-home conda-path)
+   )
 
 (use-package cuda-mode
   :ensure t)
@@ -1318,9 +1311,9 @@
           (incollection  . "${=has-pdf=:1}${=has-note=:1}${year:4}${author:36}${title:*}${booktitle:40}")
           (inproceedings . "${=has-pdf=:1}${=has-note=:1}${year:4}${author:36}${title:*}${booktitle:40}")
           (t             . "${=has-pdf=:1}${=has-note=:1}${year:4}${author:36}${title:*}"))
-        bibtex-completion-pdf-open-function
-        (lambda (fpath)
-          (call-process "open" nil 0 nil fpath))
+  ;;       bibtex-completion-pdf-open-function
+  ;;       (lambda (fpath)
+  ;;         (call-process "open" nil 0 nil fpath))
 	  )
 
 

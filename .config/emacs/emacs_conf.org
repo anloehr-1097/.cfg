@@ -810,14 +810,14 @@ This section contains the basic configuration for =org-mode= plus the configurat
 
 #+begin_src emacs-lisp
 
-  (use-package org-bullets
-    :hook (org-mode . org-bullets-mode)
-    :custom
-    (org-bullets-bullet-list '("*" "**" "***" "****" "*****" "******" "*******")))
+    (use-package org-bullets
+      :hook (org-mode . org-bullets-mode)
+      :custom
+      (org-bullets-bullet-list '("♔" "♕" "♜" "♝" "♞" "♟" "♻")))
 
-  ;;(use-package org-superstar
-      ;;:ensure t
-      ;;:hook (org-mode . org-superstar-mode))
+    ;;(use-package org-superstar
+        ;;:ensure t
+        ;;:hook (org-mode . org-superstar-mode))
 
 #+end_src
 
@@ -1812,6 +1812,9 @@ Make emacs recognize whenever a change to a file has occured outside of emacs.
 #+begin_src emacs-lisp
   (global-auto-revert-mode 1)
 #+end_src
+
+
+
 * Runtime Performance
 
 Dial the GC threshold back down so that garbage collection happens more frequently but in less time.
