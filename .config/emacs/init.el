@@ -833,11 +833,7 @@
  ;; If there is more than one, they won't work right.
  '(conda-anaconda-home conda-path)
  '(org-agenda-files
-   '("/Users/anlhr/org/Tasks.org" "/Users/anlhr/org/Habits.org"
-     "/Users/anlhr/org/Birthdays.org"
-     "/Users/anlhr/KeepInSync/Life.org"
-     "/Users/anlhr/research/planning.org"
-     "~/logbooks/Todos.org"))
+   '("~/logbooks/Notebook04022026.org" "/home/anloehr/logbooks/Todos.org"))
  '(pdf-tools-handle-upgrades t))
 
 (use-package cuda-mode

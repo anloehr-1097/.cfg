@@ -41,6 +41,7 @@ fi
 export PATH="/usr/local/opt/llvm/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/opt/ncurses/bin:$PATH"
+export PATH="${HOME}/.local/bin:$PATH"
 export LDFLAGS="-L/usr/local/opt/ncurses/lib"
 export CPPFLAGS="-I/usr/local/opt/ncurses/include"
 export PKG_CONFIG_PATH="/usr/local/opt/ncurses/lib/pkgconfig"
@@ -157,4 +158,8 @@ if [ -f '/Users/anlhr/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '
 if [ -d "$HOME/tmux-sessionizer" ]; then
     alias ts="$HOME/tmux-sessionizer/tmux-sessionizer"
 fi
-eval "$(starship init zsh)"
+# eval "$(starship init zsh)"
+#
+#
+# eval "$(oh-my-posh init zsh)"
+source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
