@@ -158,8 +158,11 @@ if [ -f '/Users/anlhr/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '
 if [ -d "$HOME/tmux-sessionizer" ]; then
     alias ts="$HOME/tmux-sessionizer/tmux-sessionizer"
 fi
-# eval "$(starship init zsh)"
-#
-#
-# eval "$(oh-my-posh init zsh)"
-source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
+
+if command -v starship >/dev/null 2>&1; then
+    eval "$(starship init zsh)"
+fi
+
+if [[ -f /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme ]]; then
+    source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
+fi
