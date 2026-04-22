@@ -42,22 +42,25 @@
 (setq ring-bell-function 'ignore)
 
 ;; Initialize package sources
-(require 'package)
+  (require 'package)
 
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("org" . "https://orgmode.org/elpa/")
-                         ("elpa" . "https://elpa.gnu.org/packages/")))
+  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                           ("org" . "https://orgmode.org/elpa/")
+                           ("elpa" . "https://elpa.gnu.org/packages/")))
 
-(package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
+  (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+(add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/"))
 
-  ;; Initialize use-package on non-Linux platforms
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
+  (package-initialize)
+  (unless package-archive-contents
+    (package-refresh-contents))
 
-(require 'use-package)
-(setq use-package-always-ensure t)
+    ;; Initialize use-package on non-Linux platforms
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+
+  (require 'use-package)
+  (setq use-package-always-ensure t)
 
 (use-package auto-package-update
   :custom
@@ -693,6 +696,28 @@
 
    )
 
+(use-package org-contrib
+  :after org
+  :config
+  (require 'ox-extra)
+  (ox-extras-activate '(latex-header-blocks ignore-headlines))
+  (with-eval-after-load 'ox-latex
+    ;; Import ox-latex to get org-latex-classes and other functionality
+    ;; for exporting to LaTeX from org
+    (setq org-latex-pdf-process
+          '("pdflatex -interaction nonstopmode -output-directory %o %f"
+            "bibtex %b"
+            "pdflatex -interaction nonstopmode -output-directory %o %f"
+            "pdflatex -interaction nonstopmode -output-directory %o %f"))
+    (setq org-latex-with-hyperref nil) ;; stop org adding hypersetup{author..} to latex export
+    ;; (setq org-latex-prefer-user-labels t)
+    ;; delete unwanted file extensions after latexMK
+    (setq org-latex-logfiles-extensions
+          '("lof" "lot" "tex~" "aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "dvi" "fdb_latexmk" "blg" "brf" "fls" "entoc" "ps" "spl" "bbl" "xmpi" "run.xml" "bcf" "acn" "acr" "alg" "glg" "gls" "ist"))
+    (unless (boundp 'org-latex-classes)
+      (setq org-latex-classes nil)))
+  )
+
 (use-package emacsql
   :ensure t)
 
@@ -1017,16 +1042,15 @@
 (add-to-list 'load-path "~/.config/emacs/copilot.el")
 
 (use-package copilot
-  :load-path "~/.config/emacs/copilot.el"
+  :ensure t
   :hook (prog-mode . copilot-mode)
   :bind (:map copilot-completion-map
               ("<tab>" . copilot-accept-completion)
               ("TAB" . copilot-accept-completion)
               ("C-<tab>" . copilot-accept-completion-by-word)
               ("C-TAB" . copilot-accept-completion-by-word)
-              ("C-c an" . copilot-next-completion)
-              ("C-c ap" . copilot-previous-completion))
-)
+              ("C-n" . copilot-next-completion)
+              ("C-p" . copilot-previous-completion)))
 
 (use-package graphviz-dot-mode
   :ensure t)
@@ -1470,3 +1494,11 @@
   (setq bibtex-completion-pdf-open-function
         (lambda (fpath)
           (start-process "sioyek" nil "sioyek" fpath))))
+
+(use-package openwith
+  :ensure t
+  :config
+  (openwith-mode 1)
+  (setq openwith-associations
+      '(("\\.pdf\\'" "sioyek" (file))))
+  )

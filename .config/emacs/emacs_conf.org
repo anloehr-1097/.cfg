@@ -83,6 +83,9 @@ Emacs has a built in package manager but it doesn't make it easy to automaticall
                            ("org" . "https://orgmode.org/elpa/")
                            ("elpa" . "https://elpa.gnu.org/packages/")))
 
+  (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+(add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/"))
+
   (package-initialize)
   (unless package-archive-contents
     (package-refresh-contents))
@@ -980,6 +983,31 @@ This snippet adds a hook to =org-mode= buffers so that =efs/org-babel-tangle-con
    )
 #+end_src
 
+** org-contrib
+#+begin_src emacs-lisp
+  (use-package org-contrib
+    :after org
+    :config
+    (require 'ox-extra)
+    (ox-extras-activate '(latex-header-blocks ignore-headlines))
+    (with-eval-after-load 'ox-latex
+      ;; Import ox-latex to get org-latex-classes and other functionality
+      ;; for exporting to LaTeX from org
+      (setq org-latex-pdf-process
+            '("pdflatex -interaction nonstopmode -output-directory %o %f"
+              "bibtex %b"
+              "pdflatex -interaction nonstopmode -output-directory %o %f"
+              "pdflatex -interaction nonstopmode -output-directory %o %f"))
+      (setq org-latex-with-hyperref nil) ;; stop org adding hypersetup{author..} to latex export
+      ;; (setq org-latex-prefer-user-labels t)
+      ;; delete unwanted file extensions after latexMK
+      (setq org-latex-logfiles-extensions
+            '("lof" "lot" "tex~" "aux" "idx" "log" "out" "toc" "nav" "snm" "vrb" "dvi" "fdb_latexmk" "blg" "brf" "fls" "entoc" "ps" "spl" "bbl" "xmpi" "run.xml" "bcf" "acn" "acr" "alg" "glg" "gls" "ist"))
+      (unless (boundp 'org-latex-classes)
+        (setq org-latex-classes nil)))
+    )
+#+end_src
+
 * Org Roam Setup
 
 #+begin_src emacs-lisp
@@ -1493,16 +1521,16 @@ A simple IPython client for emacs porting jupyter notebooks / their functionalit
   (add-to-list 'load-path "~/.config/emacs/copilot.el")
 
   (use-package copilot
-    :load-path "~/.config/emacs/copilot.el"
+    :ensure t
     :hook (prog-mode . copilot-mode)
     :bind (:map copilot-completion-map
                 ("<tab>" . copilot-accept-completion)
                 ("TAB" . copilot-accept-completion)
                 ("C-<tab>" . copilot-accept-completion-by-word)
                 ("C-TAB" . copilot-accept-completion-by-word)
-                ("C-c an" . copilot-next-completion)
-                ("C-c ap" . copilot-previous-completion))
-  )
+                ("C-n" . copilot-next-completion)
+                ("C-p" . copilot-previous-completion)))
+
 #+end_src
 
 ** Graphviz Dot Mode
@@ -2215,5 +2243,16 @@ Dial the GC threshold back down so that garbage collection happens more frequent
             (start-process "sioyek" nil "sioyek" fpath))))
 #+end_src
 
+#+begin_src emacs-lisp
+  (use-package openwith
+    :ensure t
+    :config
+    (openwith-mode 1)
+    (setq openwith-associations
+        '(("\\.pdf\\'" "sioyek" (file))))
+    )
+
+
+#+end_src
 
 
