@@ -1572,9 +1572,16 @@ A simple IPython client for emacs porting jupyter notebooks / their functionalit
     :defer t
     :hook (org-mode . org-latex-impatient-mode)
     :init
-  (setq org-latex-impatient-tex2svg-bin
-   ;;location of tex2svg executable
-        (concat conda-path "bin/tex2svg")))
+    (setq org-latex-impatient-tex2svg-bin
+  	;;location of tex2svg executable
+  	(concat conda-path "bin/tex2svg")))
+
+
+  (setq org-latex-pdf-process
+        '("latexmk -f -pdf -interaction=nonstopmode -output-directory=%o %f"))
+
+#+end_src
+
 
 #+end_src
 
@@ -2030,16 +2037,16 @@ Dial the GC threshold back down so that garbage collection happens more frequent
     ;;       (lambda (fpath)
     ;;         (call-process "open" nil 0 nil fpath))
   	  )
-
-
-
-
     (require 'org-ref-ivy)
-    (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
-    (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
     (require 'openalex)
-
     (setq oa-api-key (getenv "OPEN_ALEX_API_KEY"))
+    )
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package ivy-bibtex
+    :ensure t)
+
     (general-create-definer ref-keybinds-set
       :keymaps '(normal visual emacs bibtex-mode-map)
       :prefix "SPC")
@@ -2048,22 +2055,18 @@ Dial the GC threshold back down so that garbage collection happens more frequent
      "r"  '(:ignore t :which-key "ref mgmt")
      "rh" 'org-ref-bibtex-hydra/body
      "ri" 'org-ref-insert-link
-     "rd" 'org-ref-arxiv-download-and-store)
-    )
-#+end_src
+     "rd" 'org-ref-arxiv-download-and-store
+     "rs" 'ivy-bibtex
+     )
 
-#+begin_src emacs-lisp
-  (use-package ivy-bibtex
-    :ensure t)
+    ;; (general-create-definer ivy-ref-keybinds-set
+    ;;   ;; :keymaps '(normal visual emacs bibtex-mode-map)
+    ;;   :keymaps '(normal visual emacs)
+    ;;   :prefix "SPC")
 
-    (general-create-definer ivy-ref-keybinds-set
-      ;; :keymaps '(normal visual emacs bibtex-mode-map)
-      :keymaps '(normal visual emacs)
-      :prefix "SPC")
-
-    (ivy-ref-keybinds-set
-     "r"  '(:ignore t :which-key "ref mgmt")
-     "rs" 'ivy-bibtex)
+    ;; (ivy-ref-keybinds-set
+    ;;  "r"  '(:ignore t :which-key "ref mgmt")
+    ;;  "rs" 'ivy-bibtex)
 #+end_src
 
 ** Citar

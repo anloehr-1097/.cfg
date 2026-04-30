@@ -850,9 +850,20 @@
     :ensure t)
 
 
-  (custom-set-variables
-   '(conda-anaconda-home conda-path)
-   )
+  
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(conda-anaconda-home conda-path)
+ '(org-agenda-files
+   '("/Users/anlhr/org-roam/kumar20_conser_q_learn_offlin_reinf_learn.org"
+     "/Users/anlhr/org/Tasks.org" "/Users/anlhr/org/Habits.org"
+     "/Users/anlhr/org/Birthdays.org"
+     "/Users/anlhr/KeepInSync/Life.org"
+     "/Users/anlhr/research/planning.org"))
+ '(pdf-tools-handle-upgrades t))
 
 (use-package cuda-mode
   :ensure t)
@@ -1083,9 +1094,13 @@
   :defer t
   :hook (org-mode . org-latex-impatient-mode)
   :init
-(setq org-latex-impatient-tex2svg-bin
- ;;location of tex2svg executable
-      (concat conda-path "bin/tex2svg")))
+  (setq org-latex-impatient-tex2svg-bin
+	;;location of tex2svg executable
+	(concat conda-path "bin/tex2svg")))
+
+
+(setq org-latex-pdf-process
+      '("latexmk -f -pdf -interaction=nonstopmode -output-directory=%o %f"))
 
 (defun trim-dollar-spaces ()
   "Replace '$' and '$' with '$' in the current buffer."
@@ -1339,16 +1354,14 @@
   ;;       (lambda (fpath)
   ;;         (call-process "open" nil 0 nil fpath))
 	  )
-
-
-
-
   (require 'org-ref-ivy)
-  (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)   
-  (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
   (require 'openalex)
-
   (setq oa-api-key (getenv "OPEN_ALEX_API_KEY"))
+  )
+
+(use-package ivy-bibtex
+  :ensure t)
+
   (general-create-definer ref-keybinds-set
     :keymaps '(normal visual emacs bibtex-mode-map)
     :prefix "SPC")
@@ -1357,20 +1370,18 @@
    "r"  '(:ignore t :which-key "ref mgmt")
    "rh" 'org-ref-bibtex-hydra/body
    "ri" 'org-ref-insert-link
-   "rd" 'org-ref-arxiv-download-and-store)
-  )
+   "rd" 'org-ref-arxiv-download-and-store
+   "rs" 'ivy-bibtex
+   )
 
-(use-package ivy-bibtex
-  :ensure t)
+  ;; (general-create-definer ivy-ref-keybinds-set
+  ;;   ;; :keymaps '(normal visual emacs bibtex-mode-map)
+  ;;   :keymaps '(normal visual emacs)
+  ;;   :prefix "SPC")
 
-  (general-create-definer ivy-ref-keybinds-set
-    ;; :keymaps '(normal visual emacs bibtex-mode-map)
-    :keymaps '(normal visual emacs)
-    :prefix "SPC")
-
-  (ivy-ref-keybinds-set
-   "r"  '(:ignore t :which-key "ref mgmt")
-   "rs" 'ivy-bibtex)
+  ;; (ivy-ref-keybinds-set
+  ;;  "r"  '(:ignore t :which-key "ref mgmt")
+  ;;  "rs" 'ivy-bibtex)
 
 (use-package citar
 :ensure t
@@ -1502,3 +1513,9 @@
   (setq openwith-associations
       '(("\\.pdf\\'" "sioyek" (file))))
   )
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
