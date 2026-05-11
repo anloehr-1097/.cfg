@@ -676,12 +676,11 @@ This section contains the basic configuration for =org-mode= plus the configurat
   	(sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
 
   (setq org-refile-targets
-        '(("~/org/Archive.org" :maxlevel . 1)
-  	("~/org/Tasks.org" :maxlevel . 1)
-  	("~/KeepInSync/refile.org" :maxlevel . 3)
+        (org-agenda-manifest--merge-refile-targets
+         '(("~/org/Archive.org" :maxlevel . 1)
   	("~/research/backlog.org" :maxlevel . 3)
   	("~/research/planning.org" :maxlevel . 3)
-  	("~/research/paperlist.org" :maxlevel . 3)))
+  	("~/research/paperlist.org" :maxlevel . 3))))
 
   ;; Save Org buffers after refiling!
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
@@ -2261,5 +2260,4 @@ Dial the GC threshold back down so that garbage collection happens more frequent
 
 
 #+end_src
-
 

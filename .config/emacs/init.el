@@ -461,12 +461,11 @@
 	(sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
 
 (setq org-refile-targets
-      '(("~/org/Archive.org" :maxlevel . 1)
-	("~/org/Tasks.org" :maxlevel . 1)
-	("~/KeepInSync/refile.org" :maxlevel . 3)
+      (org-agenda-manifest--merge-refile-targets
+       '(("~/org/Archive.org" :maxlevel . 1)
 	("~/research/backlog.org" :maxlevel . 3)
 	("~/research/planning.org" :maxlevel . 3)
-	("~/research/paperlist.org" :maxlevel . 3)))
+	("~/research/paperlist.org" :maxlevel . 3))))
 
 ;; Save Org buffers after refiling!
 (advice-add 'org-refile :after 'org-save-all-org-buffers)
@@ -850,18 +849,9 @@
     :ensure t)
 
 
-  
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(conda-anaconda-home conda-path)
- '(org-agenda-files
-   '("~/org/Schedule.org" "/Users/anlhr/org/Tasks.org"
-     "/Users/anlhr/org/Habits.org" "/Users/anlhr/org/Birthdays.org"
-     "/Users/anlhr/research/planning.org"))
- '(pdf-tools-handle-upgrades t))
+  (custom-set-variables
+   '(conda-anaconda-home conda-path)
+   )
 
 (use-package cuda-mode
   :ensure t)
@@ -1511,9 +1501,3 @@
   (setq openwith-associations
       '(("\\.pdf\\'" "sioyek" (file))))
   )
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

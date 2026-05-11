@@ -31,6 +31,9 @@
   (expand-file-name "local.org" org-agenda-manifest-dir)
   "Path to the local org-agenda manifest file (machine-specific).")
 
+(defvar org-agenda-manifest-refile-maxlevel 3
+  "Outline depth used for refiling targets derived from the global manifest.")
+
 (defun org-agenda-manifest--expand-path (path)
   "Expand PATH to absolute path, handling ~ expansion."
   (expand-file-name path))
@@ -70,6 +73,28 @@ Returns combined list with global files first, then local files."
   (let ((global (org-agenda-manifest--read-global))
         (local (org-agenda-manifest--read-local)))
     (append global local)))
+
+(defun org-agenda-manifest-refile-targets ()
+  "Return `org-refile-targets` entries for files in the global manifest."
+  (mapcar (lambda (file)
+            (cons file `(:maxlevel . ,org-agenda-manifest-refile-maxlevel)))
+          (org-agenda-manifest--read-global)))
+
+(defun org-agenda-manifest--merge-refile-targets (targets)
+  "Merge TARGETS with manifest-backed refile targets, replacing overlaps."
+  (let ((manifest-files (org-agenda-manifest--read-global))
+        (filtered nil)
+        (dynamic-targets (org-agenda-manifest-refile-targets)))
+    (dolist (target targets)
+      (unless (member (car target) manifest-files)
+        (push target filtered)))
+    (append (nreverse filtered) dynamic-targets)))
+
+(defun org-agenda-manifest--sync-org-state ()
+  "Refresh the live Org agenda and refile configuration from manifests."
+  (setq org-agenda-files (org-agenda-manifest--read-all))
+  (setq org-refile-targets
+        (org-agenda-manifest--merge-refile-targets org-refile-targets)))
 
 (defun org-agenda-manifest--which-manifest (file)
   "Determine which manifest FILE is in.
@@ -121,7 +146,7 @@ Returns 'global, 'local, or nil if not found."
 (defun org-agenda-manifest--setup ()
   "Initialize org-agenda-files from global and local manifests."
   (let ((files (org-agenda-manifest--read-all)))
-    (setq org-agenda-files files)
+    (org-agenda-manifest--sync-org-state)
     (let ((global-count (length (org-agenda-manifest--read-global)))
           (local-count (length (org-agenda-manifest--read-local))))
       (message "Loaded org-agenda-files: %d global + %d local = %d total" 
@@ -141,8 +166,8 @@ Checks if file exists before adding."
         (unless (member expanded current-files)
           (let ((updated-files (cons expanded current-files)))
             (org-agenda-manifest--write-manifest updated-files target-manifest)
-            ;; Also update the live org-agenda-files
-            (setq org-agenda-files (org-agenda-manifest--read-all))))
+            ;; Also update the live org-agenda and refile settings
+            (org-agenda-manifest--sync-org-state)))
         (message "Added %s to %s agenda manifest" 
                  file (if local "local" "global"))))))
 
@@ -159,8 +184,8 @@ Checks if file exists before adding."
              (updated-files (remove expanded current-files)))
         (when (not (equal current-files updated-files))
           (org-agenda-manifest--write-manifest updated-files target-manifest)
-          ;; Also update the live org-agenda-files
-          (setq org-agenda-files (org-agenda-manifest--read-all))
+          ;; Also update the live org-agenda and refile settings
+          (org-agenda-manifest--sync-org-state)
           (message "Removed %s from %s agenda manifest" 
                    file (if (eq manifest-location 'global) "global" "local")))))))
 
@@ -233,7 +258,7 @@ Call this in your init.el instead of setting org-agenda-files directly."
               (let ((updated-files (cons expanded global-files)))
                 (org-agenda-manifest--write-manifest updated-files 
                                                      org-agenda-manifest-global-file)
-                (setq org-agenda-files (org-agenda-manifest--read-all)))))))))
+                (org-agenda-manifest--sync-org-state))))))))
   
   (advice-add 'org-agenda-remove-file :after
     (lambda (file &rest _)
@@ -248,7 +273,7 @@ Call this in your init.el instead of setting org-agenda-files directly."
                    (updated-files (remove expanded current-files)))
               (when (not (equal current-files updated-files))
                 (org-agenda-manifest--write-manifest updated-files target-manifest)
-                (setq org-agenda-files (org-agenda-manifest--read-all))))))))))
+                (org-agenda-manifest--sync-org-state)))))))))
 
 (provide 'org-agenda-manifest)
 ;;; org-agenda-manifest.el ends here
