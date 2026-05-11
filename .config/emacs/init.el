@@ -446,13 +446,10 @@
   (setq org-agenda-start-with-log-mode t)
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
-  (setq org-agenda-files
-        '("~/org/Tasks.org"
-          "~/org/Habits.org"
-          "~/org/Birthdays.org"
-          "~/KeepInSync/Life.org"
-          "~/research/planning.org")
-	)
+  ;; Load org-agenda-files from manifest instead of hardcoding
+  (when (locate-library "org-agenda-manifest")
+    (require 'org-agenda-manifest)
+    (org-agenda-manifest-setup))
   :bind ("C-c l" . org-store-link))
 
 (require 'org-habit)
@@ -718,6 +715,9 @@
       (setq org-latex-classes nil)))
   )
 
+(use-package ox-hugo
+  :ensure t)
+
 (use-package emacsql
   :ensure t)
 
@@ -858,10 +858,8 @@
  ;; If there is more than one, they won't work right.
  '(conda-anaconda-home conda-path)
  '(org-agenda-files
-   '("/Users/anlhr/org-roam/kumar20_conser_q_learn_offlin_reinf_learn.org"
-     "/Users/anlhr/org/Tasks.org" "/Users/anlhr/org/Habits.org"
-     "/Users/anlhr/org/Birthdays.org"
-     "/Users/anlhr/KeepInSync/Life.org"
+   '("~/org/Schedule.org" "/Users/anlhr/org/Tasks.org"
+     "/Users/anlhr/org/Habits.org" "/Users/anlhr/org/Birthdays.org"
      "/Users/anlhr/research/planning.org"))
  '(pdf-tools-handle-upgrades t))
 

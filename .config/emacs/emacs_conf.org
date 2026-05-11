@@ -661,13 +661,10 @@ This section contains the basic configuration for =org-mode= plus the configurat
     (setq org-agenda-start-with-log-mode t)
     (setq org-log-done 'time)
     (setq org-log-into-drawer t)
-    (setq org-agenda-files
-          '("~/org/Tasks.org"
-            "~/org/Habits.org"
-            "~/org/Birthdays.org"
-            "~/KeepInSync/Life.org"
-            "~/research/planning.org")
-  	)
+    ;; Load org-agenda-files from manifest instead of hardcoding
+    (when (locate-library "org-agenda-manifest")
+      (require 'org-agenda-manifest)
+      (org-agenda-manifest-setup))
     :bind ("C-c l" . org-store-link))
 
   (require 'org-habit)
@@ -1006,6 +1003,13 @@ This snippet adds a hook to =org-mode= buffers so that =efs/org-babel-tangle-con
       (unless (boundp 'org-latex-classes)
         (setq org-latex-classes nil)))
     )
+#+end_src
+
+** ox-hugo
+
+#+begin_src emacs-lisp
+  (use-package ox-hugo
+    :ensure t)
 #+end_src
 
 * Org Roam Setup
