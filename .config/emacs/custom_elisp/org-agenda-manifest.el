@@ -216,24 +216,26 @@ If in global, move to local. If in local, move to global."
   "Display list of all agenda files, grouped by global and local."
   (interactive)
   (let ((global (org-agenda-manifest--read-global))
-        (local (org-agenda-manifest--read-local)))
-    (with-temp-buffer
-      (insert "Org Agenda Files\n")
-      (insert "================\n\n")
-      
-      (insert "GLOBAL FILES (synced via Syncthing):\n")
-      (insert (format "  Count: %d\n" (length global)))
-      (dolist (f global)
-        (insert (format "  - %s\n" f)))
-      
-      (insert "\nLOCAL FILES (machine-specific):\n")
-      (insert (format "  Count: %d\n" (length local)))
-      (dolist (f local)
-        (insert (format "  - %s\n" f)))
-      
-      (insert (format "\nTotal: %d files\n" (+ (length global) (length local))))
-      
-      (display-buffer (current-buffer)))))
+        (local (org-agenda-manifest--read-local))
+        (buf (get-buffer-create "*Org Agenda Manifests*")))
+    (with-current-buffer buf
+      (let ((inhibit-read-only t))
+        (erase-buffer)
+        (insert "Org Agenda Files\n")
+        (insert "================\n\n")
+        
+        (insert "GLOBAL FILES (synced via Syncthing):\n")
+        (insert (format "  Count: %d\n" (length global)))
+        (dolist (f global)
+          (insert (format "  - %s\n" f)))
+        
+        (insert "\nLOCAL FILES (machine-specific):\n")
+        (insert (format "  Count: %d\n" (length local)))
+        (dolist (f local)
+          (insert (format "  - %s\n" f)))
+        
+        (insert (format "\nTotal: %d files\n" (+ (length global) (length local)))))
+      (display-buffer buf))))
 
 ;;;###autoload
 (defun org-agenda-manifest-setup ()

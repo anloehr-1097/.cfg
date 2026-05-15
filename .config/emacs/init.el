@@ -465,7 +465,8 @@
        '(("~/org/Archive.org" :maxlevel . 1)
 	("~/research/backlog.org" :maxlevel . 3)
 	("~/research/planning.org" :maxlevel . 3)
-	("~/research/paperlist.org" :maxlevel . 3))))
+	("~/research/paperlist.org" :maxlevel . 3)
+	("~/org/Journal.org" :maxlevel . 3))))
 
 ;; Save Org buffers after refiling!
 (advice-add 'org-refile :after 'org-save-all-org-buffers)
@@ -849,20 +850,9 @@
     :ensure t)
 
 
-  
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(conda-anaconda-home conda-path)
- '(package-selected-packages nil)
- '(package-vc-selected-packages
-   '((anki-editor :vc-backend Git :url
-		  "https://github.com/anki-editor/anki-editor")
-     (vc-use-package :vc-backend Git :url
-		     "https://github.com/slotThe/vc-use-package")))
- '(pdf-tools-handle-upgrades t))
+  (custom-set-variables
+   '(conda-anaconda-home conda-path)
+   )
 
 (use-package cuda-mode
   :ensure t)
@@ -1088,6 +1078,13 @@
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
+
+(with-eval-after-load 'tex
+  (add-to-list 'TeX-view-program-list '("Sioyek" "sioyek %o"))
+  (setq TeX-view-program-selection '((output-pdf "Sioyek"))))
+
+(with-eval-after-load 'org
+  (add-to-list 'org-file-apps '("\\.pdf\\'" . "sioyek %s")))
 
 (use-package org-latex-impatient
   :defer t

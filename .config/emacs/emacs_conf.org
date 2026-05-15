@@ -680,7 +680,8 @@ This section contains the basic configuration for =org-mode= plus the configurat
          '(("~/org/Archive.org" :maxlevel . 1)
   	("~/research/backlog.org" :maxlevel . 3)
   	("~/research/planning.org" :maxlevel . 3)
-  	("~/research/paperlist.org" :maxlevel . 3))))
+  	("~/research/paperlist.org" :maxlevel . 3)
+  	("~/org/Journal.org" :maxlevel . 3))))
 
   ;; Save Org buffers after refiling!
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
@@ -1571,6 +1572,13 @@ A simple IPython client for emacs porting jupyter notebooks / their functionalit
   (setq TeX-parse-self t)
   (setq-default TeX-master nil)
 
+  (with-eval-after-load 'tex
+    (add-to-list 'TeX-view-program-list '("Sioyek" "sioyek %o"))
+    (setq TeX-view-program-selection '((output-pdf "Sioyek"))))
+
+  (with-eval-after-load 'org
+    (add-to-list 'org-file-apps '("\\.pdf\\'" . "sioyek %s")))
+
   (use-package org-latex-impatient
     :defer t
     :hook (org-mode . org-latex-impatient-mode)
@@ -2260,4 +2268,3 @@ Dial the GC threshold back down so that garbage collection happens more frequent
 
 
 #+end_src
-
