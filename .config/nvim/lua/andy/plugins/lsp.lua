@@ -197,6 +197,11 @@ return {
         })
         vim.lsp.enable('ruff_lsp')
 
+        vim.lsp.config('fish-lsp', {
+            cmd = { 'fish-lsp', 'start' },
+            filetype = 'fish',
+            }
+        )
 		-- Bash (bashls from main)
         vim.lsp.config("bashls", {
             cmd = {'bash-language-server', 'start'},
@@ -239,5 +244,16 @@ return {
 				vim.keymap.set({ "n", "v" }, "<space>ca", vim.lsp.buf.code_action, opts)
 			end,
 		})
+        vim.api.nvim_create_autocmd('FileType', {
+            pattern = 'fish',
+            callback = function()
+                vim.lsp.start({
+                    name = 'fish-lsp',
+                    cmd = { 'fish-lsp', 'start' },
+                })
+            end,
+        })
+
+
 	end,
 }
