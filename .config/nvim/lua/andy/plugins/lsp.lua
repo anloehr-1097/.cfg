@@ -215,6 +215,12 @@ return {
         })
         vim.lsp.enable("tsserver")
 
+        -- Optional: Only required if you need to update the language server settings
+        vim.lsp.config('ty', {})
+        -- Required: Enable the language server
+        vim.lsp.enable('ty')
+
+
 		-- Global diagnostics keybindings (from arch)
 		vim.keymap.set("n", "<space>e", vim.diagnostic.open_float)
 		vim.keymap.set("n", "gl", "<cmd>lua vim.diagnostic.open_float()<cr>")
